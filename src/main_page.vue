@@ -5,7 +5,7 @@
       <v-list dense>
          <v-list-tile v-for="menuitem in menuitems" :to="{path: menuitem.path}">
                <v-list-tile-action>
-                  <v-icon>{{ menuitem.icon }}</v-icon>
+                  <v-icon :color="menuitem.color">{{ menuitem.icon }}</v-icon>
                </v-list-tile-action>
                <v-list-tile-content>
                   <v-list-tile-title>{{menuitem.name}}</v-list-tile-title>
@@ -13,6 +13,7 @@
          </v-list-tile>
       </v-list>
    </v-navigation-drawer>
+
 
 
    <v-toolbar color="primary" dark app fixed clipped-left>
@@ -44,27 +45,50 @@ let menu = [
   {
     path: "/bus",
     name: "Bus storage",
-    icon: "fa-database"
+    icon: "fa-database",
+    color: "blue"
   },
   {
     path: "/logs",
     name: "Logs",
-    icon: "fa-stream"
+    icon: "fa-stream",
+    color: "blue"
   },
   {
-    path: "/files",
-    name: "File manager",
-    icon: "fa-edit"
+    path: "/files/drivers",
+    name: "Drivers",
+    icon: "fa-screwdriver",
+    color: "green darken-2"
+  },
+  {
+    path: "/files/event_scripts",
+    name: "Event scripts",
+    icon: "fa-rocket",
+    color: "green darken-2"
+  },
+  {
+    path: "/files/web_scripts",
+    name: "Web scripts",
+    icon: "fa-link",
+    color: "green darken-2"
+  },
+  {
+    path: "/files/timer_scripts",
+    name: "Timer scripts",
+    icon: "fa-clock",
+    color: "green darken-2"
+  },
+  {
+    path: "/files/user_html",
+    name: "User HTML",
+    icon: "fa-laptop",
+    color: "green darken-2"
   },
   {
     path: "/controls",
     name: "Controls",
-    icon: "fa-cogs"
-  },
-  {
-    path: "/editor",
-    name: "Editor",
-    icon: "fa-cogs"
+    icon: "fa-cogs",
+    color: "brown"
   }
 ];
 
