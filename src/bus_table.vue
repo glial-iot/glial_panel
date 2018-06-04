@@ -4,11 +4,11 @@
 
          <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
          <template slot="items" slot-scope="props">
-            <td class="text-xs-left ">{{ props.item.topic }}</td>
-            <td class="text-xs-left ">{{ props.item.value }}</td>
-            <td class="text-xs-left ">{{ props.item.timestamp }}</td>
-            <td class="justify-center layout px-0">
-               <v-btn icon class="mx-0 " @click="topic_delete(props.item)">
+            <td class="text-xs-left table-sm">{{ props.item.topic }}</td>
+            <td class="text-xs-left  table-sm">{{ props.item.value }}</td>
+            <td class="text-xs-left  table-sm">{{ props.item.timestamp }}</td>
+            <td class="justify-center layout px-0 table-sm button-sm">
+                <v-btn icon class="mx-0 " @click="topic_delete(props.item)">
                <v-icon color="pink" small>fa-trash-alt</v-icon>
                </v-btn>
             <v-btn v-show="props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
@@ -134,3 +134,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.table-sm {
+  height: 25px;
+}
+
+.button-sm {
+  margin: -11px!important;
+}
+</style>
+

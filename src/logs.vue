@@ -1,15 +1,15 @@
 <template>
   <div>
-      <v-data-table :headers="headers" :items="table_values" :loading="loading_status" must-sort class="elevation-1" >
+      <v-data-table :headers="headers" :items="table_values" :loading="loading_status" hide-actions must-sort class="elevation-1" >
 
       <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
-         <td class="text-xs-center ">{{ props.item.key }}</td>
-         <td class="text-xs-center ">{{ props.item.level }}</td>
-         <td class="text-xs-center ">{{ props.item.source }}</td>
-         <td class="text-xs-left ">{{ props.item.date }}</td>
-         <td class="text-xs-left ">{{ props.item.entry }}</td>
-         <td class="justify-center layout px-0">
+         <td class="text-xs-center table-sm">{{ props.item.key }}</td>
+         <td class="text-xs-center table-sm">{{ props.item.level }}</td>
+         <td class="text-xs-center table-sm">{{ props.item.source }}</td>
+         <td class="text-xs-left table-sm">{{ props.item.date }}</td>
+         <td class="text-xs-left table-sm">{{ props.item.entry }}</td>
+         <td class="justify-center layout px-0 table-sm button-sm">
          <v-btn icon class="mx-0 " @click="show_trace(props.item)">
             <v-icon color="pink" small>fa-project-diagram</v-icon>
          </v-btn>
@@ -37,41 +37,41 @@ export default {
         value: "key",
         align: "center",
         sortable: false,
-        width: "5%"
+        width: "1%"
       },
       {
         text: "Level",
         value: "level",
         align: "center",
         sortable: false,
-        width: "5%"
+        width: "4%"
       },
       {
         text: "Source",
         value: "source",
         align: "center",
         sortable: false,
-        width: "20%"
+        width: "19%"
       },
       {
         text: "Date",
         value: "date",
         align: "center",
         sortable: false,
-        width: "30%"
+        width: "37%"
       },
       {
         text: "Entry",
         value: "entry",
         align: "center",
         sortable: false,
-        width: "35%"
+        width: "40%"
       },
       {
         text: "Trace",
         align: "center",
         sortable: false,
-        width: "5%"
+        width: "2%"
       }
     ],
     table_values: [],
@@ -118,3 +118,14 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+.table-sm {
+  height: 25px;
+}
+
+.button-sm {
+  margin: -11px!important;
+}
+</style>
