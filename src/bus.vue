@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="title text-xs-center py-2">Bus</div>
+        <div class="title text-xs-center py-2"></div>
 
          <bus-table></bus-table>
 
