@@ -63,7 +63,7 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get("http://localhost:8080/system_webedit_data", {
+          .get("http://localhost:8080/system_webedit_data_v2", {
             params: {
               item: "save",
               address: this.current_file_name,
@@ -95,7 +95,7 @@ export default {
     load_file: function() {
       this.content = this.last_content;
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data", {
+        .get("http://localhost:8080/system_webedit_data_v2", {
           params: {
             item: "get",
             address: this.current_file_name
