@@ -55,6 +55,12 @@ let menu = [
     color: "blue"
   },
   {
+    path: "/controls",
+    name: "Controls",
+    icon: "fa-cogs",
+    color: "brown"
+  },
+  {
     path: "/files/drivers",
     name: "Drivers",
     icon: "fa-screwdriver",
@@ -83,12 +89,6 @@ let menu = [
     name: "User HTML",
     icon: "fa-laptop",
     color: "green darken-2"
-  },
-  {
-    path: "/controls",
-    name: "Controls",
-    icon: "fa-cogs",
-    color: "brown"
   }
 ];
 
