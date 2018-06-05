@@ -111,14 +111,14 @@ export default {
         value: "date",
         align: "center",
         sortable: false,
-        width: "18%"
+        width: "21%"
       },
       {
         text: "Entry",
         value: "entry",
         align: "left",
         sortable: false,
-        width: "61%"
+        width: "55%"
       },
       {
         text: "Details",
