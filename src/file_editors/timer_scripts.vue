@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="title text-xs-center py-2">{{this.$route.params.item}}</div>
-         <files-table :path="path"></files-table>
+         <files-table :path="path" :filetype="filetype"></files-table>
     </div>
 </template>
 
@@ -16,7 +16,8 @@ Vue.component("files-table", files_table);
 
 export default {
   data: () => ({
-    path: "user/timer_scripts"
+    path: "user/timer_scripts",
+    filetype: "lua"
   })
 };
 </script>
