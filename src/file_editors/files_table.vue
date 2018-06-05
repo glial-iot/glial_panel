@@ -13,7 +13,7 @@
             </v-btn>
             </td>
 
-            <td class="text-xs-left "><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
+            <td class="text-xs-left table-sm button-sm"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
 
          </template>
 
@@ -111,3 +111,14 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+.table-sm {
+  height: 25px;
+}
+
+.button-sm {
+  margin: -11px !important;
+}
+</style>
