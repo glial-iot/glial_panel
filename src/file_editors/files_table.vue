@@ -18,6 +18,10 @@
       </template>
 
 </v-data-table>
+      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
+         {{ snackbartext }}
+         <v-btn flat  @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
 </div>
 </template>
 
@@ -29,6 +33,8 @@ Vue.use(VueAxios, Axios);
 
 export default {
   data: () => ({
+    snackbar: false,
+    snackbartext: "",
     headers: [
       {
         text: "Actions",
@@ -77,6 +83,9 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          this.snackbar = false;
+          this.snackbartext = "Delete file: network error";
+          this.snackbar = true;
         }); */
     },
 
@@ -94,6 +103,9 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          this.snackbar = false;
+          this.snackbartext = "Get file list: network error";
+          this.snackbar = true;
         });
     }
   }

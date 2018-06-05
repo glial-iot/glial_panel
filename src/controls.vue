@@ -16,6 +16,11 @@
                <v-icon left small>fa-edit</v-icon> Edit user menu
             </v-btn>
          </div>
+
+   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
+      {{ snackbartext }}
+      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
+   </v-snackbar>
     </div>
 
 
@@ -30,6 +35,8 @@ Vue.use(VueAxios, Axios);
 export default {
   data() {
     return {
+      snackbar: false,
+      snackbartext: "",
       button: null,
       color: null,
       button_wipe: {
@@ -61,7 +68,6 @@ export default {
   watch: {
     button() {
       if (this.button != undefined) {
-        console.log(this.button);
         const l = this.button;
         this[l].loading = true;
         //this[l].disabled = true;
@@ -86,13 +92,15 @@ export default {
             setTimeout(() => (this[l].disabled = false), 800);
             this[l].color = "error";
             setTimeout(() => (this[l].color = old_color), 2000);
-            console.log(this);
+            console.log(error);
+            this.snackbar = false;
+            this.snackbartext = "Network error";
+            this.snackbar = true;
           });
 
         this.button = null;
       }
     }
-  },
-
+  }
 };
 </script>

@@ -20,6 +20,11 @@
       </div>
 
     </div>
+   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
+      {{ snackbartext }}
+      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
+   </v-snackbar>
+   </div>
 </template>
 
 <script>
@@ -35,6 +40,8 @@ import "brace/theme/crimson_editor";
 
 export default {
   data: () => ({
+    snackbar: false,
+    snackbartext: "",
     lang: "lua",
     content: "",
     last_content: "",
@@ -83,6 +90,9 @@ export default {
             this.button_save_color = "error";
             setTimeout(() => (this.button_save_color = old_color), 1500);
             console.log(error);
+            this.snackbar = false;
+            this.snackbartext = "Save file: network error";
+            this.snackbar = true;
           });
       };
     },
@@ -113,6 +123,9 @@ export default {
           this.button_reload_color = "error";
           setTimeout(() => (this.button_reload_color = old_color), 1500);
           console.log(error);
+          this.snackbar = false;
+          this.snackbartext = "Load file: network error";
+          this.snackbar = true;
         });
 
       if (this.current_file_name.search(/lua/) > 0) this.lang = "lua";

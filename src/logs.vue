@@ -48,6 +48,10 @@
       </template>
 
 </v-data-table>
+   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
+      {{ snackbartext }}
+      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
+   </v-snackbar>
 </div>
 </template>
 
@@ -61,6 +65,8 @@ Vue.use(VueAxios, Axios);
 
 export default {
   data: () => ({
+    snackbar: false,
+    snackbartext: "",
     headers: [
       {
         text: "Key",
@@ -178,6 +184,9 @@ export default {
 
           this.timers.table_update.time = this.update_time;
           this.$timer.start("table_update");
+          this.snackbar = false;
+          this.snackbartext = "Table update: network error";
+          this.snackbar = true;
         });
     }
   }
