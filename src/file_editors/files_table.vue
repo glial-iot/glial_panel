@@ -2,22 +2,22 @@
   <div>
       <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1" >
 
-      <template slot="items" slot-scope="props">
+         <template slot="items" slot-scope="props">
 
-         <td class="justify-center layout px-0">
-         <v-btn icon class="mx-0 " @click="file_delete(props.item)">
-            <v-icon color="pink" small>fa-trash-alt</v-icon>
-         </v-btn>
-         <v-btn icon class="ml-0 mr-2 " @click="file_edit(props.item)">
-            <v-icon color="green" small>fa-pencil-alt</v-icon>
-         </v-btn>
-         </td>
+            <td class="justify-center layout px-0">
+            <v-btn icon class="mx-0 " @click="file_delete(props.item)">
+               <v-icon color="pink" small>fa-trash-alt</v-icon>
+            </v-btn>
+            <v-btn icon class="ml-0 mr-2 " @click="file_edit(props.item)">
+               <v-icon color="green" small>fa-pencil-alt</v-icon>
+            </v-btn>
+            </td>
 
-         <td class="text-xs-left "><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
+            <td class="text-xs-left "><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
 
-      </template>
+         </template>
 
-</v-data-table>
+      </v-data-table>
       <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
          {{ snackbartext }}
          <v-btn flat  @click.native="snackbar = false">Close</v-btn>
