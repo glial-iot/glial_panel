@@ -3,12 +3,12 @@
 
    <v-navigation-drawer fixed app clipped disable-resize-watcher permanent touchless width=200>
       <v-list dense>
-         <v-list-tile v-for="menuitem in menuitems" :to="{path: menuitem.path}">
+         <v-list-tile v-for="item in menuitems" :to="{path: item.path}" :key = "item.path">
                <v-list-tile-action>
-                  <v-icon :color="menuitem.color">{{ menuitem.icon }}</v-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
                </v-list-tile-action>
                <v-list-tile-content>
-                  <v-list-tile-title>{{menuitem.name}}</v-list-tile-title>
+                  <v-list-tile-title>{{item.name}}</v-list-tile-title>
                </v-list-tile-content>
          </v-list-tile>
       </v-list>
