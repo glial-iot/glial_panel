@@ -18,6 +18,11 @@
          </template>
 
       </v-data-table>
+
+      <v-layout justify-left>
+         <files-create-button :path="path" :filetype="filetype"></files-create-button>
+      </v-layout >
+
       <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
          {{ snackbartext }}
          <v-btn flat  @click.native="snackbar = false">Close</v-btn>
@@ -30,6 +35,10 @@ import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+
+import files_create_button from "./files_create_button.vue";
+Vue.component("files-create-button", files_create_button);
+
 
 export default {
   data: () => ({
@@ -51,7 +60,7 @@ export default {
     ],
     files_table: []
   }),
-  props: ["path"],
+  props: ["path","filetype"],
 
   watch: {
     path(new_item) {
