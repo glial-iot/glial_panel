@@ -4,10 +4,11 @@
       <v-card-title class="py-1 px-1">
          <div class="pl-2">
             <v-btn-toggle v-model="update_interval" >
-               <v-btn flat @click="new_update_interval(500)">0.5s </v-btn>
+               <v-btn flat value=".5s" @click="new_update_interval(500)">0.5s </v-btn>
                <v-btn flat value="1s" @click="new_update_interval(1000)">1s</v-btn>
-               <v-btn flat @click="new_update_interval(5000)">5s</v-btn>
-               <v-btn flat @click="new_update_interval('none')">None</v-btn>
+               <v-btn flat value="2s" @click="new_update_interval(2000)">2s</v-btn>
+               <v-btn flat value="5s" @click="new_update_interval(5000)">5s</v-btn>
+               <v-btn flat value="none" @click="new_update_interval('none')">None</v-btn>
             </v-btn-toggle>
          </div>
          <v-spacer></v-spacer>
@@ -65,14 +66,14 @@ Vue.use(VueAxios, Axios);
 
 export default {
   data: () => ({
-    update_interval: "1s",
     group_action: "selected",
     snackbar: false,
     snackbartext: "",
+    update_interval: "2s",
     bus_values: [],
     loading_status: true,
-    update_time: 1000,
     loading_color: "blue",
+    update_time: 2000,
     all_tsdb: { topic: "*", tsdb_save: false },
     none_tsdb: { topic: "*", tsdb_save: true },
     headers: [
