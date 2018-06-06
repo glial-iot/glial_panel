@@ -30,12 +30,12 @@
 
       <v-progress-linear slot="progress" :color="loading_color" height="1" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
-         <td class="text-xs-center table-sm"><div class="ellipsis" :title="props.item.level">{{ props.item.level }}</div></td>
-         <td class="text-xs-center table-sm"><div class="ellipsis" :title="props.item.source">{{ props.item.source }}</div></td>
-         <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_rel : props.item.date_abs">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.level }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.source }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
          <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
          <td class="justify-center layout px-0 table-sm button-sm">
-            <v-btn icon class="mx-0 " @click="show_trace(props.item)">
+            <v-btn icon class="mx-0 " @click="show_detals(props.item)">
                <v-icon color="pink" small :trace="props.item.entry">fa-project-diagram</v-icon>
             </v-btn>
          </td>
@@ -219,7 +219,7 @@ export default {
       }
     },
 
-    show_trace(item) {
+    show_detals(item) {
       this.dialog_detals_props.log_trace = item.trace;
       this.dialog_detals_props.log_entry = item.entry;
       this.dialog_detals_props.log_key = item.key;
