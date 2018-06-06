@@ -79,11 +79,11 @@ export default {
 
     file_delete(item) {
       console.log("delete:", item.address);
-      /* Vue.axios
-        .get("http://localhost:8080/system_bus_action", {
+      Vue.axios
+        .get("http://localhost:8080/system_webedit_data_v2", {
           params: {
-            action: "delete_topics",
-            topic: item.topic
+            item: "delete",
+            address: item.address
           }
         })
         .then(response => {
@@ -95,7 +95,7 @@ export default {
           this.snackbar = false;
           this.snackbartext = "Delete file: network error";
           this.snackbar = true;
-        }); */
+        });
     },
 
     table_update(path) {
