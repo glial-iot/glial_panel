@@ -26,13 +26,13 @@
       </v-card-title>
 
 
-      <v-data-table :headers="headers" :items="bus_values" :loading="loading_status" hide-actions class="elevation-1" >
+      <v-data-table :headers="headers" :items="bus_values" :loading="loading_status" hide-actions class="elevation-1 no-scroll" >
          <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
          <template slot="items" slot-scope="props" >
             <tr :class="props.item.new_attr ? 'row-new' : ''" >
-               <td class="text-xs-left">{{ props.item.topic }}</td>
-               <td class="text-xs-left">{{ props.item.value }}</td>
-               <td class="text-xs-left">{{ props.item.timestamp }}</td>
+               <td class="text-xs-left"><div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div></td>
+               <td class="text-xs-left"><div class="ellipsis" :title="props.item.value">{{ props.item.value }}</div></td>
+               <td class="text-xs-left"><div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div></td>
                <td class="justify-center layout px-0 button-sm">
                   <v-btn icon class="mx-0 " @click="topic_delete(props.item)">
                      <v-icon color="pink" small>fa-trash-alt</v-icon>
@@ -214,6 +214,10 @@ export default {
 table.table tbody td,
 table.table tbody th {
   height: 25px !important;
+}
+
+.no-scroll table {
+  table-layout: fixed;
 }
 </style>
 
