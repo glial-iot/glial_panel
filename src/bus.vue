@@ -13,14 +13,14 @@
          </div>
          <v-spacer></v-spacer>
 
-         <div class="">
-            <v-btn class="" value="selected" @click="topic_delete(all_tsdb)">
+         <div>
+            <v-btn value="selected" @click="topic_delete(all_tsdb)">
                <v-icon color="pink" left>fa-trash-alt</v-icon> Delete all from Bus
             </v-btn>
-            <v-btn class="" value="selected" @click="tsdb_set(all_tsdb)">
+            <v-btn value="selected" @click="tsdb_set(all_tsdb)">
                <v-icon color="green" left>fa-download</v-icon> All TSDB
             </v-btn>
-            <v-btn class="" value="selected" @click="tsdb_set(none_tsdb)">
+            <v-btn value="selected" @click="tsdb_set(none_tsdb)">
                <v-icon color="grey" left>fa-download</v-icon> None TSDB
             </v-btn>
          </div>
