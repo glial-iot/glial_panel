@@ -49,19 +49,29 @@
       <v-btn flat  @click.native="snackbar = false">Close</v-btn>
    </v-snackbar>
 
-   <v-dialog v-model="dialog_trace" max-width="500px">
+   <v-dialog v-model="dialog_detals_visible" max-width="500px">
       <v-card>
          <v-card-title>
-         Log entry details
+            <div class="title text-xs-center">Details log entry #{{dialog_detals_props.log_key}}({{dialog_detals_props.log_source}})</div>
          </v-card-title>
+         <v-divider></v-divider>
          <v-card-text>
-            {{dialog_trace_entry}}
+         <div class="subheading">Date and time:</div>
+            {{dialog_detals_props.log_date}}
          </v-card-text>
+         <v-divider></v-divider>
          <v-card-text>
-            {{dialog_trace_text}}
+            <div class="subheading">Log entry:</div>
+            {{dialog_detals_props.log_entry}}
          </v-card-text>
+         <v-divider></v-divider>
+         <v-card-text>
+            <div class="subheading">Trace:</div>
+            {{dialog_detals_props.log_trace}}
+         </v-card-text>
+         <v-divider></v-divider>
          <v-card-actions>
-         <v-btn color="primary" flat @click.stop="dialog_trace=false">Close</v-btn>
+            <v-btn color="primary" flat @click.stop="dialog_detals_visible=false">Close</v-btn>
          </v-card-actions>
       </v-card>
    </v-dialog>
@@ -82,9 +92,12 @@ export default {
     snackbar: false,
     snackbartext: "",
     search: "",
-    dialog_trace: false,
-    dialog_trace_text: "",
-    dialog_trace_entry: "",
+    dialog_detals_visible: false,
+    dialog_detals_props: {
+      log_entry: "",
+      log_trace: "",
+      visible: false
+    },
     time_format_rel: true,
     button_delete_logs: {
       disabled: false,
@@ -207,9 +220,12 @@ export default {
     },
 
     show_trace(item) {
-      this.dialog_trace_text = "Trace: "+ item.trace;
-      this.dialog_trace_entry = item.entry + " (key:" + item.key + ", " + item.date_abs + ", " + item.date_rel + ")";
-      this.dialog_trace = true;
+      this.dialog_detals_props.log_trace = item.trace;
+      this.dialog_detals_props.log_entry = item.entry;
+      this.dialog_detals_props.log_key = item.key;
+      this.dialog_detals_props.log_date = item.date_abs + ", " + item.date_rel;
+      this.dialog_detals_props.log_source = item.source;
+      this.dialog_detals_visible = true;
     }
   }
 };
@@ -224,7 +240,6 @@ export default {
 .button-sm {
   margin: -11px !important;
 }
-
 </style>
 
 <style>
