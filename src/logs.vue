@@ -35,7 +35,7 @@
          <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
          <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
          <td class="justify-center layout px-0 table-sm button-sm">
-            <v-btn icon class="mx-0 " @click="show_detals(props.item)">
+            <v-btn icon class="mx-0 " @click="show_details(props.item)">
                <v-icon color="pink" small :trace="props.item.entry">fa-project-diagram</v-icon>
             </v-btn>
          </td>
@@ -49,29 +49,29 @@
       <v-btn flat  @click.native="snackbar = false">Close</v-btn>
    </v-snackbar>
 
-   <v-dialog v-model="dialog_detals_visible" max-width="500px">
+   <v-dialog v-model="dialog_details_visible" max-width="500px">
       <v-card>
          <v-card-title>
-            <div class="title text-xs-center">Details log entry #{{dialog_detals_props.log_key}}({{dialog_detals_props.log_source}})</div>
+            <div class="title text-xs-center">Details log entry #{{dialog_details_props.log_key}}({{dialog_details_props.log_source}})</div>
          </v-card-title>
          <v-divider></v-divider>
          <v-card-text>
          <div class="subheading">Date and time:</div>
-            {{dialog_detals_props.log_date}}
+            {{dialog_details_props.log_date}}
          </v-card-text>
          <v-divider></v-divider>
          <v-card-text>
             <div class="subheading">Log entry:</div>
-            {{dialog_detals_props.log_entry}}
+            {{dialog_details_props.log_entry}}
          </v-card-text>
          <v-divider></v-divider>
          <v-card-text>
             <div class="subheading">Trace:</div>
-            {{dialog_detals_props.log_trace}}
+            {{dialog_details_props.log_trace}}
          </v-card-text>
          <v-divider></v-divider>
          <v-card-actions>
-            <v-btn color="primary" flat @click.stop="dialog_detals_visible=false">Close</v-btn>
+            <v-btn color="primary" flat @click.stop="dialog_details_visible=false">Close</v-btn>
          </v-card-actions>
       </v-card>
    </v-dialog>
@@ -92,8 +92,8 @@ export default {
     snackbar: false,
     snackbartext: "",
     search: "",
-    dialog_detals_visible: false,
-    dialog_detals_props: {
+    dialog_details_visible: false,
+    dialog_details_props: {
       log_entry: "",
       log_trace: "",
       visible: false
@@ -219,13 +219,13 @@ export default {
       }
     },
 
-    show_detals(item) {
-      this.dialog_detals_props.log_trace = item.trace;
-      this.dialog_detals_props.log_entry = item.entry;
-      this.dialog_detals_props.log_key = item.key;
-      this.dialog_detals_props.log_date = item.date_abs + ", " + item.date_rel;
-      this.dialog_detals_props.log_source = item.source;
-      this.dialog_detals_visible = true;
+    show_details(item) {
+      this.dialog_details_props.log_trace = item.trace;
+      this.dialog_details_props.log_entry = item.entry;
+      this.dialog_details_props.log_key = item.key;
+      this.dialog_details_props.log_date = item.date_abs + ", " + item.date_rel;
+      this.dialog_details_props.log_source = item.source;
+      this.dialog_details_visible = true;
     }
   }
 };
