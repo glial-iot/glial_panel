@@ -26,9 +26,8 @@
          </div>
       </v-card-title>
 
-
       <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="elevation-1 no-scroll" >
-         <v-progress-linear slot="progress" :color="progressbar_color" height="1"></v-progress-linear>
+         <v-progress-linear slot="progress" :color="primary" height="1"></v-progress-linear>
 
          <template slot="items" slot-scope="props" >
             <tr :class="props.item.new_attr ? 'row-new' : ''" >
@@ -71,7 +70,6 @@ export default {
     snackbar_visible: false,
     snackbar_text: "",
     progressbar_visible: true,
-    progressbar_color: "blue",
     bus_values: [],
     update_time: 2000,
     all_tsdb: { topic: "*", tsdb_save: false },
@@ -161,7 +159,6 @@ export default {
         .then(response => {
           this.bus_values = this.set_update_attr(response.data);
           //console.log(this.bus_values)
-          this.progressbar_color = "blue";
           if (this.update_time !== "none") {
             this.timers.table_update.time = this.update_time;
             this.$timer.stop("table_update");
@@ -172,7 +169,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.progressbar_color = "red";
           if (this.update_time !== "none") {
             this.timers.table_update.time = this.update_time;
             this.$timer.stop("table_update");

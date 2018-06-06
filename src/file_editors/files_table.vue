@@ -6,12 +6,12 @@
             <files-create-button :path="path" :filetype="filetype"></files-create-button>
          </v-card-title>
 
-         <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1" >
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
 
             <template slot="items" slot-scope="props">
-               <td class="text-xs-left table-sm button-sm"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
+               <td class="text-xs-left"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
 
-               <td class="justify-center layout px-0">
+               <td class="justify-center layout px-0 button-sm">
                   <v-btn icon class="mx-0" @click="file_delete(props.item)">
                      <v-icon color="pink" small>fa-trash-alt</v-icon>
                   </v-btn>
@@ -121,3 +121,20 @@ export default {
 };
 </script>
 
+<style>
+table.table tbody td,
+table.table tbody th {
+  height: 25px !important;
+}
+
+.no-scroll table {
+  table-layout: fixed;
+}
+</style>
+
+
+<style scoped>
+.button-sm {
+  margin: -11px !important;
+}
+</style>

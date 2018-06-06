@@ -18,7 +18,7 @@
          ></v-text-field>
       </v-card-title>
 
-      <v-data-table :headers="headers" :search="search" :items="table_values" :loading="loading_status" hide-actions must-sort class="elevation-1 no-scroll" >
+      <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="elevation-1 no-scroll" >
 
       <template slot="headers" slot-scope="props">
       <tr>
@@ -28,7 +28,6 @@
       </tr>
       </template>
 
-      <v-progress-linear slot="progress" :color="loading_color" height="1" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
          <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.level }}</div></td>
          <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.source }}</div></td>
@@ -141,7 +140,6 @@ export default {
       }
     ],
     table_values: [],
-    loading_status: false,
     update_time: 1000,
     loading_color: "blue"
   }),
@@ -185,7 +183,6 @@ export default {
     },
 
     table_update() {
-      this.loading_status = true;
       Vue.axios
         .get("http://localhost:8080/system_logger_action", {
           params: {
@@ -231,19 +228,21 @@ export default {
 };
 </script>
 
-
-<style scoped>
-.table-sm {
-  height: 25px;
+<style>
+table.table tbody td,
+table.table tbody th {
+  height: 25px !important;
 }
 
+.no-scroll table {
+  table-layout: fixed;
+}
+</style>
+
+
+<style scoped>
 .button-sm {
   margin: -11px !important;
 }
 </style>
 
-<style>
-.no-scroll table {
-  table-layout: fixed;
-}
-</style>
