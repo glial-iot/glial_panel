@@ -157,7 +157,9 @@ export default {
     },
     new_update_interval: function(new_interval) {
       this.update_time = new_interval;
-      this.table_update();
+      this.timers.table_update.time = this.update_time;
+      this.$timer.stop("table_update");
+      //this.table_update();
     },
     set_update_attr: function(values) {
       for (let index = 0; index < values.length; index++) {
@@ -184,6 +186,7 @@ export default {
           this.loading_color = "blue";
           if (this.update_time !== "none") {
             this.timers.table_update.time = this.update_time;
+            this.$timer.stop("table_update");
             this.$timer.start("table_update");
             this.loading_status = true;
           } else {
@@ -196,6 +199,7 @@ export default {
           this.loading_color = "red";
           if (this.update_time !== "none") {
             this.timers.table_update.time = this.update_time;
+            this.$timer.stop("table_update");
             this.$timer.start("table_update");
             this.loading_status = true;
           } else {
