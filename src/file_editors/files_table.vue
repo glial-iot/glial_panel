@@ -1,28 +1,29 @@
 <template>
   <div>
-      <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1" >
+      <v-card>
 
-         <template slot="items" slot-scope="props">
+         <v-card-title class="py-1 px-1">
+            <files-create-button :path="path" :filetype="filetype"></files-create-button>
+         </v-card-title>
 
-            <td class="justify-center layout px-0">
-            <v-btn icon class="mx-0 " @click="file_delete(props.item)">
-               <v-icon color="pink" small>fa-trash-alt</v-icon>
-            </v-btn>
-            <v-btn icon class="ml-0 mr-2 " @click="file_edit(props.item)">
-               <v-icon color="green" small>fa-pencil-alt</v-icon>
-            </v-btn>
-            </td>
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1" >
 
-            <td class="text-xs-left table-sm button-sm"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
+            <template slot="items" slot-scope="props">
+               <td class="text-xs-left table-sm button-sm"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
 
-         </template>
+               <td class="justify-center layout px-0">
+                  <v-btn icon class="mx-0" @click="file_delete(props.item)">
+                     <v-icon color="pink" small>fa-trash-alt</v-icon>
+                  </v-btn>
+                  <v-btn icon class="ml-0 mr-2" @click="file_edit(props.item)">
+                     <v-icon color="green" small>fa-pencil-alt</v-icon>
+                  </v-btn>
+               </td>
+            </template>
 
-      </v-data-table>
+         </v-data-table>
 
-      <v-layout justify-left>
-         <files-create-button :path="path" :filetype="filetype"></files-create-button>
-      </v-layout >
-
+      </v-card>
       <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
          {{ snackbartext }}
          <v-btn flat  @click.native="snackbar = false">Close</v-btn>
@@ -39,28 +40,27 @@ Vue.use(VueAxios, Axios);
 import files_create_button from "./files_create_button.vue";
 Vue.component("files-create-button", files_create_button);
 
-
 export default {
   data: () => ({
     snackbar: false,
     snackbartext: "",
     headers: [
       {
-        text: "Actions",
-        sortable: false,
-        align: "center",
-        width: "10%"
-      },
-      {
         text: "Filename",
         value: "name",
         align: "left",
         width: "90%"
+      },
+      {
+        text: "Actions",
+        sortable: false,
+        align: "center",
+        width: "10%"
       }
     ],
     files_table: []
   }),
-  props: ["path","filetype"],
+  props: ["path", "filetype"],
 
   watch: {
     path(new_item) {
@@ -121,13 +121,3 @@ export default {
 };
 </script>
 
-
-<style scoped>
-.table-sm {
-  height: 25px;
-}
-
-.button-sm {
-  margin: -11px !important;
-}
-</style>
