@@ -18,7 +18,7 @@
          ></v-text-field>
       </v-card-title>
 
-      <v-data-table :headers="headers" :search="search" :items="table_values" :loading="loading_status" hide-actions must-sort class="elevation-1" >
+      <v-data-table :headers="headers" :search="search" :items="table_values" :loading="loading_status" hide-actions must-sort class="elevation-1 no-scroll" >
 
       <template slot="headers" slot-scope="props">
       <tr>
@@ -30,10 +30,10 @@
 
       <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
-         <td class="text-xs-center table-sm">{{ props.item.level }}</td>
-         <td class="text-xs-center table-sm">{{ props.item.source }}</td>
-         <td class="text-xs-center table-sm">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</td>
-         <td class="text-xs-left table-sm"><div class="table-logs-owerflow">{{ props.item.entry }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis" :title="props.item.level">{{ props.item.level }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis" :title="props.item.source">{{ props.item.source }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_rel : props.item.date_abs">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
+         <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
          <td class="justify-center layout px-0 table-sm button-sm">
             <v-btn icon class="mx-0 " @click="show_trace(props.item)">
                <v-icon color="pink" small :trace="props.item.entry">fa-project-diagram</v-icon>
@@ -97,34 +97,34 @@ export default {
         value: "level",
         align: "center",
         sortable: false,
-        width: "3%"
+        width: "10%"
       },
       {
         text: "Source",
         value: "source",
         align: "center",
         sortable: false,
-        width: "19%"
+        width: "20%"
       },
       {
         text: "Date",
         value: "date",
         align: "center",
         sortable: false,
-        width: "21%"
+        width: "20%"
       },
       {
         text: "Entry",
         value: "entry",
         align: "left",
         sortable: false,
-        width: "55%"
+        width: "40%"
       },
       {
         text: "Details",
         align: "center",
         sortable: false,
-        width: "2%"
+        width: "10%"
       }
     ],
     table_values: [],
@@ -223,5 +223,12 @@ export default {
 
 .button-sm {
   margin: -11px !important;
+}
+
+</style>
+
+<style>
+.no-scroll table {
+  table-layout: fixed;
 }
 </style>
