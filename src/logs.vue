@@ -28,7 +28,7 @@
       </tr>
       </template>
 
-      <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
+      <v-progress-linear slot="progress" :color="loading_color" height="1" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
          <td class="text-xs-center table-sm"><div class="ellipsis" :title="props.item.level">{{ props.item.level }}</div></td>
          <td class="text-xs-center table-sm"><div class="ellipsis" :title="props.item.source">{{ props.item.source }}</div></td>

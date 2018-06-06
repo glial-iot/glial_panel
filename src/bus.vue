@@ -28,7 +28,7 @@
 
 
       <v-data-table :headers="headers" :items="bus_values" :loading="loading_status" hide-actions class="elevation-1 no-scroll" >
-         <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
+         <v-progress-linear slot="progress" :color="progressbar_color" height="1"></v-progress-linear>
          <template slot="items" slot-scope="props" >
             <tr :class="props.item.new_attr ? 'row-new' : ''" >
                <td class="text-xs-left"><div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div></td>
