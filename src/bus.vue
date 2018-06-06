@@ -27,8 +27,9 @@
       </v-card-title>
 
 
-      <v-data-table :headers="headers" :items="bus_values" :loading="loading_status" hide-actions class="elevation-1 no-scroll" >
+      <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="elevation-1 no-scroll" >
          <v-progress-linear slot="progress" :color="progressbar_color" height="1"></v-progress-linear>
+
          <template slot="items" slot-scope="props" >
             <tr :class="props.item.new_attr ? 'row-new' : ''" >
                <td class="text-xs-left"><div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div></td>
@@ -49,9 +50,9 @@
          </template>
       </v-data-table>
    </v-card>
-   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
-      {{ snackbartext }}
-      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
+   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar_visible" :color="'error'" >
+      {{ snackbar_text }}
+      <v-btn flat  @click.native="snackbar_visible = false">Close</v-btn>
    </v-snackbar>
 </div>
 </template>
@@ -66,13 +67,12 @@ Vue.use(VueAxios, Axios);
 
 export default {
   data: () => ({
-    group_action: "selected",
-    snackbar: false,
-    snackbartext: "",
     update_interval: "2s",
+    snackbar_visible: false,
+    snackbar_text: "",
+    progressbar_visible: true,
+    progressbar_color: "blue",
     bus_values: [],
-    loading_status: true,
-    loading_color: "blue",
     update_time: 2000,
     all_tsdb: { topic: "*", tsdb_save: false },
     none_tsdb: { topic: "*", tsdb_save: true },
@@ -112,6 +112,8 @@ export default {
 
   methods: {
     tsdb_set(item) {
+             this.progressbar_visible = true;
+
       Vue.axios
         .get("http://localhost:8080/system_bus_action", {
           params: {
@@ -122,19 +124,18 @@ export default {
         })
         .then(response => {
           if (item.topic !== "*") item.tsdb_save = !item.tsdb_save;
-          this.loading_color = "blue";
-          console.log(response);
-          this.snackbar = false;
+      this.progressbar_visible = false;
+          clear_snackbar();
         })
         .catch(error => {
           console.log(error);
-          this.loading_color = "red";
-          this.snackbar = false;
-          this.snackbartext = "Set TSDB attribute: network error";
-          this.snackbar = true;
+      this.progressbar_visible = false;
+          show_snackbar("Set TSDB attribute: network error");
         });
     },
     topic_delete(item) {
+             this.progressbar_visible = true;
+
       Vue.axios
         .get("http://localhost:8080/system_bus_action", {
           params: {
@@ -144,23 +145,57 @@ export default {
         })
         .then(response => {
           Vue.delete(this.bus_values, this.bus_values.indexOf(item));
-          this.loading_color = "blue";
-          console.log(response);
-          this.snackbar = false;
+      this.progressbar_visible = false;
+          clear_snackbar();
         })
         .catch(error => {
           console.log(error);
-          this.loading_color = "red";
-          this.snackbar = false;
-          this.snackbartext = "Delete topic: network error";
-          this.snackbar = true;
+      this.progressbar_visible = false;
+          show_snackbar("Delete topic: network error");
+        });
+    },
+    table_update() {
+      this.progressbar_visible = true;
+      Vue.axios
+        .get("http://localhost:8080/system_bus_data")
+        .then(response => {
+          this.bus_values = this.set_update_attr(response.data);
+          //console.log(this.bus_values)
+          this.progressbar_color = "blue";
+          if (this.update_time !== "none") {
+            this.timers.table_update.time = this.update_time;
+            this.$timer.stop("table_update");
+            this.$timer.start("table_update");
+          }
+          this.progressbar_visible = false;
+          clear_snackbar();
+        })
+        .catch(error => {
+          console.log(error);
+          this.progressbar_color = "red";
+          if (this.update_time !== "none") {
+            this.timers.table_update.time = this.update_time;
+            this.$timer.stop("table_update");
+            this.$timer.start("table_update");
+          }
+          this.progressbar_visible = false;
+          show_snackbar("Update table: network error");
         });
     },
     new_update_interval: function(new_interval) {
       this.update_time = new_interval;
       this.timers.table_update.time = this.update_time;
       this.$timer.stop("table_update");
-      //this.table_update();
+      this.table_update();
+    },
+    show_snackbar: function(text) {
+      this.snackbar_visible = false;
+      this.snackbar_text = text;
+      this.snackbar_visible = true;
+    },
+    clear_snackbar: function() {
+      this.snackbar_visible = false;
+      this.snackbar_text = "";
     },
     set_update_attr: function(values) {
       for (let index = 0; index < values.length; index++) {
@@ -169,47 +204,11 @@ export default {
         );
 
         if (result !== undefined) {
-          //console.log(result.topic, result.value, values[index].topic, values[index].value)
-          if (result.value !== values[index].value) {
+          if (result.value !== values[index].value)
             values[index].new_attr = true;
-            //console.log(result.value, values[index].value, values[index]);
-          }
         }
       }
       return values;
-    },
-    table_update() {
-      Vue.axios
-        .get("http://localhost:8080/system_bus_data")
-        .then(response => {
-          this.bus_values = this.set_update_attr(response.data);
-          //console.log(this.bus_values)
-          this.loading_color = "blue";
-          if (this.update_time !== "none") {
-            this.timers.table_update.time = this.update_time;
-            this.$timer.stop("table_update");
-            this.$timer.start("table_update");
-            this.loading_status = true;
-          } else {
-            this.loading_status = false;
-          }
-          this.snackbar = false;
-        })
-        .catch(error => {
-          console.log(error);
-          this.loading_color = "red";
-          if (this.update_time !== "none") {
-            this.timers.table_update.time = this.update_time;
-            this.$timer.stop("table_update");
-            this.$timer.start("table_update");
-            this.loading_status = true;
-          } else {
-            this.loading_status = false;
-          }
-          this.snackbar = false;
-          this.snackbartext = "Update table: network error";
-          this.snackbar = true;
-        });
     }
   }
 };
