@@ -95,7 +95,6 @@ export default {
     },
 
     table_update(path) {
-      this.files_table = [];
       Vue.axios
         .get("http://localhost:8080/system_webedit_data_v2", {
           params: {
@@ -109,6 +108,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
+          this.files_table = [];
           this.$refs.snackbar.update('Get file list: network error');
         });
     }
