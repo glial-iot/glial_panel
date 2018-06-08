@@ -1,24 +1,27 @@
 <template>
 <div>
-   <v-card>
-      <v-card-title class="py-1 px-1">
-         <v-btn :loading="button_delete_logs.loading" :disabled="button_delete_logs.disabled" :color="button_delete_logs.color" @click.native="delete_logs()" >
-            <v-icon left small>fa-edit</v-icon>Delete logs
-         </v-btn>
+   <v-card class="elevation-3">
+       <v-card-title class="py-1 px-1">
+
+         <div class="pl-2">
+            <v-btn-toggle v-model="search">
+               <v-btn flat value="INFO">INFO</v-btn>
+               <v-btn flat value="WARNING">WARNING</v-btn>
+               <v-btn flat value="ERROR">ERROR</v-btn>
+               <v-btn flat value="">ALL</v-btn>
+            </v-btn-toggle>
+         </div>
 
          <v-spacer></v-spacer>
 
-         <v-text-field
-         v-model="search"
-         append-icon="search"
-         label="Filter"
-         single-line
-         hide-details
-         class="pb-3 pr-2"
-         ></v-text-field>
+         <v-btn :loading="button_delete_logs.loading" :disabled="button_delete_logs.disabled" :color="button_delete_logs.color" @click.native="delete_logs()" >
+            <v-icon left small>fa-trash-alt</v-icon>Delete logs
+         </v-btn>
       </v-card-title>
 
-      <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="elevation-1 no-scroll" >
+      <v-divider></v-divider>
+
+      <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="no-scroll" >
 
       <template slot="headers" slot-scope="props">
       <tr>

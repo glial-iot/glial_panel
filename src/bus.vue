@@ -1,6 +1,6 @@
 <template>
 <div>
-   <v-card>
+   <v-card class="elevation-3">
       <v-card-title class="py-1 px-1">
          <div class="pl-2">
             <v-btn-toggle v-model="update_interval">
@@ -11,6 +11,7 @@
                <v-btn flat value="0">None</v-btn>
             </v-btn-toggle>
          </div>
+
          <v-spacer></v-spacer>
 
          <div>
@@ -26,7 +27,9 @@
          </div>
       </v-card-title>
 
-      <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="elevation-1 no-scroll" >
+      <v-divider></v-divider>
+
+      <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="no-scroll" >
          <v-progress-linear slot="progress" color="primary" height="1"></v-progress-linear>
 
          <template slot="items" slot-scope="props" >
