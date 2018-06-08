@@ -98,3 +98,23 @@ export default {
   })
 };
 </script>
+
+
+<style>
+table.table tbody td,
+table.table tbody th {
+  height: 25px !important;
+}
+
+table.table thead tr {
+    height: 30px;
+}
+
+.no-scroll table {
+  table-layout: fixed;
+}
+
+.button-sm {
+  margin: -11px !important;
+}
+</style>

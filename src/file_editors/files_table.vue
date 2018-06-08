@@ -117,11 +117,6 @@ export default {
 </script>
 
 <style>
-table.table tbody td,
-table.table tbody th {
-  height: 25px !important;
-}
-
 .no-scroll table {
   table-layout: fixed;
 }
@@ -129,7 +124,4 @@ table.table tbody th {
 
 
 <style scoped>
-.button-sm {
-  margin: -11px !important;
-}
 </style>
