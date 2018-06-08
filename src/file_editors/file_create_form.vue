@@ -1,19 +1,26 @@
 <template>
    <div>
-      <v-layout row >
-         <v-flex xs-6 ml-3>
-            <v-text-field light
-               name="input-1"
-               label="filename"
-               v-model= "filenameinput"
-            ></v-text-field>
-         </v-flex>
-         <v-flex xs-6 mt-2>
-               <v-btn :loading="button_create.loading" :disabled="button_create.disabled" :color="button_create.color" left :path="path" :filetype="filetype" @click="create_file(path,filetype)">
-                  <v-icon left small>fa-file</v-icon> Create new file
-               </v-btn>
-         </v-flex>
-      </v-layout>
+      <v-btn right color="secondary" class="my-2" @click="dialog_visible = true">
+         <v-icon left small>fa-file</v-icon> Create
+      </v-btn>
+
+      <v-dialog v-model="dialog_visible" max-width="500px">
+         <v-card>
+            <v-card-title>
+               <div class="title text-xs-center">Create new file</div>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+               <v-text-field autofocus label="Name of file" v-model= "filenameinput"></v-text-field>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+               <v-btn color="primary" flat @click.stop="dialog_visible=false">Close</v-btn>
+               <v-spacer></v-spacer>
+               <v-btn :loading="button_create.loading" :disabled="button_create.disabled" :color="button_create.color" right flat :path="path" :filetype="filetype" @click="create_file(path,filetype)"> <v-icon left small>fa-file</v-icon> Create</v-btn>
+            </v-card-actions>
+         </v-card>
+      </v-dialog>
    </div>
 </template>
 
@@ -26,6 +33,7 @@ Vue.use(VueAxios, Axios);
 export default {
   data() {
     return {
+      dialog_visible: false,
       button_create: {
         disabled: false,
         loading: false,
@@ -52,7 +60,8 @@ export default {
           this.button_create.loading = true;
           this.button_create.disabled = true;
           setTimeout(() => (this.button_create.color = "primary"), 1500);
-          this.$emit("data_updated", path);
+          setTimeout(() => (this.dialog_visible = false), 1500);
+          setTimeout(() => (this.$emit("data_updated", path)), 1500);
           this.filenameinput = "";
         })
         .catch(error => {

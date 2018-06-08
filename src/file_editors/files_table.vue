@@ -1,12 +1,16 @@
 <template>
   <div>
-      <v-card>
+      <v-card class="elevation-3">
 
-         <v-card-title class="py-1 px-1">
-            <files-create-button @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
+         <v-card-title class="py-0 px-0">
+            <v-spacer></v-spacer>
+
+            <file-create-form @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(path)" :path="path" :filetype="filetype"></file-create-form>
          </v-card-title>
 
-         <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
+         <v-divider></v-divider>
+
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll" >
 
             <template slot="items" slot-scope="props">
                <td class="text-xs-left"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
@@ -25,6 +29,7 @@
 
       </v-card>
       <snackbar ref="snackbar"></snackbar>
+
    </div>
 </template>
 
@@ -34,14 +39,15 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import files_create_button from "./files_create_button.vue";
-Vue.component("files-create-button", files_create_button);
+import file_create_form from "./file_create_form.vue";
+Vue.component("file-create-form", file_create_form);
 
 import snackbar from "../snackbar.vue";
 Vue.component("snackbar", snackbar);
 
 export default {
   data: () => ({
+     new_file_visible: true,
     headers: [
       {
         text: "Filename",
