@@ -147,7 +147,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      time: this.update_time
+      time: 1000
     }
   },
 
