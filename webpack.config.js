@@ -7,6 +7,7 @@ module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
+        publicPath: '/',
         filename: 'build.js'
     },
     module: {
@@ -93,7 +94,8 @@ if (process.env.NODE_ENV === 'production') {
             minimize: true
         }),
         new FaviconsWebpackPlugin({
-            logo: './src/assets/tape_logo.svg'
+            logo: './src/assets/tape_logo.svg',
+            prefix: '/',
         })
     ])
 }
