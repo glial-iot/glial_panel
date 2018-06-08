@@ -3,7 +3,7 @@
       <v-card>
 
          <v-card-title class="py-1 px-1">
-            <files-create-button :path="path" :filetype="filetype"></files-create-button>
+            <files-create-button @create_error="snackbar_display" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
          </v-card-title>
 
          <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
@@ -76,7 +76,12 @@ export default {
     file_edit(item) {
       this.$router.push({ path: "/editor", query: { file: item.address } });
     },
-
+    snackbar_display(){
+          this.snackbar = false;
+          this.snackbartext = "ERROR";
+          this.snackbar = true;
+    }
+    ,
     file_delete(item) {
       console.log("delete:", item.address);
       Vue.axios

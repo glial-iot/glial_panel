@@ -10,7 +10,7 @@
             ></v-text-field>
          </v-flex>
          <v-flex xs-6 mt-2>
-               <v-btn color="success" left :path="path" :filetype="filetype" @click="create_file(path,filetype)">
+               <v-btn :loading="button_create.loading" :disabled="button_create.disabled" :color="button_create.color" left :path="path" :filetype="filetype" @click="create_file(path,filetype)">
                   <v-icon left small>fa-file</v-icon> Create new file
                </v-btn>
          </v-flex>
@@ -25,9 +25,16 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 export default {
-  data: () => ({
+  data() {
+    return {
+    button_create: {
+        disabled: false,
+        loading: false,
+        color: "primary"
+      },
     filenameinput: ""
-  }),
+  }
+  },
   props: ["path", "filetype"],
 
   methods: {
@@ -39,9 +46,28 @@ export default {
             address: path + "/" + this.filenameinput + "." + filetype
           }
         })
-        .then(response => {})
+        .then(response => {
+      
+            setTimeout(() => (this.button_create.loading = false), 800);
+            setTimeout(() => (this.button_create.disabled = false), 800);
+            this.button_create.color = "success";
+            this.button_create.loading = true;
+            this.button_create.disabled = true;
+            setTimeout(() => (this.button_create.color = "primary"), 1500);
+            this.$emit("data_updated", path);
+            this.filenameinput = "";
+
+        })
         .catch(error => {
-          console.log(error);
+              
+            setTimeout(() => (this.button_create.loading = false), 800);
+            setTimeout(() => (this.button_create.disabled = false), 800);
+            this.button_create.color = "error";
+            this.button_create.loading = true;
+            this.button_create.disabled = true;
+            setTimeout(() => (this.button_create.color = "primary"), 2000);
+            this.$emit("create_error");
+        
         });
     }
   }
