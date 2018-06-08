@@ -152,6 +152,14 @@ export default {
   },
 
   methods: {
+    update_snackbar: function(text) {
+      this.snackbar_visible = false;
+      this.snackbar_text = text;
+
+      if (text !== "") {
+        this.snackbar_visible = true;
+      }
+    },
     delete_logs() {
       Vue.axios
         .get("http://localhost:8080/system_logger_action", {
@@ -165,7 +173,7 @@ export default {
           setTimeout(() => (this.button_delete_logs.disabled = false), 800);
           this.button_delete_logs.color = "success";
           setTimeout(() => (this.button_delete_logs.color = old_color), 1500);
-          this.snackbar = false;
+          this.update_snackbar("");
         })
         .catch(error => {
           let old_color = this.button_delete_logs.color;
@@ -174,9 +182,7 @@ export default {
           this.button_delete_logs.color = "error";
           setTimeout(() => (this.button_delete_logs.color = old_color), 2000);
           console.log(error);
-          this.snackbar = false;
-          this.snackbartext = "Delete logs: network error";
-          this.snackbar = true;
+          this.update_snackbar("Delete logs: network error");
         });
 
       this.table_update();
@@ -195,16 +201,14 @@ export default {
           this.timers.table_update.time = this.update_time;
           this.loading_color = "blue";
           this.$timer.start("table_update");
-          this.snackbar = false;
+          this.update_snackbar("");
         })
         .catch(error => {
           this.loading_color = "red";
           this.timers.table_update.time = this.update_time;
           this.$timer.start("table_update");
           console.log(error);
-          this.snackbar = false;
-          this.snackbartext = "Table update: network error";
-          this.snackbar = true;
+          this.update_snackbar("Table update: network error");
         });
     },
 
