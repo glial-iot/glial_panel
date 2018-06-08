@@ -1,11 +1,13 @@
 var path = require('path')
 var webpack = require('webpack')
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
+        publicPath: '/',
         filename: 'build.js'
     },
     module: {
@@ -79,6 +81,15 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
+        }),
+        new HtmlWebpackPlugin({
+            title: 'NOKIA IMPACT Glue',
+            meta: {
+                author: 'vvzvlad by nokia iot lab'
+            }
+        }),
+        new FaviconsWebpackPlugin({
+            logo: './src/assets/tape_logo.svg'
         })
     ])
 }
