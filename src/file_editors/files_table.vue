@@ -3,7 +3,7 @@
       <v-card>
 
          <v-card-title class="py-1 px-1">
-            <files-create-button @create_error="$refs.gluebar.update('Error creating a new file');" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
+            <files-create-button @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
          </v-card-title>
 
          <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
@@ -24,12 +24,8 @@
          </v-data-table>
 
       </v-card>
-      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
-         {{ snackbartext }}
-         <v-btn flat  @click.native="snackbar = false">Close</v-btn>
-      </v-snackbar>
-      <gluebar ref="gluebar"></gluebar>
-</div>
+      <snackbar ref="snackbar"></snackbar>
+   </div>
 </template>
 
 <script>
@@ -41,13 +37,11 @@ Vue.use(VueAxios, Axios);
 import files_create_button from "./files_create_button.vue";
 Vue.component("files-create-button", files_create_button);
 
-import gluebar from "./gluebar.vue";
-Vue.component("gluebar", gluebar);
+import snackbar from "../snackbar.vue";
+Vue.component("snackbar", snackbar);
 
 export default {
   data: () => ({
-    snackbar: false,
-    snackbartext: "",
     headers: [
       {
         text: "Filename",
@@ -80,13 +74,6 @@ export default {
     file_edit(item) {
       this.$router.push({ path: "/editor", query: { file: item.address } });
     },
-    update_snackbar: function(text) {
-      this.snackbar_visible = false;
-      this.snackbar_text = text;
-      if (text !== "") {
-        this.snackbar_visible = true;
-      }
-    },
     file_delete(item) {
       console.log("delete:", item.address);
       Vue.axios
@@ -99,11 +86,11 @@ export default {
         .then(response => {
           Vue.delete(this.files_table, this.files_table.indexOf(item));
           console.log(response);
-          this.$refs.gluebar.update(""); 
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
-          this.$refs.gluebar.update('Delete file: network error');          
+          this.$refs.snackbar.update('Delete file: network error');
         });
     },
 
@@ -118,11 +105,11 @@ export default {
         })
         .then(response => {
           this.files_table = response.data;
-          this.$refs.gluebar.update(""); 
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
-          console.log(error);          
-          this.$refs.gluebar.update('Get file list: network error');    
+          console.log(error);
+          this.$refs.snackbar.update('Get file list: network error');
         });
     }
   }
