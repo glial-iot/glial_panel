@@ -234,9 +234,5 @@ table.table tbody th {
 .row-new:hover {
   background-color: rgb(155, 204, 255);
 }
-
-.button-sm {
-  margin: -11px !important;
-}
 </style>
 
