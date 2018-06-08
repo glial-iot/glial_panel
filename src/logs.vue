@@ -18,7 +18,7 @@
          ></v-text-field>
       </v-card-title>
 
-      <v-data-table :headers="headers" :search="search" :items="table_values" :loading="loading_status" hide-actions must-sort class="elevation-1" >
+      <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="elevation-1 no-scroll" >
 
       <template slot="headers" slot-scope="props">
       <tr>
@@ -28,14 +28,13 @@
       </tr>
       </template>
 
-      <v-progress-linear slot="progress" :color="loading_color" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
-         <td class="text-xs-center table-sm">{{ props.item.level }}</td>
-         <td class="text-xs-center table-sm">{{ props.item.source }}</td>
-         <td class="text-xs-center table-sm">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</td>
-         <td class="text-xs-left table-sm"><div class="table-logs-owerflow">{{ props.item.entry }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.level }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.source }}</div></td>
+         <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
+         <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
          <td class="justify-center layout px-0 table-sm button-sm">
-            <v-btn icon class="mx-0 " @click="show_trace(props.item)">
+            <v-btn icon class="mx-0 " @click="show_details(props.item)">
                <v-icon color="pink" small :trace="props.item.entry">fa-project-diagram</v-icon>
             </v-btn>
          </td>
@@ -49,19 +48,29 @@
       <v-btn flat  @click.native="snackbar = false">Close</v-btn>
    </v-snackbar>
 
-   <v-dialog v-model="dialog_trace" max-width="500px">
+   <v-dialog v-model="dialog_details_visible" max-width="500px">
       <v-card>
          <v-card-title>
-         Log entry details
+            <div class="title text-xs-center">Details log entry #{{dialog_details_props.log_key}}({{dialog_details_props.log_source}})</div>
          </v-card-title>
+         <v-divider></v-divider>
          <v-card-text>
-            {{dialog_trace_entry}}
+         <div class="subheading">Date and time:</div>
+            {{dialog_details_props.log_date}}
          </v-card-text>
+         <v-divider></v-divider>
          <v-card-text>
-            {{dialog_trace_text}}
+            <div class="subheading">Log entry:</div>
+            {{dialog_details_props.log_entry}}
          </v-card-text>
+         <v-divider></v-divider>
+         <v-card-text>
+            <div class="subheading">Trace:</div>
+            {{dialog_details_props.log_trace}}
+         </v-card-text>
+         <v-divider></v-divider>
          <v-card-actions>
-         <v-btn color="primary" flat @click.stop="dialog_trace=false">Close</v-btn>
+            <v-btn color="primary" flat @click.stop="dialog_details_visible=false">Close</v-btn>
          </v-card-actions>
       </v-card>
    </v-dialog>
@@ -82,9 +91,12 @@ export default {
     snackbar: false,
     snackbartext: "",
     search: "",
-    dialog_trace: false,
-    dialog_trace_text: "",
-    dialog_trace_entry: "",
+    dialog_details_visible: false,
+    dialog_details_props: {
+      log_entry: "",
+      log_trace: "",
+      visible: false
+    },
     time_format_rel: true,
     button_delete_logs: {
       disabled: false,
@@ -97,38 +109,37 @@ export default {
         value: "level",
         align: "center",
         sortable: false,
-        width: "3%"
+        width: "10%"
       },
       {
         text: "Source",
         value: "source",
         align: "center",
         sortable: false,
-        width: "19%"
+        width: "20%"
       },
       {
         text: "Date",
         value: "date",
         align: "center",
         sortable: false,
-        width: "21%"
+        width: "20%"
       },
       {
         text: "Entry",
         value: "entry",
         align: "left",
         sortable: false,
-        width: "55%"
+        width: "40%"
       },
       {
         text: "Details",
         align: "center",
         sortable: false,
-        width: "2%"
+        width: "10%"
       }
     ],
     table_values: [],
-    loading_status: false,
     update_time: 1000,
     loading_color: "blue"
   }),
@@ -136,7 +147,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      time: this.update_time
+      time: 1000
     }
   },
 
@@ -172,7 +183,6 @@ export default {
     },
 
     table_update() {
-      this.loading_status = true;
       Vue.axios
         .get("http://localhost:8080/system_logger_action", {
           params: {
@@ -206,22 +216,33 @@ export default {
       }
     },
 
-    show_trace(item) {
-      this.dialog_trace_text = "Trace: "+ item.trace;
-      this.dialog_trace_entry = item.entry + " (key:" + item.key + ", " + item.date_abs + ", " + item.date_rel + ")";
-      this.dialog_trace = true;
+    show_details(item) {
+      this.dialog_details_props.log_trace = item.trace;
+      this.dialog_details_props.log_entry = item.entry;
+      this.dialog_details_props.log_key = item.key;
+      this.dialog_details_props.log_date = item.date_abs + ", " + item.date_rel;
+      this.dialog_details_props.log_source = item.source;
+      this.dialog_details_visible = true;
     }
   }
 };
 </script>
 
-
-<style scoped>
-.table-sm {
-  height: 25px;
+<style>
+table.table tbody td,
+table.table tbody th {
+  height: 25px !important;
 }
 
+.no-scroll table {
+  table-layout: fixed;
+}
+</style>
+
+
+<style scoped>
 .button-sm {
   margin: -11px !important;
 }
 </style>
+

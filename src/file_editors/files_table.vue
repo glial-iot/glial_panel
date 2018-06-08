@@ -1,23 +1,29 @@
 <template>
   <div>
-      <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1" >
+      <v-card>
 
-         <template slot="items" slot-scope="props">
+         <v-card-title class="py-1 px-1">
+            <files-create-button @create_error="snackbar_display" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
+         </v-card-title>
 
-            <td class="justify-center layout px-0">
-            <v-btn icon class="mx-0 " @click="file_delete(props.item)">
-               <v-icon color="pink" small>fa-trash-alt</v-icon>
-            </v-btn>
-            <v-btn icon class="ml-0 mr-2 " @click="file_edit(props.item)">
-               <v-icon color="green" small>fa-pencil-alt</v-icon>
-            </v-btn>
-            </td>
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
 
-            <td class="text-xs-left table-sm button-sm"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
+            <template slot="items" slot-scope="props">
+               <td class="text-xs-left"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
 
-         </template>
+               <td class="justify-center layout px-0 button-sm">
+                  <v-btn icon class="mx-0" @click="file_delete(props.item)">
+                     <v-icon color="pink" small>fa-trash-alt</v-icon>
+                  </v-btn>
+                  <v-btn icon class="ml-0 mr-2" @click="file_edit(props.item)">
+                     <v-icon color="green" small>fa-pencil-alt</v-icon>
+                  </v-btn>
+               </td>
+            </template>
 
-      </v-data-table>
+         </v-data-table>
+
+      </v-card>
       <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
          {{ snackbartext }}
          <v-btn flat  @click.native="snackbar = false">Close</v-btn>
@@ -31,27 +37,30 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
+import files_create_button from "./files_create_button.vue";
+Vue.component("files-create-button", files_create_button);
+
 export default {
   data: () => ({
     snackbar: false,
     snackbartext: "",
     headers: [
       {
-        text: "Actions",
-        sortable: false,
-        align: "center",
-        width: "10%"
-      },
-      {
         text: "Filename",
         value: "name",
         align: "left",
         width: "90%"
+      },
+      {
+        text: "Actions",
+        sortable: false,
+        align: "center",
+        width: "10%"
       }
     ],
     files_table: []
   }),
-  props: ["path"],
+  props: ["path", "filetype"],
 
   watch: {
     path(new_item) {
@@ -67,14 +76,19 @@ export default {
     file_edit(item) {
       this.$router.push({ path: "/editor", query: { file: item.address } });
     },
-
+    snackbar_display(){
+          this.snackbar = false;
+          this.snackbartext = "ERROR";
+          this.snackbar = true;
+    }
+    ,
     file_delete(item) {
       console.log("delete:", item.address);
-      /* Vue.axios
-        .get("http://localhost:8080/system_bus_action", {
+      Vue.axios
+        .get("http://localhost:8080/system_webedit_data_v2", {
           params: {
-            action: "delete_topics",
-            topic: item.topic
+            item: "delete",
+            address: item.address
           }
         })
         .then(response => {
@@ -86,7 +100,7 @@ export default {
           this.snackbar = false;
           this.snackbartext = "Delete file: network error";
           this.snackbar = true;
-        }); */
+        });
     },
 
     table_update(path) {
@@ -112,12 +126,19 @@ export default {
 };
 </script>
 
-
-<style scoped>
-.table-sm {
-  height: 25px;
+<style>
+table.table tbody td,
+table.table tbody th {
+  height: 25px !important;
 }
 
+.no-scroll table {
+  table-layout: fixed;
+}
+</style>
+
+
+<style scoped>
 .button-sm {
   margin: -11px !important;
 }
