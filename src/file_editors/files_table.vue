@@ -3,7 +3,7 @@
       <v-card>
 
          <v-card-title class="py-1 px-1">
-            <files-create-button @create_error="snackbar_display" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
+            <files-create-button @create_error="update_snackbar('Create file: network error')" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
          </v-card-title>
 
          <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
@@ -76,12 +76,13 @@ export default {
     file_edit(item) {
       this.$router.push({ path: "/editor", query: { file: item.address } });
     },
-    snackbar_display(){
-          this.snackbar = false;
-          this.snackbartext = "ERROR";
-          this.snackbar = true;
-    }
-    ,
+    update_snackbar: function(text) {
+      this.snackbar_visible = false;
+      this.snackbar_text = text;
+      if (text !== "") {
+        this.snackbar_visible = true;
+      }
+    },
     file_delete(item) {
       console.log("delete:", item.address);
       Vue.axios
@@ -94,12 +95,11 @@ export default {
         .then(response => {
           Vue.delete(this.files_table, this.files_table.indexOf(item));
           console.log(response);
+          this.update_snackbar("");
         })
         .catch(error => {
           console.log(error);
-          this.snackbar = false;
-          this.snackbartext = "Delete file: network error";
-          this.snackbar = true;
+          this.update_snackbar("Delete file: network error");
         });
     },
 
@@ -114,12 +114,11 @@ export default {
         })
         .then(response => {
           this.files_table = response.data;
+          this.update_snackbar("");
         })
         .catch(error => {
           console.log(error);
-          this.snackbar = false;
-          this.snackbartext = "Get file list: network error";
-          this.snackbar = true;
+          this.update_snackbar("Get file list: network error");
         });
     }
   }
