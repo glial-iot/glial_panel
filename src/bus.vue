@@ -179,8 +179,8 @@ export default {
           this.bus_values = this.set_update_attr(response.data);
           //console.log(this.bus_values)
           this.$timer.stop("table_update");
-          if (this.update_interval > 0) {
-            this.timers.table_update.time = this.update_interval;
+          if (+this.update_interval > 0) {
+            this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
           this.progressbar_visible = false;
@@ -190,8 +190,8 @@ export default {
           console.log(error);
           this.$timer.stop("table_update");
 
-          if (this.update_interval > 0) {
-            this.timers.table_update.time = this.update_interval;
+          if (+this.update_interval > 0) {
+            this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
           this.progressbar_visible = false;
