@@ -3,7 +3,7 @@
       <v-card>
 
          <v-card-title class="py-1 px-1">
-            <files-create-button @create_error="update_snackbar('Create file: network error')" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
+            <files-create-button @create_error="$refs.gluebar.update('Error creating a new file');" @data_updated="table_update(path)" :path="path" :filetype="filetype"></files-create-button>
          </v-card-title>
 
          <v-data-table :headers="headers" :items="files_table" hide-actions class="elevation-1 no-scroll" >
@@ -28,6 +28,7 @@
          {{ snackbartext }}
          <v-btn flat  @click.native="snackbar = false">Close</v-btn>
       </v-snackbar>
+      <gluebar ref="gluebar"></gluebar>
 </div>
 </template>
 
@@ -39,6 +40,9 @@ Vue.use(VueAxios, Axios);
 
 import files_create_button from "./files_create_button.vue";
 Vue.component("files-create-button", files_create_button);
+
+import gluebar from "./gluebar.vue";
+Vue.component("gluebar", gluebar);
 
 export default {
   data: () => ({
@@ -95,11 +99,11 @@ export default {
         .then(response => {
           Vue.delete(this.files_table, this.files_table.indexOf(item));
           console.log(response);
-          this.update_snackbar("");
+          this.$refs.gluebar.update(""); 
         })
         .catch(error => {
           console.log(error);
-          this.update_snackbar("Delete file: network error");
+          this.$refs.gluebar.update('Delete file: network error');          
         });
     },
 
@@ -114,11 +118,11 @@ export default {
         })
         .then(response => {
           this.files_table = response.data;
-          this.update_snackbar("");
+          this.$refs.gluebar.update(""); 
         })
         .catch(error => {
-          console.log(error);
-          this.update_snackbar("Get file list: network error");
+          console.log(error);          
+          this.$refs.gluebar.update('Get file list: network error');    
         });
     }
   }
