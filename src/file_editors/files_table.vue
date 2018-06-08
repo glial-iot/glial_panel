@@ -60,12 +60,6 @@ export default {
   }),
   props: ["path", "filetype"],
 
-  watch: {
-    path(new_item) {
-      this.table_update(new_item);
-    }
-  },
-
   mounted: function() {
     this.table_update(this.path);
   },
