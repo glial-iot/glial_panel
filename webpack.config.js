@@ -7,7 +7,6 @@ module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/',
         filename: 'build.js'
     },
     module: {
@@ -61,7 +60,18 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map'
+    devtool: '#eval-source-map',
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'NOKIA IMPACT Glue',
+            meta: {
+                author: 'vvzvlad by nokia iot lab'
+            },
+            filename: 'index.html',
+            inject: false,
+            template: '!!ejs-loader!src/index.ejs'
+        }),
+    ]
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -81,12 +91,6 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
-        }),
-        new HtmlWebpackPlugin({
-            title: 'NOKIA IMPACT Glue',
-            meta: {
-                author: 'vvzvlad by nokia iot lab'
-            }
         }),
         new FaviconsWebpackPlugin({
             logo: './src/assets/tape_logo.svg'
