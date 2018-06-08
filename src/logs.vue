@@ -29,15 +29,12 @@
       </template>
 
       <template slot="items" slot-scope="props">
-         <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.level }}</div></td>
-         <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.source }}</div></td>
-         <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
-         <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
-         <td class="justify-center layout px-0 table-sm button-sm">
-            <v-btn icon class="mx-0 " @click="show_details(props.item)">
-               <v-icon color="pink" small :trace="props.item.entry">fa-project-diagram</v-icon>
-            </v-btn>
-         </td>
+         <tr @click="show_details(props.item)">
+            <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.level }}</div></td>
+            <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.source }}</div></td>
+            <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
+            <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
+         </tr>
       </template>
 
       </v-data-table>
@@ -123,20 +120,13 @@ export default {
         value: "date",
         align: "center",
         sortable: false,
-        width: "20%"
+        width: "18%"
       },
       {
         text: "Entry",
         value: "entry",
         align: "left",
         sortable: false,
-        width: "40%"
-      },
-      {
-        text: "Details",
-        align: "center",
-        sortable: false,
-        width: "10%"
       }
     ],
     table_values: [],
