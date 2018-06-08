@@ -3,12 +3,12 @@
    <v-card>
       <v-card-title class="py-1 px-1">
          <div class="pl-2">
-            <v-btn-toggle v-model="update_interval" >
-               <v-btn flat value=".5s" @click="new_update_interval(500)">0.5s </v-btn>
-               <v-btn flat value="1s" @click="new_update_interval(1000)">1s</v-btn>
-               <v-btn flat value="2s" @click="new_update_interval(2000)">2s</v-btn>
-               <v-btn flat value="5s" @click="new_update_interval(5000)">5s</v-btn>
-               <v-btn flat value="none" @click="new_update_interval('none')">None</v-btn>
+            <v-btn-toggle v-model="update_interval">
+               <v-btn flat value="500">0.5s</v-btn>
+               <v-btn flat value="1000">1s</v-btn>
+               <v-btn flat value="2000">2s</v-btn>
+               <v-btn flat value="5000">5s</v-btn>
+               <v-btn flat value="0">None</v-btn>
             </v-btn-toggle>
          </div>
          <v-spacer></v-spacer>
@@ -27,7 +27,7 @@
       </v-card-title>
 
       <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="elevation-1 no-scroll" >
-         <v-progress-linear slot="progress" :color="primary" height="1"></v-progress-linear>
+         <v-progress-linear slot="progress" color="primary" height="1"></v-progress-linear>
 
          <template slot="items" slot-scope="props" >
             <tr :class="props.item.new_attr ? 'row-new' : ''" >
@@ -66,12 +66,11 @@ Vue.use(VueAxios, Axios);
 
 export default {
   data: () => ({
-    update_interval: "2s",
+    update_interval: "2000",
     snackbar_visible: false,
     snackbar_text: "",
     progressbar_visible: true,
     bus_values: [],
-    update_time: 2000,
     all_tsdb: { topic: "*", tsdb_save: false },
     none_tsdb: { topic: "*", tsdb_save: true },
     headers: [
@@ -101,17 +100,37 @@ export default {
     ]
   }),
 
+  mounted: function() {},
+
+  watch: {
+    update_interval() {
+      this.$timer.stop("table_update");
+
+      if (+this.update_interval > 0) {
+        this.timers.table_update.time = +this.update_interval;
+        this.table_update();
+      }
+    }
+  },
+
   timers: {
     table_update: {
       autostart: true,
-      time: this.update_time
+      time: 0
     }
   },
 
   methods: {
-    tsdb_set(item) {
-             this.progressbar_visible = true;
+    update_snackbar: function(text) {
+      this.snackbar_visible = false;
+      this.snackbar_text = text;
 
+      if (text !== "") {
+        this.snackbar_visible = true;
+      }
+    },
+    tsdb_set(item) {
+      this.progressbar_visible = true;
       Vue.axios
         .get("http://localhost:8080/system_bus_action", {
           params: {
@@ -122,17 +141,17 @@ export default {
         })
         .then(response => {
           if (item.topic !== "*") item.tsdb_save = !item.tsdb_save;
-      this.progressbar_visible = false;
-          clear_snackbar();
+          this.progressbar_visible = false;
+          this.update_snackbar("");
         })
         .catch(error => {
           console.log(error);
-      this.progressbar_visible = false;
-          show_snackbar("Set TSDB attribute: network error");
+          this.progressbar_visible = false;
+          this.update_snackbar("Set TSDB attribute: network error");
         });
     },
     topic_delete(item) {
-             this.progressbar_visible = true;
+      this.progressbar_visible = true;
 
       Vue.axios
         .get("http://localhost:8080/system_bus_action", {
@@ -143,13 +162,13 @@ export default {
         })
         .then(response => {
           Vue.delete(this.bus_values, this.bus_values.indexOf(item));
-      this.progressbar_visible = false;
-          clear_snackbar();
+          this.progressbar_visible = false;
+          this.update_snackbar("");
         })
         .catch(error => {
           console.log(error);
-      this.progressbar_visible = false;
-          show_snackbar("Delete topic: network error");
+          this.progressbar_visible = false;
+          this.update_snackbar("Delete topic: network error");
         });
     },
     table_update() {
@@ -159,39 +178,25 @@ export default {
         .then(response => {
           this.bus_values = this.set_update_attr(response.data);
           //console.log(this.bus_values)
-          if (this.update_time !== "none") {
-            this.timers.table_update.time = this.update_time;
-            this.$timer.stop("table_update");
+          this.$timer.stop("table_update");
+          if (this.update_interval > 0) {
+            this.timers.table_update.time = this.update_interval;
             this.$timer.start("table_update");
           }
           this.progressbar_visible = false;
-          clear_snackbar();
+          this.update_snackbar("");
         })
         .catch(error => {
           console.log(error);
-          if (this.update_time !== "none") {
-            this.timers.table_update.time = this.update_time;
-            this.$timer.stop("table_update");
+          this.$timer.stop("table_update");
+
+          if (this.update_interval > 0) {
+            this.timers.table_update.time = this.update_interval;
             this.$timer.start("table_update");
           }
           this.progressbar_visible = false;
-          show_snackbar("Update table: network error");
+          this.update_snackbar("Update table: network error");
         });
-    },
-    new_update_interval: function(new_interval) {
-      this.update_time = new_interval;
-      this.timers.table_update.time = this.update_time;
-      this.$timer.stop("table_update");
-      this.table_update();
-    },
-    show_snackbar: function(text) {
-      this.snackbar_visible = false;
-      this.snackbar_text = text;
-      this.snackbar_visible = true;
-    },
-    clear_snackbar: function() {
-      this.snackbar_visible = false;
-      this.snackbar_text = "";
     },
     set_update_attr: function(values) {
       for (let index = 0; index < values.length; index++) {
