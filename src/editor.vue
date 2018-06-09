@@ -1,13 +1,13 @@
 <template>
    <div>
       <div class="text-xs-left">
-         <v-btn @click.native="back">
+         <v-btn @click.native="$router.go(-1)">
             <v-icon left small>fa-arrow-left</v-icon> Back
          </v-btn>
-         <v-btn :color="button_save_color" @click.native="save_file">
+         <v-btn @click.native="save_file">
             <v-icon left small>fa-cloud-upload-alt</v-icon> Save
          </v-btn>
-         <v-btn :color="button_reload_color" @click.native="load_file">
+         <v-btn @click.native="load_file">
             <v-icon left small>fa-sync-alt</v-icon> Reload
          </v-btn>
       </div>
@@ -41,18 +41,22 @@ export default {
     lang: "lua",
     content: "",
     last_content: "",
-    current_file_name: "",
-    save_flag: true,
-    button_save_color: "",
-    button_reload_color: ""
+    current_name: "",
+    current_item: "",
+    save_flag: true
   }),
   components: {
     editor
   },
   beforeRouteEnter(to, from, next) {
-    if (Object.keys(to.query).length !== 0 && to.query.file !== undefined) {
+    if (
+      Object.keys(to.query).length !== 0 &&
+      to.query.name !== undefined &&
+      to.query.item !== undefined
+    ) {
       next(vm => {
-        vm.current_file_name = to.query.file;
+        vm.current_name = to.query.name;
+        vm.current_item = to.query.item;
       });
     }
     next();
@@ -66,10 +70,11 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get("http://localhost:8080/system_webedit_data_v2", {
+          .get("http://localhost:8080/system_webedit_data_v3", {
             params: {
-              item: "save",
-              address: this.current_file_name,
+              action: "save",
+              item: this.current_item,
+              name: this.current_name,
               value: reader.result
             },
             headers: {
@@ -77,57 +82,45 @@ export default {
             }
           })
           .then(response => {
-            let old_color = this.button_save_color;
-            this.button_save_color = "success";
-            setTimeout(() => (this.button_save_color = old_color), 1500);
+            this.$refs.snackbar.update("File saved", "success", 3000);
           })
           .catch(error => {
-            let old_color = this.button_save_color;
-            this.button_save_color = "error";
-            setTimeout(() => (this.button_save_color = old_color), 1500);
+            this.$refs.snackbar.update("File not saved");
             console.log(error);
-            this.$refs.snackbar.update("Save file: network error");
           });
       };
     },
     update_last_editor_content: function(content) {
       this.last_content = content;
     },
-    back: function() {
-      this.$router.go(-1);
-    },
     load_file: function() {
       this.content = this.last_content;
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v2", {
+        .get("http://localhost:8080/system_webedit_data_v3", {
           params: {
-            item: "get",
-            address: this.current_file_name
+            action: "get",
+            item: this.current_item,
+            name: this.current_name
           }
         })
         .then(response => {
           this.content = response.data;
-          let old_color = this.button_reload_color;
-          this.button_reload_color = "success";
-          setTimeout(() => (this.button_reload_color = old_color), 1500);
+          this.$refs.snackbar.update("File loaded", "success", 2000);
           //console.log(this.content);
         })
         .catch(error => {
-          let old_color = this.button_reload_color;
-          this.button_reload_color = "error";
-          setTimeout(() => (this.button_reload_color = old_color), 1500);
-          console.log(error);
           this.$refs.snackbar.update("Load file: network error");
+          console.log(error);
         });
 
-      if (this.current_file_name.search(/lua/) > 0) this.lang = "lua";
+      if (this.current_name.search(/lua/) > 0) this.lang = "lua";
 
-      if (this.current_file_name.search(/html/) > 0) this.lang = "html";
+      if (this.current_name.search(/html/) > 0) this.lang = "html";
     }
   },
   watch: {
-    current_file_name: function(file) {
-      this.current_file_name = file;
+    current_name: function(file) {
+      this.current_name = file;
       this.load_file();
     }
   }

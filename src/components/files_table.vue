@@ -5,7 +5,7 @@
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
 
-            <file-create-form @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(path)" :path="path" :filetype="filetype"></file-create-form>
+            <file-create-form @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(item)" :item="item" :filetype="filetype"></file-create-form>
          </v-card-title>
 
          <v-divider></v-divider>
@@ -58,7 +58,7 @@ export default {
     new_file_visible: true,
     headers: [
       {
-        text: "Filename",
+        text: "Name",
         value: "name",
         align: "left",
         width: "90%"
@@ -72,28 +72,31 @@ export default {
     ],
     files_table: []
   }),
-  props: ["path", "filetype"],
+  props: ["item", "filetype"],
 
   mounted: function() {
-    this.table_update(this.path);
+    this.table_update(this.item);
   },
 
   methods: {
-    file_edit(item) {
-      this.$router.push({ path: "/editor", query: { file: item.address } });
+    file_edit(table_item) {
+      this.$router.push({
+        path: "/editor",
+        query: { item: this.item, name: table_item.name }
+      });
     },
-    file_delete(item) {
-      console.log("delete:", item.address);
+    file_delete(table_item) {
+      console.log("delete:", this.item, table_item.name);
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v2", {
+        .get("http://localhost:8080/system_webedit_data_v3", {
           params: {
-            item: "delete",
-            address: item.address
+            action: "delete",
+            item: this.item,
+            name: table_item.name
           }
         })
         .then(response => {
-          Vue.delete(this.files_table, this.files_table.indexOf(item));
-          console.log(response);
+          this.table_update(this.item);
           this.$refs.snackbar.update("");
         })
         .catch(error => {
@@ -102,12 +105,12 @@ export default {
         });
     },
 
-    table_update(path) {
+    table_update(item) {
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v2", {
+        .get("http://localhost:8080/system_webedit_data_v3", {
           params: {
-            item: "get_list",
-            address: path
+            action: "get_list",
+            item: item
           }
         })
         .then(response => {
