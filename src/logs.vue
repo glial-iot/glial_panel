@@ -51,10 +51,7 @@
          </v-data-table>
       </v-card>
 
-      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'">
-         {{ snackbartext }}
-         <v-btn flat @click.native="snackbar = false">Close</v-btn>
-      </v-snackbar>
+      <snackbar ref="snackbar"></snackbar>
 
       <v-dialog v-model="dialog_details_visible" max-width="500px">
          <v-card>
@@ -93,11 +90,11 @@ Vue.use(VueTimers);
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+import snackbar from "./snackbar.vue";
+Vue.component("snackbar", snackbar);
 
 export default {
   data: () => ({
-    snackbar: false,
-    snackbartext: "",
     search: "",
     dialog_details_visible: false,
     dialog_details_props: {
@@ -153,14 +150,6 @@ export default {
   },
 
   methods: {
-    update_snackbar: function(text) {
-      this.snackbar_visible = false;
-      this.snackbar_text = text;
-
-      if (text !== "") {
-        this.snackbar_visible = true;
-      }
-    },
     delete_logs() {
       Vue.axios
         .get("http://localhost:8080/system_logger_action", {
@@ -174,7 +163,7 @@ export default {
           setTimeout(() => (this.button_delete_logs.disabled = false), 800);
           this.button_delete_logs.color = "success";
           setTimeout(() => (this.button_delete_logs.color = old_color), 1500);
-          this.update_snackbar("");
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
           let old_color = this.button_delete_logs.color;
@@ -183,7 +172,7 @@ export default {
           this.button_delete_logs.color = "error";
           setTimeout(() => (this.button_delete_logs.color = old_color), 2000);
           console.log(error);
-          this.update_snackbar("Delete logs: network error");
+          this.$refs.snackbar.update("Delete logs: network error");
         });
 
       this.table_update();
@@ -202,14 +191,14 @@ export default {
           this.timers.table_update.time = this.update_time;
           this.loading_color = "blue";
           this.$timer.start("table_update");
-          this.update_snackbar("");
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
           this.loading_color = "red";
           this.timers.table_update.time = this.update_time;
           this.$timer.start("table_update");
           console.log(error);
-          this.update_snackbar("Table update: network error");
+          this.$refs.snackbar.update("Table update: network error");
         });
     },
 

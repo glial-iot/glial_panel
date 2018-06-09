@@ -17,10 +17,8 @@
          </v-btn>
       </div>
 
-      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'">
-         {{ snackbartext }}
-         <v-btn flat @click.native="snackbar = false">Close</v-btn>
-      </v-snackbar>
+        <snackbar ref="snackbar"></snackbar>
+
    </div>
 
 </template>
@@ -30,12 +28,12 @@ import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+import snackbar from "./snackbar.vue";
+Vue.component("snackbar", snackbar);
 
 export default {
   data() {
     return {
-      snackbar: false,
-      snackbartext: "",
       button: null,
       color: null,
       button_wipe: {
@@ -92,9 +90,7 @@ export default {
             this[l].color = "error";
             setTimeout(() => (this[l].color = old_color), 2000);
             console.log(error);
-            this.snackbar = false;
-            this.snackbartext = "Network error";
-            this.snackbar = true;
+            this.$refs.snackbar.update("Network error");            
           });
 
         this.button = null;
