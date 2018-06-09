@@ -1,9 +1,9 @@
 <template>
    <div>
-      <v-dialog v-model="visible" max-width="500px">
+      <v-dialog v-model="visible" max-width="600px">
          <v-card>
             <v-card-title>
-               <div class="title text-xs-center">Details log entry #{{key}}({{source}})</div>
+               <div class="title text-xs-center">Details log entry ({{level}}) #{{key}}({{source}})</div>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -39,6 +39,7 @@ export default {
     trace: "",
     key: "",
     date: "",
+    level: "",
     source: ""
   }),
   methods: {
@@ -48,6 +49,7 @@ export default {
       this.key = item.key;
       this.date = item.date_abs + ", " + item.date_rel;
       this.source = item.source;
+      this.level = item.level;
       this.visible = true;
     }
   }
