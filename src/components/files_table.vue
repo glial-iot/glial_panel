@@ -28,6 +28,13 @@
 
          </v-data-table>
 
+         <v-divider></v-divider>
+
+         <v-card-title class="py-0 px-0 small_title">
+            <v-spacer></v-spacer>
+            <span class="body-2 mx-4 grey--text"> Scripts: {{files_table.length}} </span>
+         </v-card-title>
+
       </v-card>
       <snackbar ref="snackbar"></snackbar>
 

@@ -110,6 +110,10 @@ table.table thead tr {
   height: 30px;
 }
 
+.small_title {
+  height: 30px;
+}
+
 .no-scroll table {
   table-layout: fixed;
 }
