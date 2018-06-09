@@ -12,9 +12,6 @@
          <v-btn :loading="button_update.loading" :disabled="button_update.disabled" :color="button_update.color" @click.native="button = 'button_update'">
             <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
          </v-btn>
-         <v-btn :loading="button_edit.loading" :disabled="button_edit.disabled" :color="button_edit.color" @click.native="button = 'button_edit'">
-            <v-icon left small>fa-edit</v-icon> Edit user menu
-         </v-btn>
       </div>
 
       <snackbar ref="snackbar"></snackbar>
