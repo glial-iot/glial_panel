@@ -18,10 +18,7 @@
          </v-flex>
       </div>
 
-      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'">
-         {{ snackbartext }}
-         <v-btn flat @click.native="snackbar = false">Close</v-btn>
-      </v-snackbar>
+      <snackbar ref="snackbar"></snackbar>
    </div>
 </template>
 
@@ -31,6 +28,9 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
+import snackbar from "./snackbar.vue";
+Vue.component("snackbar", snackbar);
+
 import editor from "vue-brace";
 import "brace/mode/lua";
 import "brace/mode/html";
@@ -38,8 +38,6 @@ import "brace/theme/crimson_editor";
 
 export default {
   data: () => ({
-    snackbar: false,
-    snackbartext: "",
     lang: "lua",
     content: "",
     last_content: "",
@@ -87,10 +85,8 @@ export default {
             let old_color = this.button_save_color;
             this.button_save_color = "error";
             setTimeout(() => (this.button_save_color = old_color), 1500);
-            console.log(error);
-            this.snackbar = false;
-            this.snackbartext = "Save file: network error";
-            this.snackbar = true;
+            console.log(error);            
+            this.$refs.snackbar.update("Save file: network error");
           });
       };
     },
@@ -121,9 +117,7 @@ export default {
           this.button_reload_color = "error";
           setTimeout(() => (this.button_reload_color = old_color), 1500);
           console.log(error);
-          this.snackbar = false;
-          this.snackbartext = "Load file: network error";
-          this.snackbar = true;
+          this.$refs.snackbar.update("Load file: network error");
         });
 
       if (this.current_file_name.search(/lua/) > 0) this.lang = "lua";

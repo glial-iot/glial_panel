@@ -58,10 +58,7 @@
             </template>
          </v-data-table>
       </v-card>
-      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar_visible" :color="'error'">
-         {{ snackbar_text }}
-         <v-btn flat @click.native="snackbar_visible = false">Close</v-btn>
-      </v-snackbar>
+     <snackbar ref="snackbar"></snackbar>
    </div>
 </template>
 
@@ -72,12 +69,12 @@ Vue.use(VueTimers);
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+import snackbar from "./snackbar.vue";
+Vue.component("snackbar", snackbar);
 
 export default {
   data: () => ({
     update_interval: "2000",
-    snackbar_visible: false,
-    snackbar_text: "",
     progressbar_visible: true,
     bus_values: [],
     all_tsdb: { topic: "*", tsdb_save: false },
@@ -130,14 +127,6 @@ export default {
   },
 
   methods: {
-    update_snackbar: function(text) {
-      this.snackbar_visible = false;
-      this.snackbar_text = text;
-
-      if (text !== "") {
-        this.snackbar_visible = true;
-      }
-    },
     tsdb_set(item) {
       this.progressbar_visible = true;
       Vue.axios
@@ -151,12 +140,12 @@ export default {
         .then(response => {
           if (item.topic !== "*") item.tsdb_save = !item.tsdb_save;
           this.progressbar_visible = false;
-          this.update_snackbar("");
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
           this.progressbar_visible = false;
-          this.update_snackbar("Set TSDB attribute: network error");
+          this.$refs.snackbar.update("Set TSDB attribute: network error");
         });
     },
     topic_delete(item) {
@@ -172,12 +161,12 @@ export default {
         .then(response => {
           Vue.delete(this.bus_values, this.bus_values.indexOf(item));
           this.progressbar_visible = false;
-          this.update_snackbar("");
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
           this.progressbar_visible = false;
-          this.update_snackbar("Delete topic: network error");
+          this.$refs.snackbar.update("Delete topic: network error");
         });
     },
     table_update() {
@@ -193,7 +182,7 @@ export default {
             this.$timer.start("table_update");
           }
           this.progressbar_visible = false;
-          this.update_snackbar("");
+          this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
@@ -204,7 +193,7 @@ export default {
             this.$timer.start("table_update");
           }
           this.progressbar_visible = false;
-          this.update_snackbar("Update table: network error");
+          this.$refs.snackbar.update("Update table: network error");
         });
     },
     set_update_attr: function(values) {
