@@ -90,7 +90,7 @@ Vue.use(VueTimers);
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
-import snackbar from "./snackbar.vue";
+import snackbar from "./components/snackbar.vue";
 Vue.component("snackbar", snackbar);
 
 export default {

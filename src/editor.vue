@@ -28,7 +28,7 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import snackbar from "./snackbar.vue";
+import snackbar from "./components/snackbar.vue";
 Vue.component("snackbar", snackbar);
 
 import editor from "vue-brace";
@@ -85,7 +85,7 @@ export default {
             let old_color = this.button_save_color;
             this.button_save_color = "error";
             setTimeout(() => (this.button_save_color = old_color), 1500);
-            console.log(error);            
+            console.log(error);
             this.$refs.snackbar.update("Save file: network error");
           });
       };

@@ -17,7 +17,7 @@
          </v-btn>
       </div>
 
-        <snackbar ref="snackbar"></snackbar>
+      <snackbar ref="snackbar"></snackbar>
 
    </div>
 
@@ -28,7 +28,7 @@ import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
-import snackbar from "./snackbar.vue";
+import snackbar from "./components/snackbar.vue";
 Vue.component("snackbar", snackbar);
 
 export default {
@@ -90,7 +90,7 @@ export default {
             this[l].color = "error";
             setTimeout(() => (this[l].color = old_color), 2000);
             console.log(error);
-            this.$refs.snackbar.update("Network error");            
+            this.$refs.snackbar.update("Network error");
           });
 
         this.button = null;

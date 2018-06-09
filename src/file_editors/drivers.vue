@@ -11,7 +11,7 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import files_table from "./files_table.vue";
+import files_table from "../components/files_table.vue";
 Vue.component("files-table", files_table);
 
 export default {

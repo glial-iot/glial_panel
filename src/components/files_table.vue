@@ -43,7 +43,7 @@ Vue.use(VueAxios, Axios);
 import file_create_form from "./file_create_form.vue";
 Vue.component("file-create-form", file_create_form);
 
-import snackbar from "../snackbar.vue";
+import snackbar from "./snackbar.vue";
 Vue.component("snackbar", snackbar);
 
 export default {
