@@ -1,5 +1,5 @@
 <template>
-   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="visible" :color='color'>
+   <v-snackbar :timeout="timeout" :top="true" :right="true" v-model="visible" :color='color'>
       {{text}}
       <v-btn flat @click.native="visible = false">Close</v-btn>
    </v-snackbar>
@@ -10,15 +10,17 @@ export default {
   data: () => ({
     visible: false,
     text: "",
-    color: ""
+    color: "",
+    timeout: 0
   }),
   methods: {
-    update(message, color) {
+    update(message, color, timeout) {
       this.visible = false;
       if (message !== "") {
         this.text = message;
-        this.visible = true;
         this.color = color || "error";
+        this.timeout = timeout || 10000;
+        this.visible = true;
       }
     }
   }
