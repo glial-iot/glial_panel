@@ -58,25 +58,27 @@
          </v-card-title>
       </v-card>
 
-      <snackbar ref="snackbar"></snackbar>
+      <snackbar ref="snackbar_error"></snackbar>
+      <snackbar ref="snackbar_msg"></snackbar>
       <logrowdetails ref="logrowdetails"></logrowdetails>
 
    </div>
 </template>
 
 <script>
-
 import Vue from "vue";
 import VueTimers from "vue-timers";
 Vue.use(VueTimers);
+
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+
 import snackbar from "./components/snackbar.vue";
 Vue.component("snackbar", snackbar);
+
 import logrowdetails from "./components/logrowdetails.vue";
 Vue.component("logrowdetails", logrowdetails);
-
 
 export default {
   data: () => ({
@@ -142,7 +144,7 @@ export default {
           setTimeout(() => (this.button_delete_logs.disabled = false), 800);
           this.button_delete_logs.color = "success";
           setTimeout(() => (this.button_delete_logs.color = old_color), 1500);
-          this.$refs.snackbar.update("");
+          this.$refs.snackbar_msg.update("Logs deleted", "success", 2000);
         })
         .catch(error => {
           let old_color = this.button_delete_logs.color;
@@ -151,7 +153,7 @@ export default {
           this.button_delete_logs.color = "error";
           setTimeout(() => (this.button_delete_logs.color = old_color), 2000);
           console.log(error);
-          this.$refs.snackbar.update("Delete logs: network error");
+          this.$refs.snackbar_error.update("Delete logs: network error");
         });
 
       this.table_update();
@@ -170,22 +172,32 @@ export default {
           this.timers.table_update.time = this.update_time;
           this.loading_color = "blue";
           this.$timer.start("table_update");
-          this.$refs.snackbar.update("");
+          this.$refs.snackbar_error.update("");
         })
         .catch(error => {
           this.loading_color = "red";
           this.timers.table_update.time = this.update_time;
           this.$timer.start("table_update");
           console.log(error);
-          this.$refs.snackbar.update("Table update: network error");
+          this.$refs.snackbar_error.update("Table update: network error");
         });
     },
 
     time_format_change() {
       if (this.time_format_rel) {
         this.time_format_rel = false;
+        this.$refs.snackbar_msg.update(
+          "Set time format to absolute",
+          "success",
+          3000
+        );
       } else {
         this.time_format_rel = true;
+        this.$refs.snackbar_msg.update(
+          "Set time format to relative",
+          "success",
+          3000
+        );
       }
     }
   }
