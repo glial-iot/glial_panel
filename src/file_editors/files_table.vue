@@ -1,5 +1,5 @@
 <template>
-  <div>
+   <div>
       <v-card class="elevation-3">
 
          <v-card-title class="py-0 px-0">
@@ -10,10 +10,11 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll" >
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll">
 
             <template slot="items" slot-scope="props">
-               <td class="text-xs-left"><v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
+               <td class="text-xs-left">
+                  <v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}</td>
 
                <td class="justify-center layout px-0 button-sm">
                   <v-btn icon class="mx-0" @click="file_delete(props.item)">
@@ -47,7 +48,7 @@ Vue.component("snackbar", snackbar);
 
 export default {
   data: () => ({
-     new_file_visible: true,
+    new_file_visible: true,
     headers: [
       {
         text: "Filename",
@@ -90,7 +91,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.$refs.snackbar.update('Delete file: network error');
+          this.$refs.snackbar.update("Delete file: network error");
         });
     },
 
@@ -109,7 +110,7 @@ export default {
         .catch(error => {
           console.log(error);
           this.files_table = [];
-          this.$refs.snackbar.update('Get file list: network error');
+          this.$refs.snackbar.update("Get file list: network error");
         });
     }
   }

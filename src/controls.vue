@@ -1,28 +1,27 @@
 <template>
-    <div>
-        <div class="title text-xs-center py-1">Controls</div>
+   <div>
+      <div class="title text-xs-center py-1">Controls</div>
 
-        <div class="text-xs-center">
-            <v-btn :loading="button_wipe.loading" :disabled="button_wipe.disabled" :color="button_wipe.color" @click.native="button = 'button_wipe'" >
-               <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
-            </v-btn>
-            <v-btn :loading="button_stop.loading" :disabled="button_stop.disabled" :color="button_stop.color" @click.native="button = 'button_stop'" >
-                 <v-icon left small>fa-stop-circle</v-icon>  Tarantool stop
-            </v-btn>
-            <v-btn :loading="button_update.loading" :disabled="button_update.disabled" :color="button_update.color" @click.native="button = 'button_update'" >
-              <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
-            </v-btn>
-            <v-btn :loading="button_edit.loading" :disabled="button_edit.disabled" :color="button_edit.color" @click.native="button = 'button_edit'" >
-               <v-icon left small>fa-edit</v-icon> Edit user menu
-            </v-btn>
-         </div>
+      <div class="text-xs-center">
+         <v-btn :loading="button_wipe.loading" :disabled="button_wipe.disabled" :color="button_wipe.color" @click.native="button = 'button_wipe'">
+            <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+         </v-btn>
+         <v-btn :loading="button_stop.loading" :disabled="button_stop.disabled" :color="button_stop.color" @click.native="button = 'button_stop'">
+            <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
+         </v-btn>
+         <v-btn :loading="button_update.loading" :disabled="button_update.disabled" :color="button_update.color" @click.native="button = 'button_update'">
+            <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
+         </v-btn>
+         <v-btn :loading="button_edit.loading" :disabled="button_edit.disabled" :color="button_edit.color" @click.native="button = 'button_edit'">
+            <v-icon left small>fa-edit</v-icon> Edit user menu
+         </v-btn>
+      </div>
 
-   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
-      {{ snackbartext }}
-      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
-   </v-snackbar>
-    </div>
-
+      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'">
+         {{ snackbartext }}
+         <v-btn flat @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
+   </div>
 
 </template>
 

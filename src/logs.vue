@@ -1,81 +1,89 @@
 <template>
-<div>
-   <v-card class="elevation-3">
-       <v-card-title class="py-1 px-1">
+   <div>
+      <v-card class="elevation-3">
+         <v-card-title class="py-1 px-1">
 
-         <div class="pl-2">
-            <v-btn-toggle v-model="search">
-               <v-btn flat value="INFO">INFO</v-btn>
-               <v-btn flat value="WARNING">WARNING</v-btn>
-               <v-btn flat value="ERROR">ERROR</v-btn>
-               <v-btn flat value="">ALL</v-btn>
-            </v-btn-toggle>
-         </div>
+            <div class="pl-2">
+               <v-btn-toggle v-model="search">
+                  <v-btn flat value="INFO">INFO</v-btn>
+                  <v-btn flat value="WARNING">WARNING</v-btn>
+                  <v-btn flat value="ERROR">ERROR</v-btn>
+                  <v-btn flat value="">ALL</v-btn>
+               </v-btn-toggle>
+            </div>
 
-         <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-         <v-btn :loading="button_delete_logs.loading" :disabled="button_delete_logs.disabled" :color="button_delete_logs.color" @click.native="delete_logs()" >
-            <v-icon left small>fa-trash-alt</v-icon>Delete logs
-         </v-btn>
-      </v-card-title>
-
-      <v-divider></v-divider>
-
-      <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="no-scroll" >
-
-      <template slot="headers" slot-scope="props">
-      <tr>
-         <th v-for="header in props.headers" :key="header.text" @click="time_format_change" :style="'width:'+ header.width" >
-            {{ header.text }}
-         </th>
-      </tr>
-      </template>
-
-      <template slot="items" slot-scope="props">
-         <tr @click="show_details(props.item)">
-            <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.level }}</div></td>
-            <td class="text-xs-center table-sm"><div class="ellipsis">{{ props.item.source }}</div></td>
-            <td class="text-xs-center table-sm"><div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div></td>
-            <td class="text-xs-left table-sm"><div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div></td>
-         </tr>
-      </template>
-
-      </v-data-table>
-   </v-card>
-
-   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
-      {{ snackbartext }}
-      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
-   </v-snackbar>
-
-   <v-dialog v-model="dialog_details_visible" max-width="500px">
-      <v-card>
-         <v-card-title>
-            <div class="title text-xs-center">Details log entry #{{dialog_details_props.log_key}}({{dialog_details_props.log_source}})</div>
+            <v-btn :loading="button_delete_logs.loading" :disabled="button_delete_logs.disabled" :color="button_delete_logs.color" @click.native="delete_logs()">
+               <v-icon left small>fa-trash-alt</v-icon>Delete logs
+            </v-btn>
          </v-card-title>
-         <v-divider></v-divider>
-         <v-card-text>
-         <div class="subheading">Date and time:</div>
-            {{dialog_details_props.log_date}}
-         </v-card-text>
-         <v-divider></v-divider>
-         <v-card-text>
-            <div class="subheading">Log entry:</div>
-            {{dialog_details_props.log_entry}}
-         </v-card-text>
-         <v-divider></v-divider>
-         <v-card-text>
-            <div class="subheading">Trace:</div>
-            {{dialog_details_props.log_trace}}
-         </v-card-text>
-         <v-divider></v-divider>
-         <v-card-actions>
-            <v-btn color="primary" flat @click.stop="dialog_details_visible=false">Close</v-btn>
-         </v-card-actions>
-      </v-card>
-   </v-dialog>
 
-</div>
+         <v-divider></v-divider>
+
+         <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="no-scroll">
+
+            <template slot="headers" slot-scope="props">
+               <tr>
+                  <th v-for="header in props.headers" :key="header.text" @click="time_format_change" :style="'width:'+ header.width">
+                     {{ header.text }}
+                  </th>
+               </tr>
+            </template>
+
+            <template slot="items" slot-scope="props">
+               <tr @click="show_details(props.item)">
+                  <td class="text-xs-center table-sm">
+                     <div class="ellipsis">{{ props.item.level }}</div>
+                  </td>
+                  <td class="text-xs-center table-sm">
+                     <div class="ellipsis">{{ props.item.source }}</div>
+                  </td>
+                  <td class="text-xs-center table-sm">
+                     <div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div>
+                  </td>
+                  <td class="text-xs-left table-sm">
+                     <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
+                  </td>
+               </tr>
+            </template>
+
+         </v-data-table>
+      </v-card>
+
+      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'">
+         {{ snackbartext }}
+         <v-btn flat @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
+
+      <v-dialog v-model="dialog_details_visible" max-width="500px">
+         <v-card>
+            <v-card-title>
+               <div class="title text-xs-center">Details log entry #{{dialog_details_props.log_key}}({{dialog_details_props.log_source}})</div>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+               <div class="subheading">Date and time:</div>
+               {{dialog_details_props.log_date}}
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text>
+               <div class="subheading">Log entry:</div>
+               {{dialog_details_props.log_entry}}
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text>
+               <div class="subheading">Trace:</div>
+               {{dialog_details_props.log_trace}}
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+               <v-btn color="primary" flat @click.stop="dialog_details_visible=false">Close</v-btn>
+            </v-card-actions>
+         </v-card>
+      </v-dialog>
+
+   </div>
 </template>
 
 <script>
@@ -129,7 +137,7 @@ export default {
         text: "Entry",
         value: "entry",
         align: "left",
-        sortable: false,
+        sortable: false
       }
     ],
     table_values: [],

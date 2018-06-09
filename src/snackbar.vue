@@ -1,8 +1,8 @@
 <template>
-  <v-snackbar :timeout="10000" :top="true" :right="true"  v-model="visible"  :color='color' >
-       {{text}}
-       <v-btn flat  @click.native="visible = false">Close</v-btn>
-  </v-snackbar>
+   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="visible" :color='color'>
+      {{text}}
+      <v-btn flat @click.native="visible = false">Close</v-btn>
+   </v-snackbar>
 </template>
 <script>
 import Vue from "vue";

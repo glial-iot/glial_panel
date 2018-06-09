@@ -1,27 +1,27 @@
 <template>
    <div>
       <div class="text-xs-left">
-         <v-btn @click.native="back" >
+         <v-btn @click.native="back">
             <v-icon left small>fa-arrow-left</v-icon> Back
          </v-btn>
-         <v-btn :color="button_save_color" @click.native="save_file" >
+         <v-btn :color="button_save_color" @click.native="save_file">
             <v-icon left small>fa-cloud-upload-alt</v-icon> Save
          </v-btn>
-         <v-btn :color="button_reload_color" @click.native="load_file" >
+         <v-btn :color="button_reload_color" @click.native="load_file">
             <v-icon left small>fa-sync-alt</v-icon> Reload
          </v-btn>
       </div>
 
       <div id="app">
          <v-flex xs12>
-            <editor :content="content" :lang="lang" v-on:content-update="update_last_editor_content" theme='crimson_editor' :height="'630px'" ></editor>
+            <editor :content="content" :lang="lang" v-on:content-update="update_last_editor_content" theme='crimson_editor' :height="'630px'"></editor>
          </v-flex>
       </div>
 
-   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'" >
-      {{ snackbartext }}
-      <v-btn flat  @click.native="snackbar = false">Close</v-btn>
-   </v-snackbar>
+      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar" :color="'error'">
+         {{ snackbartext }}
+         <v-btn flat @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
    </div>
 </template>
 

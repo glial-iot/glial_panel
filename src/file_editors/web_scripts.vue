@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <div class="title text-xs-center py-2">{{this.$route.params.item}}</div>
-         <files-table :path="path" :filetype="filetype"></files-table>
-    </div>
+   <div>
+      <div class="title text-xs-center py-2">{{this.$route.params.item}}</div>
+      <files-table :path="path" :filetype="filetype"></files-table>
+   </div>
 </template>
 
 <script>

@@ -11,13 +11,14 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-               <v-text-field autofocus label="Name of file" v-model= "filenameinput"></v-text-field>
+               <v-text-field autofocus label="Name of file" v-model="filenameinput"></v-text-field>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
                <v-btn color="primary" flat @click.stop="dialog_visible=false">Close</v-btn>
                <v-spacer></v-spacer>
-               <v-btn :loading="button_create.loading" :disabled="button_create.disabled" :color="button_create.color" right flat :path="path" :filetype="filetype" @click="create_file(path,filetype)"> <v-icon left small>fa-file</v-icon> Create</v-btn>
+               <v-btn :loading="button_create.loading" :disabled="button_create.disabled" :color="button_create.color" right flat :path="path" :filetype="filetype" @click="create_file(path,filetype)">
+                  <v-icon left small>fa-file</v-icon> Create</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
@@ -61,7 +62,7 @@ export default {
           this.button_create.disabled = true;
           setTimeout(() => (this.button_create.color = "primary"), 1500);
           setTimeout(() => (this.dialog_visible = false), 1500);
-          setTimeout(() => (this.$emit("data_updated", path)), 1500);
+          setTimeout(() => this.$emit("data_updated", path), 1500);
           this.filenameinput = "";
         })
         .catch(error => {

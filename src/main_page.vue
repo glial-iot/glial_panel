@@ -20,7 +20,7 @@
          <v-menu :nudge-width="-100">
             <v-toolbar-title slot="activator">
                <div>
-                  <img style="height: 25px" class="mr-3 mt-2" src="./logo_nokia.svg" alt="Nokia Logo"></img>
+                <img class="mr-3 mt-2" src="./logo_nokia.svg" height="25px" alt="Nokia Logo">
                   IMPACT GLUE
                </div>
             </v-toolbar-title>
@@ -107,7 +107,7 @@ table.table tbody th {
 }
 
 table.table thead tr {
-    height: 30px;
+  height: 30px;
 }
 
 .no-scroll table {

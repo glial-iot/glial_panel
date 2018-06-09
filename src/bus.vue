@@ -1,62 +1,68 @@
 <template>
-<div>
-   <v-card class="elevation-3">
-      <v-card-title class="py-1 px-1">
-         <div class="pl-2">
-            <v-btn-toggle v-model="update_interval">
-               <v-btn flat value="500">0.5s</v-btn>
-               <v-btn flat value="1000">1s</v-btn>
-               <v-btn flat value="2000">2s</v-btn>
-               <v-btn flat value="5000">5s</v-btn>
-               <v-btn flat value="0">None</v-btn>
-            </v-btn-toggle>
-         </div>
+   <div>
+      <v-card class="elevation-3">
+         <v-card-title class="py-1 px-1">
+            <div class="pl-2">
+               <v-btn-toggle v-model="update_interval">
+                  <v-btn flat value="500">0.5s</v-btn>
+                  <v-btn flat value="1000">1s</v-btn>
+                  <v-btn flat value="2000">2s</v-btn>
+                  <v-btn flat value="5000">5s</v-btn>
+                  <v-btn flat value="0">None</v-btn>
+               </v-btn-toggle>
+            </div>
 
-         <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-         <div>
-            <v-btn value="selected" @click="topic_delete(all_tsdb)">
-               <v-icon color="pink" left>fa-trash-alt</v-icon> Delete all from Bus
-            </v-btn>
-            <v-btn value="selected" @click="tsdb_set(all_tsdb)">
-               <v-icon color="green" left>fa-download</v-icon> All TSDB
-            </v-btn>
-            <v-btn value="selected" @click="tsdb_set(none_tsdb)">
-               <v-icon color="grey" left>fa-download</v-icon> None TSDB
-            </v-btn>
-         </div>
-      </v-card-title>
+            <div>
+               <v-btn value="selected" @click="topic_delete(all_tsdb)">
+                  <v-icon color="pink" left>fa-trash-alt</v-icon> Delete all from Bus
+               </v-btn>
+               <v-btn value="selected" @click="tsdb_set(all_tsdb)">
+                  <v-icon color="green" left>fa-download</v-icon> All TSDB
+               </v-btn>
+               <v-btn value="selected" @click="tsdb_set(none_tsdb)">
+                  <v-icon color="grey" left>fa-download</v-icon> None TSDB
+               </v-btn>
+            </div>
+         </v-card-title>
 
-      <v-divider></v-divider>
+         <v-divider></v-divider>
 
-      <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="no-scroll" >
-         <v-progress-linear slot="progress" color="primary" height="1"></v-progress-linear>
+         <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="no-scroll">
+            <v-progress-linear slot="progress" color="primary" height="1"></v-progress-linear>
 
-         <template slot="items" slot-scope="props" >
-            <tr :class="props.item.new_attr ? 'row-new' : ''" >
-               <td class="text-xs-left"><div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div></td>
-               <td class="text-xs-left"><div class="ellipsis" :title="props.item.value">{{ props.item.value }}</div></td>
-               <td class="text-xs-left"><div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div></td>
-               <td class="justify-center layout px-0 button-sm">
-                  <v-btn icon class="mx-0 " @click="topic_delete(props.item)">
-                     <v-icon color="pink" small>fa-trash-alt</v-icon>
-                  </v-btn>
-                  <v-btn v-show="props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
-                     <v-icon color="green" small>fa-download</v-icon>
-                  </v-btn>
-                  <v-btn v-show="!props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
-                     <v-icon color="grey" small>fa-download</v-icon>
-                  </v-btn>
-               </td>
-            </tr>
-         </template>
-      </v-data-table>
-   </v-card>
-   <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar_visible" :color="'error'" >
-      {{ snackbar_text }}
-      <v-btn flat  @click.native="snackbar_visible = false">Close</v-btn>
-   </v-snackbar>
-</div>
+            <template slot="items" slot-scope="props">
+               <tr :class="props.item.new_attr ? 'row-new' : ''">
+                  <td class="text-xs-left">
+                     <div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div>
+                  </td>
+                  <td class="text-xs-left">
+                     <div class="ellipsis" :title="props.item.value">{{ props.item.value }}</div>
+                  </td>
+                  <td class="text-xs-left">
+                     <div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div>
+                  </td>
+                  <td class="justify-center layout px-0 button-sm">
+                     <v-btn icon class="mx-0 " @click="topic_delete(props.item)">
+                        <v-icon color="pink" small>fa-trash-alt</v-icon>
+                     </v-btn>
+                     <v-btn v-show="props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
+                        <v-icon color="green" small>fa-download</v-icon>
+                     </v-btn>
+                     <v-btn v-show="!props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
+                        <v-icon color="grey" small>fa-download</v-icon>
+                     </v-btn>
+                  </td>
+               </tr>
+            </template>
+         </v-data-table>
+      </v-card>
+      <v-snackbar :timeout="10000" :top="true" :right="true" v-model="snackbar_visible" :color="'error'">
+         {{ snackbar_text }}
+         <v-btn flat @click.native="snackbar_visible = false">Close</v-btn>
+      </v-snackbar>
+   </div>
 </template>
 
 <script>
