@@ -69,7 +69,7 @@ module.exports = {
             },
             filename: 'index.html',
             inject: false,
-            template: '!!ejs-loader!src/index.ejs'
+            template: '!!ejs-loader!src/assets/index.ejs'
         }),
     ]
 }
