@@ -20,7 +20,7 @@
          <v-menu :nudge-width="-100">
             <v-toolbar-title slot="activator">
                <div>
-                <img class="mr-3 mt-2" src="./logo_nokia.svg" height="25px" alt="Nokia Logo">
+                <img class="mr-3 mt-2" src="./assets/logo_nokia.svg" height="25px" alt="Nokia Logo">
                   IMPACT GLUE
                </div>
             </v-toolbar-title>
