@@ -21,7 +21,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :search="search" :items="table_values" hide-actions must-sort class="no-scroll">
+         <v-data-table :headers="headers" :items="table_values" :search="search" :custom-filter="customFilter" hide-actions must-sort class="no-scroll">
 
             <template slot="headers" slot-scope="props">
                <tr>
@@ -199,6 +199,14 @@ export default {
           3000
         );
       }
+    },
+
+    customFilter(items, search, filter) {
+      if (search.length === 0) {
+        return items
+      }
+      
+      return items.filter(item => item.level === search)
     }
   }
 };
