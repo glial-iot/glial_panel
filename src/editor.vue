@@ -31,7 +31,7 @@ Vue.use(VueAxios, Axios);
 import snackbar from "./components/snackbar.vue";
 Vue.component("snackbar", snackbar);
 
-import editor from "vue-brace";
+import editor from "./brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
 import "brace/theme/crimson_editor";
