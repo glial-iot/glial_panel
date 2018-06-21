@@ -205,10 +205,10 @@ export default {
 
     customFilter(items, search, filter) {
       if (search.length === 0) {
-        return items
+        return items;
       }
-      
-      return items.filter(item => item.level === search)
+
+      return items.filter(item => item.level === search);
     }
   }
 };
