@@ -169,14 +169,16 @@ export default {
         })
         .then(response => {
           this.table_values = response.data;
-          this.timers.table_update.time = this.update_time;
           this.loading_color = "blue";
+          this.timers.table_update.time = this.update_time;
+          this.$timer.stop("table_update");
           this.$timer.start("table_update");
           this.$refs.snackbar_error.update("");
         })
         .catch(error => {
           this.loading_color = "red";
           this.timers.table_update.time = this.update_time;
+          this.$timer.stop("table_update");
           this.$timer.start("table_update");
           console.log(error);
           this.$refs.snackbar_error.update("Table update: network error");
