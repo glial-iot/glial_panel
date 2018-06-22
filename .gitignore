@@ -9,3 +9,4 @@ yarn-error.log
 *.njsproj
 *.sln
 /package-lock.json
+/web_app.code-workspace
