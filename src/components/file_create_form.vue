@@ -43,12 +43,13 @@ export default {
       filename: ""
     };
   },
-  props: ["item", "filetype"],
-
+  props: ["item", "filetype","server_url"],
+  
   methods: {
     create_file() {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_webedit_data_v3';
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "new",
             item: this.item,
