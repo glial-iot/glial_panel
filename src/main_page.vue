@@ -25,6 +25,8 @@
                </div>
             </v-toolbar-title>
          </v-menu>
+         <v-spacer></v-spacer>
+         <caption right>( at: {{this.server_url}} )</caption>
    </v-toolbar>
 
 
@@ -58,6 +60,12 @@ let menu = [
     path: "/controls",
     name: "Controls",
     icon: "fa-cogs",
+    color: "brown"
+  },
+    {
+    path: "/settings",
+    name: "Settings",
+    icon: "fa-sliders-h",
     color: "brown"
   },
   {
@@ -94,8 +102,17 @@ let menu = [
 
 export default {
   data: () => ({
-    menuitems: menu
-  })
+    menuitems: menu   
+  }),
+  computed: {
+    server_url () {
+      return this.$store.state.server_url
+    }
+  },
+  created: function() {
+    var stored_url = this.$localStorage.get("url", "localhost:8080");
+    this.$store.commit('update', stored_url)
+  }
 };
 </script>
 

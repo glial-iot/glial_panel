@@ -24,10 +24,12 @@
         "vue-brace": "^2.0.0",
         "vue-bulma-brace": "^0.1.0",
         "vue-fontawesome": "0.0.2",
+        "vue-localstorage": "^0.6.2",
         "vue-router": "^3.0.1",
         "vue-timers": "^1.7.2",
         "vue2-ace-editor": "0.0.10",
-        "vuetify": "^1.0.18"
+        "vuetify": "^1.0.18",
+        "vuex": "^3.0.1"
     },
     "browserslist": [
         "> 1%",

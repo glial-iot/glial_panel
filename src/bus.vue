@@ -111,7 +111,7 @@ export default {
       }
     ]
   }),
-
+ 
   mounted: function() {},
 
   watch: {
@@ -134,9 +134,10 @@ export default {
 
   methods: {
     tsdb_set(item) {
+      var endpoint_url = 'http://' + this.$store.state.server_url+'/system_bus_action';
       this.progressbar_visible = true;
       Vue.axios
-        .get("http://localhost:8080/system_bus_action", {
+        .get(endpoint_url, {
           params: {
             action: "update_tsdb_attribute",
             topic: item.topic,
@@ -155,10 +156,11 @@ export default {
         });
     },
     topic_delete(item) {
+      var endpoint_url = 'http://' + this.$store.state.server_url+'/system_bus_action';
       this.progressbar_visible = true;
 
       Vue.axios
-        .get("http://localhost:8080/system_bus_action", {
+        .get(endpoint_url, {
           params: {
             action: "delete_topics",
             topic: item.topic
@@ -176,9 +178,10 @@ export default {
         });
     },
     table_update() {
+      var endpoint_url = 'http://' + this.$store.state.server_url+'/system_bus_data';
       this.progressbar_visible = true;
       Vue.axios
-        .get("http://localhost:8080/system_bus_data")
+        .get(endpoint_url)
         .then(response => {
           this.bus_values = this.set_update_attr(response.data);
           //console.log(this.bus_values)

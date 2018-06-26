@@ -82,13 +82,14 @@ export default {
     file_edit(table_item) {
       this.$router.push({
         path: "/editor",
-        query: { item: this.item, name: table_item.name }
+        query: { item: this.item, name: table_item.name, }
       });
     },
     file_delete(table_item) {
+      var endpoint_url = 'http://' + this.$store.state.server_url+'/system_webedit_data_v3';
       console.log("delete:", this.item, table_item.name);
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "delete",
             item: this.item,
@@ -106,8 +107,9 @@ export default {
     },
 
     table_update(item) {
+      var endpoint_url = 'http://' + this.$store.state.server_url+'/system_webedit_data_v3';
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "get_list",
             item: item
