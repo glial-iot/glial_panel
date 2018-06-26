@@ -25,6 +25,8 @@
                </div>
             </v-toolbar-title>
          </v-menu>
+         <v-spacer></v-spacer>
+         <caption right>( at: {{server_url}})</caption>
    </v-toolbar>
 
 
@@ -32,7 +34,7 @@
          <v-container grid-list-md text-xs-center>
             <v-layout row wrap>
                <v-flex xs12>
-                  <router-view></router-view>
+                  <router-view :server_url="server_url"></router-view>
                </v-flex>
             </v-layout>
          </v-container>
@@ -58,6 +60,12 @@ let menu = [
     path: "/controls",
     name: "Controls",
     icon: "fa-cogs",
+    color: "brown"
+  },
+    {
+    path: "/settings",
+    name: "Settings",
+    icon: "fa-sliders-h",
     color: "brown"
   },
   {
@@ -94,8 +102,12 @@ let menu = [
 
 export default {
   data: () => ({
-    menuitems: menu
-  })
+    menuitems: menu,
+    server_url: String
+  }),
+  created: function() {
+    this.server_url = this.$localStorage.get("url", "localhost");
+  }
 };
 </script>
 

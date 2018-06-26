@@ -59,15 +59,16 @@ export default {
       }
     };
   },
+  props: ["server_url"],
   watch: {
     button() {
       if (this.button != undefined) {
         const l = this.button;
         this[l].loading = true;
         //this[l].disabled = true;
-
+        var endpoint_url = 'http://' + this.$props.server_url+':8080/system_actions';
         Vue.axios
-          .get("http://localhost:8080/system_actions", {
+          .get(endpoint_url, {
             params: {
               action: this[l].action
             }

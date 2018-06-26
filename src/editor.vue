@@ -61,8 +61,11 @@ export default {
     }
     next();
   },
+  props: ["server_url"],
+  
   methods: {
     save_file: function(event) {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_webedit_data_v3';
       let data = new Blob([this.last_content], {
         type: "text/plain"
       });
@@ -70,7 +73,7 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get("http://localhost:8080/system_webedit_data_v3", {
+          .get(endpoint_url, {
             params: {
               action: "save",
               item: this.current_item,
@@ -94,9 +97,10 @@ export default {
       this.last_content = content;
     },
     load_file: function() {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_webedit_data_v3';
       this.content = this.last_content;
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "get",
             item: this.current_item,

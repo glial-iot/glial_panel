@@ -122,6 +122,7 @@ export default {
     update_time: 1000,
     loading_color: "blue"
   }),
+  props: ["server_url"],
 
   timers: {
     table_update: {
@@ -132,8 +133,9 @@ export default {
 
   methods: {
     delete_logs() {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_logger_action';
       Vue.axios
-        .get("http://localhost:8080/system_logger_action", {
+        .get(endpoint_url, {
           params: {
             action: "delete_logs"
           }
@@ -160,8 +162,9 @@ export default {
     },
 
     table_update() {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_logger_action';
       Vue.axios
-        .get("http://localhost:8080/system_logger_action", {
+        .get(endpoint_url, {
           params: {
             action: "get_logs",
             limit: 100
@@ -169,16 +172,14 @@ export default {
         })
         .then(response => {
           this.table_values = response.data;
-          this.loading_color = "blue";
           this.timers.table_update.time = this.update_time;
-          this.$timer.stop("table_update");
+          this.loading_color = "blue";
           this.$timer.start("table_update");
           this.$refs.snackbar_error.update("");
         })
         .catch(error => {
           this.loading_color = "red";
           this.timers.table_update.time = this.update_time;
-          this.$timer.stop("table_update");
           this.$timer.start("table_update");
           console.log(error);
           this.$refs.snackbar_error.update("Table update: network error");
@@ -205,10 +206,10 @@ export default {
 
     customFilter(items, search, filter) {
       if (search.length === 0) {
-        return items;
+        return items
       }
-
-      return items.filter(item => item.level === search);
+      
+      return items.filter(item => item.level === search)
     }
   }
 };

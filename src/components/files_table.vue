@@ -5,7 +5,7 @@
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
 
-            <file-create-form @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(item)" :item="item" :filetype="filetype"></file-create-form>
+            <file-create-form :server_url="this.$props.server_url" @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update(item)" :item="item" :filetype="filetype"></file-create-form>
          </v-card-title>
 
          <v-divider></v-divider>
@@ -72,7 +72,7 @@ export default {
     ],
     files_table: []
   }),
-  props: ["item", "filetype"],
+  props: ["item", "filetype","server_url"],
 
   mounted: function() {
     this.table_update(this.item);
@@ -82,13 +82,14 @@ export default {
     file_edit(table_item) {
       this.$router.push({
         path: "/editor",
-        query: { item: this.item, name: table_item.name }
+        query: { item: this.item, name: table_item.name,  server_url: this.$props.server_url }
       });
     },
     file_delete(table_item) {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_webedit_data_v3';
       console.log("delete:", this.item, table_item.name);
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "delete",
             item: this.item,
@@ -106,8 +107,9 @@ export default {
     },
 
     table_update(item) {
+      var endpoint_url = 'http://' + this.$props.server_url+':8080/system_webedit_data_v3';
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "get_list",
             item: item

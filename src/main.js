@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import main_page from './main_page.vue'
 import controls from './controls.vue'
+import settings from './settings.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
 import editor from './editor.vue'
@@ -35,6 +36,9 @@ fontawesome.library.add(solid.faDatabase)
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+import VueLocalStorage from 'vue-localstorage';
+Vue.use(VueLocalStorage);
+
 const router = new VueRouter({
     routes: [{
         path: '/bus',
@@ -60,6 +64,9 @@ const router = new VueRouter({
     }, {
         path: '/controls',
         component: controls,
+    }, {
+        path: '/settings',
+        component: settings,
     }, {
         path: '/editor',
         component: editor

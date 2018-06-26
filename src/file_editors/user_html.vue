@@ -1,6 +1,6 @@
 <template>
    <div>
-      <files-table :item="item" :filetype="filetype"></files-table>
+      <files-table :server_url="this.$props.server_url" :item="item" :filetype="filetype"></files-table>
    </div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   data: () => ({
     item: "USER_HTML",
     filetype: "html"
-  })
+  }),
+  props: ["server_url"]
 };
 </script>
