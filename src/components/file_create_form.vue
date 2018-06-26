@@ -44,11 +44,12 @@ export default {
     };
   },
   props: ["item", "filetype"],
-
+  
   methods: {
     create_file() {
+      var endpoint_url = 'http://' + this.$store.state.server_url+'/system_webedit_data_v3';
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(endpoint_url, {
           params: {
             action: "new",
             item: this.item,
