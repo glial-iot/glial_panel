@@ -25,6 +25,8 @@
                </div>
             </v-toolbar-title>
          </v-menu>
+         <v-spacer></v-spacer>
+         <caption right>( at: {{this.server_url}} : {{this.port_number}} )</caption>         
    </v-toolbar>
 
 
@@ -58,6 +60,12 @@ let menu = [
     path: "/controls",
     name: "Controls",
     icon: "fa-cogs",
+    color: "brown"
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    icon: "fa-sliders-h",
     color: "brown"
   },
   {
@@ -95,7 +103,24 @@ let menu = [
 export default {
   data: () => ({
     menuitems: menu
-  })
+  }),
+  computed: {
+    server_url() {
+      return this.$store.state.server_url;
+    },
+    port_number() {
+      return this.$store.state.port_number;
+    }
+  },
+
+  
+  created: function() {
+    this.$store.commit(
+      "update_url",
+      this.$localStorage.get("url", "localhost")
+    );
+    this.$store.commit("update_port", this.$localStorage.get("port", "8080"));
+  }
 };
 </script>
 

@@ -121,8 +121,7 @@ export default {
     table_values: [],
     update_time: 1000,
     loading_color: "blue"
-  }),
-
+  }), 
   timers: {
     table_update: {
       autostart: true,
@@ -133,7 +132,7 @@ export default {
   methods: {
     delete_logs() {
       Vue.axios
-        .get("http://localhost:8080/system_logger_action", {
+        .get(this.$store.getters.full_url+'/system_logger_action', {
           params: {
             action: "delete_logs"
           }
@@ -161,7 +160,7 @@ export default {
 
     table_update() {
       Vue.axios
-        .get("http://localhost:8080/system_logger_action", {
+        .get(this.$store.getters.full_url+'/system_logger_action', {
           params: {
             action: "get_logs",
             limit: 100
@@ -206,8 +205,7 @@ export default {
     customFilter(items, search, filter) {
       if (search.length === 0) {
         return items;
-      }
-
+      }      
       return items.filter(item => item.level === search);
     }
   }

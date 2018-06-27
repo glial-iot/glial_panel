@@ -61,6 +61,7 @@ export default {
     }
     next();
   },
+   
   methods: {
     save_file: function(event) {
       let data = new Blob([this.last_content], {
@@ -70,7 +71,7 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get("http://localhost:8080/system_webedit_data_v3", {
+          .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
             params: {
               action: "save",
               item: this.current_item,
@@ -96,7 +97,7 @@ export default {
     load_file: function() {
       this.content = this.last_content;
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
           params: {
             action: "get",
             item: this.current_item,
