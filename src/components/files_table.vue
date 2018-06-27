@@ -88,7 +88,7 @@ export default {
     file_delete(table_item) {
       console.log("delete:", this.item, table_item.name);
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
           params: {
             action: "delete",
             item: this.item,
@@ -107,7 +107,7 @@ export default {
 
     table_update(item) {
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
           params: {
             action: "get_list",
             item: item

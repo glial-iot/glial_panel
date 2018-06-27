@@ -44,11 +44,11 @@ export default {
     };
   },
   props: ["item", "filetype"],
-
+  
   methods: {
     create_file() {
       Vue.axios
-        .get("http://localhost:8080/system_webedit_data_v3", {
+        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
           params: {
             action: "new",
             item: this.item,
