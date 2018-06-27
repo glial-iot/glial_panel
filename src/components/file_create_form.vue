@@ -44,17 +44,20 @@ export default {
     };
   },
   props: ["item", "filetype"],
-  
+
   methods: {
     create_file() {
       Vue.axios
-        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
-          params: {
-            action: "new",
-            item: this.item,
-            name: this.filename
+        .get(
+          this.$store.getters.full_server_http_url + "/system_webedit_data_v3",
+          {
+            params: {
+              action: "new",
+              item: this.item,
+              name: this.filename
+            }
           }
-        })
+        )
         .then(response => {
           setTimeout(() => (this.button_create.loading = false), 500);
           setTimeout(() => (this.button_create.disabled = false), 500);

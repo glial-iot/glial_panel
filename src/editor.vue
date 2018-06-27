@@ -61,7 +61,7 @@ export default {
     }
     next();
   },
-   
+
   methods: {
     save_file: function(event) {
       let data = new Blob([this.last_content], {
@@ -71,17 +71,21 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
-            params: {
-              action: "save",
-              item: this.current_item,
-              name: this.current_name,
-              value: reader.result
-            },
-            headers: {
-              "content-type": "multipart/form-data"
+          .get(
+            this.$store.getters.full_server_http_url +
+              "/system_webedit_data_v3",
+            {
+              params: {
+                action: "save",
+                item: this.current_item,
+                name: this.current_name,
+                value: reader.result
+              },
+              headers: {
+                "content-type": "multipart/form-data"
+              }
             }
-          })
+          )
           .then(response => {
             this.$refs.snackbar.update("File saved", "success", 3000);
           })
@@ -97,13 +101,16 @@ export default {
     load_file: function() {
       this.content = this.last_content;
       Vue.axios
-        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
-          params: {
-            action: "get",
-            item: this.current_item,
-            name: this.current_name
+        .get(
+          this.$store.getters.full_server_http_url + "/system_webedit_data_v3",
+          {
+            params: {
+              action: "get",
+              item: this.current_item,
+              name: this.current_name
+            }
           }
-        })
+        )
         .then(response => {
           this.content = response.data;
           this.$refs.snackbar.update("File loaded", "success", 2000);

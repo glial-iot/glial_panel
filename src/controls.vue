@@ -65,9 +65,9 @@ export default {
       if (this.button != undefined) {
         const l = this.button;
         this[l].loading = true;
-        //this[l].disabled = true;        
+        //this[l].disabled = true;
         Vue.axios
-          .get(this.$store.getters.full_url+'/system_actions', {
+          .get(this.$store.getters.full_server_http_url + "/system_actions", {
             params: {
               action: this[l].action
             }

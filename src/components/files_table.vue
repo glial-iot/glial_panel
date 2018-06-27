@@ -88,13 +88,16 @@ export default {
     file_delete(table_item) {
       console.log("delete:", this.item, table_item.name);
       Vue.axios
-        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
-          params: {
-            action: "delete",
-            item: this.item,
-            name: table_item.name
+        .get(
+          this.$store.getters.full_server_http_url + "/system_webedit_data_v3",
+          {
+            params: {
+              action: "delete",
+              item: this.item,
+              name: table_item.name
+            }
           }
-        })
+        )
         .then(response => {
           this.table_update(this.item);
           this.$refs.snackbar.update("");
@@ -107,12 +110,15 @@ export default {
 
     table_update(item) {
       Vue.axios
-        .get(this.$store.getters.full_url+'/system_webedit_data_v3', {
-          params: {
-            action: "get_list",
-            item: item
+        .get(
+          this.$store.getters.full_server_http_url + "/system_webedit_data_v3",
+          {
+            params: {
+              action: "get_list",
+              item: item
+            }
           }
-        })
+        )
         .then(response => {
           this.files_table = response.data;
           this.$refs.snackbar.update("");
