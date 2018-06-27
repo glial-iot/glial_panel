@@ -121,7 +121,7 @@ export default {
     table_values: [],
     update_time: 1000,
     loading_color: "blue"
-  }), 
+  }),
   timers: {
     table_update: {
       autostart: true,
@@ -132,11 +132,14 @@ export default {
   methods: {
     delete_logs() {
       Vue.axios
-        .get(this.$store.getters.full_url+'/system_logger_action', {
-          params: {
-            action: "delete_logs"
+        .get(
+          this.$store.getters.full_server_http_url + "/system_logger_action",
+          {
+            params: {
+              action: "delete_logs"
+            }
           }
-        })
+        )
         .then(response => {
           let old_color = this.button_delete_logs.color;
           setTimeout(() => (this.button_delete_logs.loading = false), 800);
@@ -160,12 +163,15 @@ export default {
 
     table_update() {
       Vue.axios
-        .get(this.$store.getters.full_url+'/system_logger_action', {
-          params: {
-            action: "get_logs",
-            limit: 100
+        .get(
+          this.$store.getters.full_server_http_url + "/system_logger_action",
+          {
+            params: {
+              action: "get_logs",
+              limit: 100
+            }
           }
-        })
+        )
         .then(response => {
           this.table_values = response.data;
           this.loading_color = "blue";
@@ -205,7 +211,7 @@ export default {
     customFilter(items, search, filter) {
       if (search.length === 0) {
         return items;
-      }      
+      }
       return items.filter(item => item.level === search);
     }
   }
