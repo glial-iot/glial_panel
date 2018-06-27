@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import main_page from './main_page.vue'
 import controls from './controls.vue'
+import settings from './settings.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
 import editor from './editor.vue'
@@ -35,6 +36,12 @@ fontawesome.library.add(solid.faDatabase)
 
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+import VueLocalStorage from 'vue-localstorage';
+Vue.use(VueLocalStorage);
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
 const router = new VueRouter({
     routes: [{
         path: '/bus',
@@ -61,6 +68,9 @@ const router = new VueRouter({
         path: '/controls',
         component: controls,
     }, {
+        path: '/settings',
+        component: settings,
+    }, {
         path: '/editor',
         component: editor
     }, {
@@ -69,10 +79,29 @@ const router = new VueRouter({
     }]
 })
 
-
+const store = new Vuex.Store({
+    state: {
+      server_url: String,
+      port_number: String
+    },
+    mutations: {
+      update_url (state, new_url) {
+        state.server_url= new_url;        
+      },
+      update_port (state, new_port) {        
+        state.port_number= new_port;
+      }
+    }
+    ,
+    getters: {
+        full_url: state => {
+            return "http://"+state.server_url+":"+state.port_number; }    
+    }
+  })
 
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(main_page)
 })

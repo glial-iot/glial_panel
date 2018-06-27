@@ -59,15 +59,15 @@ export default {
       }
     };
   },
+
   watch: {
     button() {
       if (this.button != undefined) {
         const l = this.button;
         this[l].loading = true;
-        //this[l].disabled = true;
-
+        //this[l].disabled = true;        
         Vue.axios
-          .get("http://localhost:8080/system_actions", {
+          .get(this.$store.getters.full_url+'/system_actions', {
             params: {
               action: this[l].action
             }
