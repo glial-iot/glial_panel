@@ -86,23 +86,23 @@ const store = new Vuex.Store({
    },
    mutations: {
       server_address(state, address) {
-         this.$localStorage.set("server_address", address);
+         Vue.localStorage.set("server_address", address);
       },
       server_port(state, port) {
-         this.$localStorage.set("server_port", port);
+         Vue.localStorage.set("server_port", port);
       }
    },
    getters: {
       full_server_http_url: state => {
-         let port = this.$localStorage.get("server_port", "8080")
-         let address = this.$localStorage.get("server_address", "localhost")
+         let port = Vue.localStorage.get("server_port", "8080")
+         let address = Vue.localStorage.get("server_address", "localhost")
          return "http://" + address + ":" + port;
       },
       server_port: state => {
-         return this.$localStorage.get("server_port", "8080")
+         return Vue.localStorage.get("server_port", "8080")
       },
       server_address: state => {
-         return this.$localStorage.get("server_address", "localhost")
+         return Vue.localStorage.get("server_address", "localhost")
       }
    }
 })
