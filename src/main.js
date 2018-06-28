@@ -81,28 +81,22 @@ const router = new VueRouter({
 
 const store = new Vuex.Store({
    state: {
-      server_url: '',
-      port_number: ''
+      server_address: Vue.localStorage.get("server_address", "localhost"),
+      server_port: Vue.localStorage.get("server_port", "8080")
    },
    mutations: {
       server_address(state, address) {
+         state.server_address = address
          Vue.localStorage.set("server_address", address);
       },
       server_port(state, port) {
+         state.server_port = port
          Vue.localStorage.set("server_port", port);
       }
    },
    getters: {
       full_server_http_url: state => {
-         let port = Vue.localStorage.get("server_port", "8080")
-         let address = Vue.localStorage.get("server_address", "localhost")
-         return "http://" + address + ":" + port;
-      },
-      server_port: state => {
-         return Vue.localStorage.get("server_port", "8080")
-      },
-      server_address: state => {
-         return Vue.localStorage.get("server_address", "localhost")
+         return `http://${state.server_address}:${state.server_port}`;
       }
    }
 })

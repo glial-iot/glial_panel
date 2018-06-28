@@ -35,9 +35,6 @@
 <script>
 import Vue from "vue";
 
-import VueLocalStorage from "vue-localstorage";
-Vue.use(VueLocalStorage);
-
 export default {
   data() {
     return {
@@ -47,8 +44,8 @@ export default {
   },
 
   created: function() {
-    this.server_address = this.$store.getters.server_address;
-    this.server_port = this.$store.getters.server_port;
+    this.server_address = this.$store.state.server_address;
+    this.server_port = this.$store.state.server_port;
   },
 
   methods: {
