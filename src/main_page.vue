@@ -105,7 +105,6 @@ export default {
     menuitems: menu
   }),
   mounted() {
-    console.log(localstorage);
   }
 };
 </script>
