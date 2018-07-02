@@ -95,7 +95,6 @@ if (process.env.NODE_ENV === 'production') {
       }),
       new FaviconsWebpackPlugin({
          logo: './src/assets/tape_logo.svg',
-         prefix: '/',
       })
    ])
 }
