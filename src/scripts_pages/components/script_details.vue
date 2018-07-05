@@ -101,19 +101,17 @@ export default {
       this.get_logs();
     },
     restart() {
-      let endpoint;
-      if (this.type === "WEB_EVENT") endpoint = "/webevents";
-      if (this.type === "DRIVER") endpoint = "/drivers";
-      if (this.type === "BUS_EVENT") endpoint = "/busevents";
-      if (this.type === "TIMER_EVENT") endpoint = "/timerevents";
-
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + endpoint, {
-          params: {
-            action: "restart",
-            uuid: this.uuid
+        .get(
+          this.$store.getters.full_server_http_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "restart",
+              uuid: this.uuid
+            }
           }
-        })
+        )
         .then(response => {
           console.log(response);
         })

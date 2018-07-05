@@ -77,7 +77,8 @@ const router = new VueRouter({
 const store = new Vuex.Store({
    state: {
       server_address: Vue.localStorage.get("server_address", "localhost"),
-      server_port: Vue.localStorage.get("server_port", "8080")
+      server_port: Vue.localStorage.get("server_port", "8080"),
+      endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
       server_address(state, address) {

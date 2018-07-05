@@ -185,28 +185,27 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.$refs.snackbar.update("Delete script: error");
+          this.$refs.snackbar.update("Delete script error");
         });
     },
     script_restart(table_item) {
-      let endpoint;
-      if (this.type === "WEB_EVENT") endpoint = "/webevents";
-      if (this.type === "DRIVER") endpoint = "/drivers";
-      if (this.type === "BUS_EVENT") endpoint = "/busevents";
-      if (this.type === "TIMER_EVENT") endpoint = "/timerevents";
-
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + endpoint, {
-          params: {
-            action: "restart",
-            uuid: table_item.uuid
+        .get(
+          this.$store.getters.full_server_http_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "restart",
+              uuid: table_item.uuid
+            }
           }
-        })
+        )
         .then(response => {
           console.log(response);
         })
         .catch(error => {
           console.log(error);
+          this.$refs.snackbar.update("Restart script error");
         });
     },
     script_active_change(table_item, flag) {
@@ -225,7 +224,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.$refs.snackbar.update("Active change: error");
+          this.$refs.snackbar.update("Active change error");
         });
     },
 
@@ -247,7 +246,7 @@ export default {
         .catch(error => {
           console.log(error);
           this.files_table = [];
-          this.$refs.snackbar.update("Get script list: error");
+          this.$refs.snackbar.update("Get script list error");
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
         });
