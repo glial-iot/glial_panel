@@ -112,6 +112,11 @@ export default {
     ]
   }),
 
+  beforeRouteLeave(to, from, next) {
+    this.$timer.stop("table_update");
+    next();
+  },
+
   mounted: function() {},
 
   watch: {

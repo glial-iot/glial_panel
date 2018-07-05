@@ -14,7 +14,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn :loading="button_delete_logs.loading" :disabled="button_delete_logs.disabled" :color="button_delete_logs.color" @click.native="delete_logs()">
+            <v-btn color="primary" @click.native="delete_logs()">
                <v-icon left small>fa-trash-alt</v-icon>Delete logs
             </v-btn>
          </v-card-title>
@@ -37,7 +37,7 @@
                      <div class="ellipsis">{{ props.item.level }}</div>
                   </td>
                   <td class="text-xs-center table-sm">
-                     <div class="ellipsis">{{ props.item.source }}</div>
+                     <div class="ellipsis" :title="props.item.uuid_source">{{ props.item.source }}</div>
                   </td>
                   <td class="text-xs-center table-sm">
                      <div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div>
@@ -84,11 +84,6 @@ export default {
   data: () => ({
     search: "",
     time_format_rel: true,
-    button_delete_logs: {
-      disabled: false,
-      loading: false,
-      color: "secondary"
-    },
     headers: [
       {
         text: "Level",
@@ -119,41 +114,36 @@ export default {
       }
     ],
     table_values: [],
-    update_time: 1000,
-    loading_color: "blue"
+    update_time: 1000
   }),
   timers: {
     table_update: {
-      autostart: true,
+      autostart: true, //не выключается после ухода со страницы
       time: 1000
     }
+  },
+
+  mounted: function() {
+    this.table_update();
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.$timer.stop("table_update");
+    next();
   },
 
   methods: {
     delete_logs() {
       Vue.axios
-        .get(
-          this.$store.getters.full_server_http_url + "/system_logger_action",
-          {
-            params: {
-              action: "delete_logs"
-            }
+        .get(this.$store.getters.full_server_http_url + "/logger", {
+          params: {
+            action: "delete_logs"
           }
-        )
+        })
         .then(response => {
-          let old_color = this.button_delete_logs.color;
-          setTimeout(() => (this.button_delete_logs.loading = false), 800);
-          setTimeout(() => (this.button_delete_logs.disabled = false), 800);
-          this.button_delete_logs.color = "success";
-          setTimeout(() => (this.button_delete_logs.color = old_color), 1500);
           this.$refs.snackbar_msg.update("Logs deleted", "success", 2000);
         })
         .catch(error => {
-          let old_color = this.button_delete_logs.color;
-          setTimeout(() => (this.button_delete_logs.loading = false), 800);
-          setTimeout(() => (this.button_delete_logs.disabled = false), 800);
-          this.button_delete_logs.color = "error";
-          setTimeout(() => (this.button_delete_logs.color = old_color), 2000);
           console.log(error);
           this.$refs.snackbar_error.update("Delete logs: network error");
         });
@@ -163,25 +153,20 @@ export default {
 
     table_update() {
       Vue.axios
-        .get(
-          this.$store.getters.full_server_http_url + "/system_logger_action",
-          {
-            params: {
-              action: "get_logs",
-              limit: 100
-            }
+        .get(this.$store.getters.full_server_http_url + "/logger", {
+          params: {
+            action: "get_logs",
+            limit: 100
           }
-        )
+        })
         .then(response => {
           this.table_values = response.data;
-          this.loading_color = "blue";
           this.timers.table_update.time = this.update_time;
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
           this.$refs.snackbar_error.update("");
         })
         .catch(error => {
-          this.loading_color = "red";
           this.timers.table_update.time = this.update_time;
           this.$timer.stop("table_update");
           this.$timer.start("table_update");

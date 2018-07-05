@@ -28,10 +28,10 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import snackbar from "./components/snackbar.vue";
+import snackbar from "../components/snackbar.vue";
 Vue.component("snackbar", snackbar);
 
-import editor from "./brace/index.js";
+import editor from "../brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
 import "brace/theme/crimson_editor";
@@ -41,24 +41,32 @@ export default {
     lang: "lua",
     content: "",
     last_content: "",
-    current_name: "",
-    current_item: "",
-    save_flag: true
+    uuid: "",
+    save_flag: true,
+    saved: false
   }),
   components: {
     editor
   },
   beforeRouteEnter(to, from, next) {
-    if (
-      Object.keys(to.query).length !== 0 &&
-      to.query.name !== undefined &&
-      to.query.item !== undefined
-    ) {
+    if (Object.keys(to.query).length !== 0 && to.query.uuid !== undefined) {
       next(vm => {
-        vm.current_name = to.query.name;
-        vm.current_item = to.query.item;
+        vm.uuid = to.query.uuid;
       });
     }
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    /*     if (this.saved == false) {
+      const answer = window.confirm(
+        "Do you really want to leave? You have unsaved changes!"
+      );
+      if (answer) {
+        next();
+      } else {
+        next(false);
+      }
+    } */
     next();
   },
 
@@ -71,23 +79,19 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get(
-            this.$store.getters.full_server_http_url +
-              "/system_webedit_data_v3",
-            {
-              params: {
-                action: "save",
-                item: this.current_item,
-                name: this.current_name,
-                value: reader.result
-              },
-              headers: {
-                "content-type": "multipart/form-data"
-              }
+          .get(this.$store.getters.full_server_http_url + "/scripts", {
+            params: {
+              action: "update",
+              uuid: this.uuid,
+              body: reader.result
+            },
+            headers: {
+              "content-type": "multipart/form-data"
             }
-          )
+          })
           .then(response => {
             this.$refs.snackbar.update("File saved", "success", 3000);
+            this.saved = true;
           })
           .catch(error => {
             this.$refs.snackbar.update("File not saved");
@@ -96,39 +100,35 @@ export default {
       };
     },
     update_last_editor_content: function(content) {
-      this.last_content = content;
+      if (this.last_content !== content) {
+        this.last_content = content;
+        this.saved = false;
+      }
     },
+
     load_file: function() {
       this.content = this.last_content;
       Vue.axios
-        .get(
-          this.$store.getters.full_server_http_url + "/system_webedit_data_v3",
-          {
-            params: {
-              action: "get",
-              item: this.current_item,
-              name: this.current_name
-            }
+        .get(this.$store.getters.full_server_http_url + "/scripts", {
+          params: {
+            action: "get",
+            uuid: this.uuid
           }
-        )
+        })
         .then(response => {
-          this.content = response.data;
+          this.content = response.data.body;
           this.$refs.snackbar.update("File loaded", "success", 2000);
-          //console.log(this.content);
+          this.saved = true;
         })
         .catch(error => {
+          this.content = "";
           this.$refs.snackbar.update("Load file: network error");
-          console.log(error);
         });
-
-      if (this.current_name.search(/lua/) > 0) this.lang = "lua";
-
-      if (this.current_name.search(/html/) > 0) this.lang = "html";
     }
   },
   watch: {
-    current_name: function(file) {
-      this.current_name = file;
+    uuid: function(uuid) {
+      this.uuid = uuid;
       this.load_file();
     }
   }

@@ -67,7 +67,7 @@ export default {
         this[l].loading = true;
         //this[l].disabled = true;
         Vue.axios
-          .get(this.$store.getters.full_server_http_url + "/system_actions", {
+          .get(this.$store.getters.full_server_http_url + "/system_event", {
             params: {
               action: this[l].action
             }

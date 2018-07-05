@@ -26,7 +26,7 @@
             </v-toolbar-title>
          </v-menu>
          <v-spacer></v-spacer>
-         <caption right>( {{$store.getters.server_address}} )</caption>
+         <caption right> {{$store.getters.full_server_url}} </caption>
    </v-toolbar>
 
 
@@ -69,43 +69,36 @@ let menu = [
     color: "brown"
   },
   {
-    path: "/files/drivers",
+    path: "/scripts/drivers",
     name: "Drivers",
     icon: "fa-screwdriver",
     color: "green darken-2"
-  },
+  } /*
   {
-    path: "/files/event_scripts",
+    path: "/scripts/event_scripts",
     name: "Event scripts",
     icon: "fa-rocket",
     color: "green darken-2"
-  },
+  }, */,
   {
-    path: "/files/web_scripts",
+    path: "/scripts/web_scripts",
     name: "Web scripts",
     icon: "fa-link",
     color: "green darken-2"
-  },
+  } /* ,
   {
-    path: "/files/timer_scripts",
+    path: "/scripts/timer_scripts",
     name: "Timer scripts",
     icon: "fa-clock",
     color: "green darken-2"
-  },
-  {
-    path: "/files/user_html",
-    name: "User HTML",
-    icon: "fa-laptop",
-    color: "green darken-2"
-  }
+  } */
 ];
 
 export default {
   data: () => ({
     menuitems: menu
   }),
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 

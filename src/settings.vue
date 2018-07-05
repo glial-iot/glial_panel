@@ -12,14 +12,14 @@
             <v-layout row wrap mt-3 pt-3>
                <v-flex xs3 pt-4>
                   <v-icon>fa-globe</v-icon>
-                  <v-title>Server connection address</v-title>
+                  <v-title>Server address</v-title>
                </v-flex>
                <v-flex xs3>
                   <v-text-field name="input-3-1" label="server address" v-model="server_address">
                   </v-text-field>
                </v-flex>
                <v-flex xs2>
-                  <v-text-field name="input-3-P" label="port number" v-model="server_port">
+                  <v-text-field name="input-3-P" label="port" v-model="server_port">
                   </v-text-field>
                </v-flex>
                <v-flex xs1>

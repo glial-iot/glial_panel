@@ -4,13 +4,11 @@ import controls from './controls.vue'
 import settings from './settings.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
-import editor from './editor.vue'
-import drivers from './file_editors/drivers.vue'
-import event_scripts from './file_editors/event_scripts.vue'
-import timer_scripts from './file_editors/timer_scripts.vue'
-import web_scripts from './file_editors/web_scripts.vue'
-import user_html from './file_editors/user_html.vue'
-
+import editor from './scripts_pages/editor.vue'
+import drivers from './scripts_pages/drivers.vue'
+//import event_scripts from './scripts_pages/event_scripts.vue'
+//import timer_scripts from './scripts_pages/timer_scripts.vue'
+import web_scripts from './scripts_pages/web_scripts.vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -50,21 +48,18 @@ const router = new VueRouter({
       path: '/logs',
       component: logs
    }, {
-      path: '/files/drivers',
+      path: '/scripts/drivers',
       component: drivers
-   }, {
-      path: '/files/event_scripts',
+   }, /* {
+      path: '/scripts/event_scripts',
       component: event_scripts
-   }, {
-      path: '/files/web_scripts',
+   },  */{
+      path: '/scripts/web_scripts',
       component: web_scripts
-   }, {
-      path: '/files/timer_scripts',
+   }, /* {
+      path: '/scripts/timer_scripts',
       component: timer_scripts
-   }, {
-      path: '/files/user_html',
-      component: user_html
-   }, {
+   },  */{
       path: '/controls',
       component: controls,
    }, {
@@ -97,7 +92,11 @@ const store = new Vuex.Store({
    getters: {
       full_server_http_url: state => {
          return `http://${state.server_address}:${state.server_port}`;
+      },
+      full_server_url: state => {
+         return `${state.server_address}:${state.server_port}`;
       }
+
    }
 })
 
