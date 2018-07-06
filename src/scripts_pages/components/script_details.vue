@@ -107,7 +107,7 @@ export default {
             this.$store.state.endpoints[this.type],
           {
             params: {
-              action: "restart",
+              action: "reload",
               uuid: this.uuid
             }
           }

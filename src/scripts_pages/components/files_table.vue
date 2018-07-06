@@ -195,7 +195,7 @@ export default {
             this.$store.state.endpoints[this.type],
           {
             params: {
-              action: "restart",
+              action: "reload",
               uuid: table_item.uuid
             }
           }
@@ -205,7 +205,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.$refs.snackbar.update("Restart script error");
+          this.$refs.snackbar.update("Reload script error");
         });
     },
     script_active_change(table_item, flag) {
