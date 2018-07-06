@@ -104,12 +104,12 @@ export default {
 
 
 <style>
-table.table tbody td,
-table.table tbody th {
+table.v-table tbody td,
+table.v-table tbody th {
   height: 25px !important;
 }
 
-table.table thead tr {
+table.v-table thead tr {
   height: 30px;
 }
 
