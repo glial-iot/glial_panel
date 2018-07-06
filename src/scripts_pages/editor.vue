@@ -1,22 +1,35 @@
 <template>
    <div>
-      <div class="text-xs-left">
-         <v-btn @click.native="$router.go(-1)">
-            <v-icon left small>fa-arrow-left</v-icon> Back
-         </v-btn>
-         <v-btn @click.native="save_file">
-            <v-icon left small>fa-cloud-upload-alt</v-icon> Save
-         </v-btn>
-         <v-btn @click.native="load_file">
-            <v-icon left small>fa-sync-alt</v-icon> Reload
-         </v-btn>
-      </div>
+      <v-card class="elevation-3">
+         <v-card-title class="py-1 px-1">
+            <div class="text-xs-left">
+               <v-btn @click.native="$router.go(-1)">
+                  <v-icon left small>fa-arrow-left</v-icon> Back
+               </v-btn>
+            </div>
 
-      <div id="app">
-         <v-flex xs12>
-            <editor :content="content" :lang="lang" v-on:content-update="update_last_editor_content" theme='crimson_editor' :height="'630px'"></editor>
-         </v-flex>
-      </div>
+            <v-spacer></v-spacer>
+            <span class=".display-1"> {{this.type}} {{this.name}} </span>
+            <v-spacer></v-spacer>
+
+            <div class="text-xs-left">
+               <v-btn @click.native="save_file">
+                  <v-icon left small>fa-cloud-upload-alt</v-icon> Save
+               </v-btn>
+               <v-btn @click.native="load_file">
+                  <v-icon left small>fa-sync-alt</v-icon> Reload
+               </v-btn>
+            </div>
+
+         </v-card-title>
+         <v-divider></v-divider>
+
+         <div id="app">
+            <v-flex xs12>
+               <editor :content="content" :lang="lang" v-on:content-update="update_last_editor_content" theme='crimson_editor' :height="'630px'"></editor>
+            </v-flex>
+         </div>
+      </v-card>
 
       <snackbar ref="snackbar"></snackbar>
    </div>
@@ -117,6 +130,8 @@ export default {
         })
         .then(response => {
           this.content = response.data.body;
+          this.name = response.data.name;
+          this.type = response.data.type;
           this.$refs.snackbar.update("File loaded", "success", 2000);
           this.saved = true;
         })

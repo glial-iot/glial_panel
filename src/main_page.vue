@@ -31,7 +31,7 @@
 
 
     <v-content>
-         <v-container grid-list-md text-xs-center>
+         <v-container fill-height fluid>
             <v-layout row wrap>
                <v-flex xs12>
                   <router-view></router-view>
