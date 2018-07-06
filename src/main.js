@@ -6,7 +6,7 @@ import bus from './bus.vue'
 import logs from './logs.vue'
 import editor from './scripts_pages/editor.vue'
 import drivers from './scripts_pages/drivers.vue'
-//import event_scripts from './scripts_pages/event_scripts.vue'
+import event_scripts from './scripts_pages/event_scripts.vue'
 //import timer_scripts from './scripts_pages/timer_scripts.vue'
 import web_scripts from './scripts_pages/web_scripts.vue'
 
@@ -50,14 +50,14 @@ const router = new VueRouter({
    }, {
       path: '/scripts/drivers',
       component: drivers
-   }, /* {
-      path: '/scripts/event_scripts',
+   }, {
+      path: '/scripts/busevent',
       component: event_scripts
-   },  */{
-      path: '/scripts/web_scripts',
+   }, {
+      path: '/scripts/webevent',
       component: web_scripts
    }, /* {
-      path: '/scripts/timer_scripts',
+      path: '/scripts/timerevent',
       component: timer_scripts
    },  */{
       path: '/controls',

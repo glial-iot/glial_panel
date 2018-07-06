@@ -73,21 +73,21 @@ let menu = [
     name: "Drivers",
     icon: "fa-screwdriver",
     color: "green darken-2"
-  } /*
+  },
   {
-    path: "/scripts/event_scripts",
+    path: "/scripts/busevent",
     name: "Event scripts",
     icon: "fa-rocket",
     color: "green darken-2"
-  }, */,
+  },
   {
-    path: "/scripts/web_scripts",
+    path: "/scripts/webevent",
     name: "Web scripts",
     icon: "fa-link",
     color: "green darken-2"
   } /* ,
   {
-    path: "/scripts/timer_scripts",
+    path: "/scripts/timerevent",
     name: "Timer scripts",
     icon: "fa-clock",
     color: "green darken-2"
