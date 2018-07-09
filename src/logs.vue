@@ -118,7 +118,7 @@ export default {
   }),
   timers: {
     table_update: {
-      autostart: true, //не выключается после ухода со страницы
+      autostart: true,
       time: 1000
     }
   },

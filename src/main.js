@@ -4,6 +4,8 @@ import controls from './controls.vue'
 import settings from './settings.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
+import backups from './backups.vue'
+
 import editor from './scripts_pages/editor.vue'
 import drivers from './scripts_pages/drivers.vue'
 import event_scripts from './scripts_pages/event_scripts.vue'
@@ -66,6 +68,9 @@ const router = new VueRouter({
       path: '/settings',
       component: settings,
    }, {
+      path: '/backups',
+      component: backups,
+   }, {
       path: '/editor',
       component: editor
    }, {
@@ -96,6 +101,9 @@ const store = new Vuex.Store({
       },
       full_server_url: state => {
          return `${state.server_address}:${state.server_port}`;
+      },
+      server_ip: state => {
+         return `${state.server_address}`;
       }
 
    }
