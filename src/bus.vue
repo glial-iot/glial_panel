@@ -29,8 +29,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="bus_values" :loading="progressbar_visible" hide-actions class="no-scroll">
-            <v-progress-linear slot="progress" color="primary" height="1"></v-progress-linear>
+         <v-data-table :headers="headers" :items="bus_values" hide-actions class="no-scroll">
 
             <template slot="items" slot-scope="props">
                <tr :class="props.item.new_attr ? 'row-new' : ''">
@@ -83,7 +82,6 @@ Vue.component("snackbar", snackbar);
 export default {
   data: () => ({
     update_interval: "2000",
-    progressbar_visible: true,
     bus_values: [],
     all_tsdb: { topic: "*", tsdb_save: false },
     none_tsdb: { topic: "*", tsdb_save: true },
@@ -141,7 +139,6 @@ export default {
 
   methods: {
     tsdb_set(item) {
-      this.progressbar_visible = true;
       Vue.axios
         .get(this.$store.getters.full_server_http_url + "/system_bus_action", {
           params: {
@@ -152,17 +149,14 @@ export default {
         })
         .then(response => {
           if (item.topic !== "*") item.tsdb_save = !item.tsdb_save;
-          this.progressbar_visible = false;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
-          this.progressbar_visible = false;
           this.$refs.snackbar.update("Set TSDB attribute: network error");
         });
     },
     topic_delete(item) {
-      this.progressbar_visible = true;
       Vue.axios
         .get(this.$store.getters.full_server_http_url + "/system_bus_action", {
           params: {
@@ -172,17 +166,14 @@ export default {
         })
         .then(response => {
           Vue.delete(this.bus_values, this.bus_values.indexOf(item));
-          this.progressbar_visible = false;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
-          this.progressbar_visible = false;
           this.$refs.snackbar.update("Delete topic: network error");
         });
     },
     table_update() {
-      this.progressbar_visible = true;
       Vue.axios
         .get(this.$store.getters.full_server_http_url + "/system_bus_data")
         .then(response => {
@@ -193,7 +184,6 @@ export default {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
-          this.progressbar_visible = false;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
@@ -204,7 +194,6 @@ export default {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
-          this.progressbar_visible = false;
           this.$refs.snackbar.update("Update table: network error");
         });
     },

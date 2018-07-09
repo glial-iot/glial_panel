@@ -11,7 +11,7 @@
             <v-layout row wrap pl-3 pt-2>
                <v-flex md3 pt-4>
                   <v-icon>fa-globe</v-icon>
-                  <v-title>Server address</v-title>
+                  <span>Server address</span>
                </v-flex>
                <v-spacer></v-spacer>
                <v-flex md3 pt-1>
