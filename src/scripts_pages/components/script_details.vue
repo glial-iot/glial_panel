@@ -26,13 +26,13 @@
 
                   <template slot="items" slot-scope="props">
                      <tr>
-                        <td class="text-xs-center table-sm">
+                        <td class="text-xs-center">
                            <div class="ellipsis">{{ props.item.level }}</div>
                         </td>
-                        <td class="text-xs-center table-sm">
+                        <td class="text-xs-center">
                            <div class="ellipsis" :title="props.item.date_abs">{{props.item.date_rel }}</div>
                         </td>
-                        <td class="text-xs-left table-sm">
+                        <td class="text-xs-left">
                            <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
                         </td>
                      </tr>

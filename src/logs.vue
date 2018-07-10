@@ -33,16 +33,16 @@
 
             <template slot="items" slot-scope="props">
                <tr @click="$refs.logrowdetails.show(props.item)">
-                  <td class="text-xs-center table-sm">
+                  <td class="text-xs-center">
                      <div class="ellipsis">{{ props.item.level }}</div>
                   </td>
-                  <td class="text-xs-center table-sm">
+                  <td class="text-xs-center">
                      <div class="ellipsis" :title="props.item.uuid_source">{{ props.item.source }}</div>
                   </td>
-                  <td class="text-xs-center table-sm">
+                  <td class="text-xs-center">
                      <div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div>
                   </td>
-                  <td class="text-xs-left table-sm">
+                  <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
                   </td>
                </tr>

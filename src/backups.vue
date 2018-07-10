@@ -5,10 +5,10 @@
          <v-data-table :headers="headers" :items="table_values" hide-actions must-sort class="no-scroll">
 
             <template slot="items" slot-scope="props">
-               <td class="text-xs-left table-sm">
+               <td class="text-xs-left">
                   <div class="ellipsis">{{ props.item.time_text }}</div>
                </td>
-               <td class="text-xs-center table-sm">
+               <td class="text-xs-center">
                   <div class="ellipsis">{{ props.item.size }} kB</div>
                </td>
                <td class="justify-center layout px-0 button-sm">
