@@ -43,13 +43,13 @@
                      <div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div>
                   </td>
                   <td class="justify-center layout px-0 button-sm">
-                     <v-btn icon class="mx-0 " @click="topic_delete(props.item)">
+                     <v-btn icon class="mx-0" @click="topic_delete(props.item)">
                         <v-icon color="pink" small>fa-trash-alt</v-icon>
                      </v-btn>
-                     <v-btn v-show="props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
+                     <v-btn v-show="props.item.tsdb_save" icon class="ml-0 mr-2" @click="tsdb_set(props.item)">
                         <v-icon color="green" small>fa-download</v-icon>
                      </v-btn>
-                     <v-btn v-show="!props.item.tsdb_save" icon class="ml-0 mr-2 " @click="tsdb_set(props.item)">
+                     <v-btn v-show="!props.item.tsdb_save" icon class="ml-0 mr-2" @click="tsdb_set(props.item)">
                         <v-icon color="grey" small>fa-download</v-icon>
                      </v-btn>
                   </td>
