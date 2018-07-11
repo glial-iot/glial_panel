@@ -13,55 +13,57 @@
          <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll">
 
             <template slot="items" slot-scope="props">
-               <td class="text-xs-left" @click="$refs.scriptdetails.show(props.item)">
-                  <v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}
-               </td>
+               <tr :key="props.item.uuid">
+                  <td class="text-xs-left" @click="$refs.scriptdetails.show(props.item)">
+                     <v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}
+                  </td>
 
-               <td class="text-xs-left" @click="$refs.scriptdetails.show(props.item)">
-                  {{ props.item.uuid }}
-               </td>
+                  <td class="text-xs-left" @click="$refs.scriptdetails.show(props.item)">
+                     {{ props.item.uuid }}
+                  </td>
 
-               <td class="justify-center text-xs-center px-0 button-sm">
-                  <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">
-                     <v-icon color="green" small>fa-check-circle</v-icon>
-                  </v-btn>
-                  <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">
-                     <v-icon color="yellow darken-1" small>fa-exclamation-circle</v-icon>
-                  </v-btn>
-                  <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">
-                     <v-icon color="red" small>fa-times-circle</v-icon>
-                  </v-btn>
-                  <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">
-                     <v-icon color="grey" small>fa-dot-circle</v-icon>
-                  </v-btn>
-               </td>
+                  <td class="justify-center text-xs-center px-0 button-sm">
+                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">
+                        <v-icon color="green" small>fa-check-circle</v-icon>
+                     </v-btn>
+                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">
+                        <v-icon color="yellow darken-1" small>fa-exclamation-circle</v-icon>
+                     </v-btn>
+                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">
+                        <v-icon color="red" small>fa-times-circle</v-icon>
+                     </v-btn>
+                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">
+                        <v-icon color="grey" small>fa-dot-circle</v-icon>
+                     </v-btn>
+                  </td>
 
-               <td class="justify-center text-xs-center px-0 button-sm">
-                  <v-btn icon class="ml-0 mr-0" v-show="props.item.active_flag == 'ACTIVE'" title="Active" @click="script_active_change(props.item, 'NON_ACTIVE')">
-                     <v-icon color="green" small>fa-play-circle</v-icon>
-                  </v-btn>
-                  <v-btn icon class="ml-0 mr-0" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Non-active" @click="script_active_change(props.item, 'ACTIVE')">
-                     <v-icon color="red" small>fa-stop-circle</v-icon>
-                  </v-btn>
-               </td>
+                  <td class="justify-center text-xs-center px-0 button-sm">
+                     <v-btn icon class="ml-0 mr-0" v-show="props.item.active_flag == 'ACTIVE'" title="Active" @click="script_active_change(props.item, 'NON_ACTIVE')">
+                        <v-icon color="green" small>fa-play-circle</v-icon>
+                     </v-btn>
+                     <v-btn icon class="ml-0 mr-0" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Non-active" @click="script_active_change(props.item, 'ACTIVE')">
+                        <v-icon color="red" small>fa-stop-circle</v-icon>
+                     </v-btn>
+                  </td>
 
-               <td class="justify-center text-xs-center button-sm">
-                  <v-btn icon class="ml-0 mr-0" title="Edit script" @click="file_edit(props.item)">
-                     <v-icon color="green" small>fa-pencil-alt</v-icon>
-                  </v-btn>
-               </td>
+                  <td class="justify-center text-xs-center button-sm">
+                     <v-btn icon class="ml-0 mr-0" title="Edit script" @click="file_edit(props.item)">
+                        <v-icon color="green" small>fa-pencil-alt</v-icon>
+                     </v-btn>
+                  </td>
 
-               <td class="justify-center text-xs-center button-sm">
-                  <v-btn icon class="ml-0 mr-0" title="Delete script" @click="script_delete(props.item)">
-                     <v-icon color="pink" small>fa-trash-alt</v-icon>
-                  </v-btn>
-               </td>
+                  <td class="justify-center text-xs-center button-sm">
+                     <v-btn icon class="ml-0 mr-0" title="Delete script" @click="script_delete(props.item)">
+                        <v-icon color="pink" small>fa-trash-alt</v-icon>
+                     </v-btn>
+                  </td>
 
-               <td class="justify-center text-xs-center button-sm">
-                  <v-btn icon class="ml-0 mr-0" title="Restart" @click="script_restart(props.item)">
-                     <v-icon color="pink" small>fa-sync</v-icon>
-                  </v-btn>
-               </td>
+                  <td class="justify-center text-xs-center button-sm">
+                     <v-btn icon class="ml-0 mr-0" title="Restart" @click="script_restart(props.item)">
+                        <v-icon color="pink" small>fa-sync</v-icon>
+                     </v-btn>
+                  </td>
+               </tr>
             </template>
 
          </v-data-table>
@@ -78,6 +80,7 @@
       <script-details ref="scriptdetails"></script-details>
    </div>
 </template>
+
 
 <script>
 import Vue from "vue";
