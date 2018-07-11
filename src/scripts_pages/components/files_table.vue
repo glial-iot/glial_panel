@@ -23,43 +23,43 @@
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
-                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">
                         <v-icon color="green" small>fa-check-circle</v-icon>
                      </v-btn>
-                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">
                         <v-icon color="yellow darken-1" small>fa-exclamation-circle</v-icon>
                      </v-btn>
-                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">
                         <v-icon color="red" small>fa-times-circle</v-icon>
                      </v-btn>
-                     <v-btn icon class="ml-0 mr-0" v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">
                         <v-icon color="grey" small>fa-dot-circle</v-icon>
                      </v-btn>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
-                     <v-btn icon class="ml-0 mr-0" v-show="props.item.active_flag == 'ACTIVE'" title="Active" @click="script_active_change(props.item, 'NON_ACTIVE')">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'ACTIVE'" title="Active" @click="script_active_change(props.item, 'NON_ACTIVE')">
                         <v-icon color="green" small>fa-play-circle</v-icon>
                      </v-btn>
-                     <v-btn icon class="ml-0 mr-0" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Non-active" @click="script_active_change(props.item, 'ACTIVE')">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Non-active" @click="script_active_change(props.item, 'ACTIVE')">
                         <v-icon color="red" small>fa-stop-circle</v-icon>
                      </v-btn>
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0" title="Edit script" @click="file_edit(props.item)">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Edit script" @click="file_edit(props.item)">
                         <v-icon color="green" small>fa-pencil-alt</v-icon>
                      </v-btn>
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0" title="Delete script" @click="script_delete(props.item)">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Delete script" @click="script_delete(props.item)">
                         <v-icon color="pink" small>fa-trash-alt</v-icon>
                      </v-btn>
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0" title="Restart" @click="script_restart(props.item)">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Restart" @click="script_restart(props.item)">
                         <v-icon color="pink" small>fa-sync</v-icon>
                      </v-btn>
                   </td>
@@ -261,6 +261,19 @@ export default {
 <style>
 .no-scroll table {
   table-layout: fixed;
+}
+
+.btn-icon {
+  height: 16px;
+  width: 16px;
+  position: relative;
+}
+
+.btn-icon:before {
+  height: 32px;
+  width: 32px;
+  left: -8px;
+  top: -8px;
 }
 </style>
 
