@@ -53,6 +53,8 @@ module.exports = {
       editor.setValue(self.content, 1);
       editor.session.setUseWrapMode(true);
       editor.session.setTabSize(3);
+      editor.session.setUseSoftTabs(true);
+      editor.session.setWrapLimitRange(null);
       editor.setShowPrintMargin(false);
       editor.setFontSize(11);
       editor.on('change', function () {
