@@ -8,6 +8,9 @@
                <td class="text-xs-left">
                   <div class="ellipsis">{{ props.item.time_text }}</div>
                </td>
+               <td class="text-xs-left">
+                  <div class="ellipsis">{{ props.item.comment }}</div>
+               </td>
                <td class="text-xs-center">
                   <div class="ellipsis">{{ props.item.size }} kB</div>
                </td>
@@ -58,15 +61,21 @@ export default {
         sortable: false
       },
       {
-        text: "Backup size",
+        text: "Сomment",
+        value: "comment",
+        align: "left",
+        sortable: false
+      },
+      {
+        text: "Size",
         value: "size",
         align: "center",
         sortable: false,
-        width: "10%"
+        width: "20%"
       },
       {
-        text: "restore",
-        align: "left",
+        text: "Restore",
+        align: "center",
         sortable: false,
         width: "10%"
       }
