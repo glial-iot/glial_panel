@@ -7,72 +7,72 @@
 const ace = require('brace');
 
 module.exports = {
-    template: '<div :style="{height: height, width: width}"></div>',
+   template: '<div :style="{height: height, width: width}"></div>',
 
-    props: {
-        content: {
-            type: String
-                // required: true
-        },
-        lang: {
-            type: String,
-            default: 'javascript'
-        },
-        theme: {
-            type: String,
-            default: 'chrome'
-        },
-        height: {
-            type: String,
-            default: '300px'
-        },
-        width: {
-            type: String,
-            default: '100%'
-        },
-        sync: {
-            type: Boolean,
-            default: true
-        }
-    },
+   props: {
+      content: {
+         type: String
+         // required: true
+      },
+      lang: {
+         type: String,
+         default: 'javascript'
+      },
+      theme: {
+         type: String,
+         default: 'chrome'
+      },
+      height: {
+         type: String,
+         default: '300px'
+      },
+      width: {
+         type: String,
+         default: '100%'
+      },
+      sync: {
+         type: Boolean,
+         default: true
+      }
+   },
 
-    data: function() {
-        return {
-            editor: null,
-        };
-    },
+   data: function () {
+      return {
+         editor: null,
+      };
+   },
 
-    mounted: function() {
-        const self = this;
-        var lang = self.lang;
-        var theme = self.theme;
-        var editor = self.editor = ace.edit(self.$el);
-        editor.$blockScrolling = Infinity;
-        editor.getSession().setMode('ace/mode/' + lang);
-        editor.setTheme('ace/theme/' + theme);
-        editor.setValue(self.content, 1);
-        editor.session.setUseWrapMode(true);
-        editor.session.setWrapLimitRange(null);
-        editor.setShowPrintMargin(false);
-        editor.setFontSize(11);
-        editor.on('change', function() {
-            self.$emit('content-update', editor.getValue());
-        });
-    },
+   mounted: function () {
+      const self = this;
+      var lang = self.lang;
+      var theme = self.theme;
+      var editor = self.editor = ace.edit(self.$el);
+      editor.$blockScrolling = Infinity;
+      editor.getSession().setMode('ace/mode/' + lang);
+      editor.setTheme('ace/theme/' + theme);
+      editor.setValue(self.content, 1);
+      editor.session.setUseWrapMode(true);
+      editor.session.setTabSize(3);
+      editor.setShowPrintMargin(false);
+      editor.setFontSize(11);
+      editor.on('change', function () {
+         self.$emit('content-update', editor.getValue());
+      });
+   },
 
-    watch: {
-        content: function(newContent) {
-            if (this.sync) {
-                this.editor.setValue(newContent, 1);
-            }
-        },
+   watch: {
+      content: function (newContent) {
+         if (this.sync) {
+            this.editor.setValue(newContent, 1);
+         }
+      },
 
-        theme: function(newTheme) {
-            this.editor.setTheme('ace/theme/' + newTheme);
-        },
+      theme: function (newTheme) {
+         this.editor.setTheme('ace/theme/' + newTheme);
+      },
 
-        lang: function(newLang) {
-            this.editor.getSession().setMode('ace/mode/' + newLang);
-        }
-    }
+      lang: function (newLang) {
+         this.editor.getSession().setMode('ace/mode/' + newLang);
+      }
+   }
 };
