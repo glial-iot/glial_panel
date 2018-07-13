@@ -27,7 +27,7 @@
             </v-flex>
             <v-spacer></v-spacer>
 
-            <v-flex xs2>
+            <v-flex xs2 class="flex-end">
                <v-menu offset-y>
                   <v-btn slot="activator" color="primary" depressed dark>
                      {{$store.getters.server_ip}}
@@ -147,5 +147,10 @@ table.v-table thead tr {
 
 .button-sm {
   margin: -11px !important;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
