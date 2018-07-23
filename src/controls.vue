@@ -79,6 +79,8 @@ export default {
             this[l].color = "success";
             setTimeout(() => (this[l].color = old_color), 1500);
             console.log(response);
+            console.log(response.data.msg);
+            this.$refs.snackbar.update(response.data.msg, "success", 5000);
           })
           .catch(error => {
             let old_color = this[l].color;
