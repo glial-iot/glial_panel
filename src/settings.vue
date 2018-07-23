@@ -29,7 +29,7 @@
                   </v-text-field>
                </v-flex>
                <v-spacer></v-spacer>
-               <v-flex md1 pt-2 ml-1>
+               <v-flex md2 pt-2 ml-1>
                   <v-btn @click="update">
                      <v-icon left small>fa-arrow-alt-circle-right</v-icon> Save
                   </v-btn>
