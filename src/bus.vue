@@ -189,7 +189,7 @@ export default {
         .catch(error => {
           console.log(error);
           this.$timer.stop("table_update");
-
+          this.bus_values = [];
           if (+this.update_interval > 0) {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
