@@ -103,7 +103,7 @@ export default {
     restart() {
       Vue.axios
         .get(
-          this.$store.getters.full_server_http_url +
+          this.$store.getters.server_url +
             this.$store.state.endpoints[this.type],
           {
             params: {
@@ -121,7 +121,7 @@ export default {
     },
     get_logs() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/logger", {
+        .get(this.$store.getters.server_url + "/logger", {
           params: {
             action: "get_logs",
             uuid: this.uuid,

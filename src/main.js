@@ -83,6 +83,7 @@ const store = new Vuex.Store({
    state: {
       server_address: Vue.localStorage.get("server_address", "localhost"),
       server_port: Vue.localStorage.get("server_port", "8080"),
+      server_scheme: Vue.localStorage.get("server_scheme", "http"),
       endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
@@ -93,14 +94,15 @@ const store = new Vuex.Store({
       server_port(state, port) {
          state.server_port = port
          Vue.localStorage.set("server_port", port);
+      },
+      server_scheme(state, scheme) {
+         state.server_scheme = scheme
+         Vue.localStorage.set("server_scheme", scheme);
       }
    },
    getters: {
-      full_server_http_url: state => {
-         return `http://${state.server_address}:${state.server_port}`;
-      },
-      full_server_url: state => {
-         return `${state.server_address}:${state.server_port}`;
+      server_url: state => {
+         return `${state.server_scheme}://${state.server_address}:${state.server_port}`;
       },
       server_ip: state => {
          return `${state.server_address}`;

@@ -176,7 +176,7 @@ export default {
     },
     script_delete(table_item) {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/scripts", {
+        .get(this.$store.getters.server_url + "/scripts", {
           params: {
             action: "delete",
             uuid: table_item.uuid
@@ -194,7 +194,7 @@ export default {
     script_restart(table_item) {
       Vue.axios
         .get(
-          this.$store.getters.full_server_http_url +
+          this.$store.getters.server_url +
             this.$store.state.endpoints[this.type],
           {
             params: {
@@ -213,7 +213,7 @@ export default {
     },
     script_active_change(table_item, flag) {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/scripts", {
+        .get(this.$store.getters.server_url + "/scripts", {
           params: {
             action: "update",
             uuid: table_item.uuid,
@@ -233,7 +233,7 @@ export default {
 
     table_update() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/scripts", {
+        .get(this.$store.getters.server_url + "/scripts", {
           params: {
             action: "get_list",
             type: this.type

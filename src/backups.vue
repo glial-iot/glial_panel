@@ -90,7 +90,7 @@ export default {
   methods: {
     restore(item) {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/backups", {
+        .get(this.$store.getters.server_url + "/backups", {
           params: {
             action: "restore",
             filename: item.filename
@@ -114,7 +114,7 @@ export default {
 
     table_update() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/backups", {
+        .get(this.$store.getters.server_url + "/backups", {
           params: {
             action: "get_list",
             limit: 100
