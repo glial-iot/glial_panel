@@ -84,6 +84,7 @@ const store = new Vuex.Store({
       server_address: Vue.localStorage.get("server_address", "localhost"),
       server_port: Vue.localStorage.get("server_port", "8080"),
       server_scheme: Vue.localStorage.get("server_scheme", "http"),
+      server_history: Vue.localStorage.get("server_history") ? JSON.parse(Vue.localStorage.get("server_history")) : [],
       endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
@@ -98,6 +99,27 @@ const store = new Vuex.Store({
       server_scheme(state, scheme) {
          state.server_scheme = scheme
          Vue.localStorage.set("server_scheme", scheme);
+      },
+      add_server_to_history(state, server) {
+         let servers = [...state.server_history]
+         let serverFound = servers.some((item) => item.scheme === server.scheme && item.address === server.address && item.port === server.port)
+
+         if (!serverFound) {
+            servers = [server, ...servers]
+         }
+
+         servers = servers.slice(0, 5)
+         state.server_history = servers
+         Vue.localStorage.set("server_history", JSON.stringify(servers));
+      },
+      sort_server_history(state, server) {
+         const newServer = Object.assign({}, server)
+         const servers = [...state.server_history]
+         const filteredServers = servers.filter((item) => JSON.stringify(item) !== JSON.stringify(server))
+         const newServers = [newServer, ...filteredServers]
+         
+         state.server_history = newServers
+         Vue.localStorage.set("server_history", JSON.stringify(newServers));
       }
    },
    getters: {
@@ -107,7 +129,20 @@ const store = new Vuex.Store({
       server_ip: state => {
          return `${state.server_address}`;
       }
-
+   },
+   actions: {
+      update_server_address: ({commit}, server) => {
+         commit("server_scheme", server.scheme)
+         commit("server_address", server.address)
+         commit("server_port", server.port)
+         commit("add_server_to_history", server)
+      },
+      change_server: ({commit}, server) => {
+         commit("server_scheme", server.scheme)
+         commit("server_address", server.address)
+         commit("server_port", server.port)
+         commit("sort_server_history", server)
+      }
    }
 })
 

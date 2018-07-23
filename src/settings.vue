@@ -60,9 +60,11 @@ export default {
 
   methods: {
     update() {
-      this.$store.commit("server_address", this.server_address);
-      this.$store.commit("server_port", this.server_port);
-      this.$store.commit("server_scheme", this.server_scheme);
+      this.$store.dispatch("update_server_address", {
+        scheme: this.server_scheme,
+        address: this.server_address,
+        port: this.server_port
+      });
     }
   }
 };
