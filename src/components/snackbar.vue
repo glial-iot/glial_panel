@@ -27,4 +27,9 @@ export default {
 };
 </script>
 
+<style>
+.v-snack--top {
+  top: 64px;
+}
+</style>
 
