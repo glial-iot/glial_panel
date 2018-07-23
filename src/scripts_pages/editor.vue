@@ -92,7 +92,7 @@ export default {
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get(this.$store.getters.full_server_http_url + "/scripts", {
+          .get(this.$store.getters.server_url + "/scripts", {
             params: {
               action: "update",
               uuid: this.uuid,
@@ -122,7 +122,7 @@ export default {
     load_file: function() {
       this.content = this.last_content;
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/scripts", {
+        .get(this.$store.getters.server_url + "/scripts", {
           params: {
             action: "get",
             uuid: this.uuid

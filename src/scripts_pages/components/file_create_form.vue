@@ -47,7 +47,7 @@ export default {
     },
     create_file() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/scripts", {
+        .get(this.$store.getters.server_url + "/scripts", {
           params: {
             action: "create",
             name: this.name,

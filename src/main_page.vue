@@ -30,11 +30,11 @@
             <v-flex xs2 class="flex-end">
                <v-menu offset-y>
                   <v-btn slot="activator" color="primary" depressed dark>
-                     {{$store.getters.server_ip}}
+                     {{ `${server_scheme}://${server_address}:${server_port}` }}
                   </v-btn>
                   <v-list>
-                     <v-list-tile v-for="(item, index) in server_items" :key="index" @click="set_ip(item.address)">
-                        <v-list-tile-title>{{ item.address }}</v-list-tile-title>
+                     <v-list-tile v-for="(server, index) in server_history" :key="index" @click="change_server(server)">
+                        <v-list-tile-title>{{ `${server.scheme}://${server.address}:${server.port}` }}</v-list-tile-title>
                      </v-list-tile>
                   </v-list>
                </v-menu>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 let menu = [
   {
     path: "/bus",
@@ -114,13 +116,17 @@ let menu = [
 
 export default {
   data: () => ({
-    menuitems: menu,
-    server_items: [{ address: "127.0.0.1" }, { address: "192.168.1.45" }]
+    menuitems: menu
   }),
-
+  computed: mapState({
+    server_scheme: state => state.server_scheme,
+    server_address: state => state.server_address,
+    server_port: state => state.server_port,
+    server_history: state => state.server_history,
+  }),
   methods: {
-    set_ip(address) {
-      this.$store.commit("server_address", address);
+    change_server(server) {
+      this.$store.dispatch("change_server", server);
     }
   }
 };

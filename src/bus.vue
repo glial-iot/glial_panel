@@ -140,7 +140,7 @@ export default {
   methods: {
     tsdb_set(item) {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/system_bus_action", {
+        .get(this.$store.getters.server_url + "/system_bus_action", {
           params: {
             action: "update_tsdb_attribute",
             topic: item.topic,
@@ -158,7 +158,7 @@ export default {
     },
     topic_delete(item) {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/system_bus_action", {
+        .get(this.$store.getters.server_url + "/system_bus_action", {
           params: {
             action: "delete_topics",
             topic: item.topic
@@ -175,7 +175,7 @@ export default {
     },
     table_update() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/system_bus_data")
+        .get(this.$store.getters.server_url + "/system_bus_data")
         .then(response => {
           this.bus_values = this.set_update_attr(response.data);
           //console.log(this.bus_values)

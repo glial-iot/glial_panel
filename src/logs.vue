@@ -135,7 +135,7 @@ export default {
   methods: {
     delete_logs() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/logger", {
+        .get(this.$store.getters.server_url + "/logger", {
           params: {
             action: "delete_logs"
           }
@@ -153,7 +153,7 @@ export default {
 
     table_update() {
       Vue.axios
-        .get(this.$store.getters.full_server_http_url + "/logger", {
+        .get(this.$store.getters.server_url + "/logger", {
           params: {
             action: "get_logs",
             limit: 100
