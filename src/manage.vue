@@ -4,7 +4,7 @@
       <v-card>
          <v-card-title>
             <v-icon>fa-sliders-h</v-icon>
-            <v-toolbar-title>Settings</v-toolbar-title>
+            <v-toolbar-title>Panel settings</v-toolbar-title>
          </v-card-title>
          <v-divider> </v-divider>
          <v-form>
@@ -40,49 +40,49 @@
       <v-card class="mt-3">
          <v-card-title>
             <v-icon>fa-cogs</v-icon>
-            <v-toolbar-title>Controls</v-toolbar-title>
+            <v-toolbar-title>Glue controls</v-toolbar-title>
          </v-card-title>
          <v-divider> </v-divider>
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md4 justify-center>
-                <v-dialog v-model="confirm_wipe" persistent max-width="290">
-                  <v-btn color="secondary" slot="activator">
-                    <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
-                  </v-btn>
-                  <v-card>
-                    <v-card-title class="headline">Confirm wipe</v-card-title>
-                    <v-card-text>Do you want to wipe storage and stop the server?</v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="green darken-1" flat @click.native="confirm_wipe = false">No</v-btn>
-                      <v-btn color="green darken-1" flat @click.native="send('wipe_storage')">Yes</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                  <v-dialog v-model="confirm_wipe" persistent max-width="290">
+                     <v-btn color="secondary" slot="activator">
+                        <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                     </v-btn>
+                     <v-card>
+                        <v-card-title class="headline">Confirm wipe</v-card-title>
+                        <v-card-text>Do you want to wipe storage and stop the server?</v-card-text>
+                        <v-card-actions>
+                           <v-spacer></v-spacer>
+                           <v-btn color="green darken-1" flat @click.native="confirm_wipe = false">No</v-btn>
+                           <v-btn color="red darken-1" flat @click.native="send('wipe_storage')">Yes</v-btn>
+                        </v-card-actions>
+                     </v-card>
+                  </v-dialog>
                </v-flex>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
-                    <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
+                     <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
                   </v-btn>
                </v-flex>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click.native="send('update')">
-                    <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
+                     <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
                   </v-btn>
                </v-flex>
             </v-layout>
          </v-form>
       </v-card>
       <v-dialog :value="server_response.length > 0" persistent max-width="290">
-        <v-card>
-          <v-card-title class="headline">Server Response</v-card-title>
-          <v-card-text>{{server_response}}</v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click.native="server_response = ''">Close</v-btn>
-          </v-card-actions>
-        </v-card>
+         <v-card>
+            <v-card-title class="headline">Server Response</v-card-title>
+            <v-card-text>{{server_response}}</v-card-text>
+            <v-card-actions>
+               <v-spacer></v-spacer>
+               <v-btn color="green darken-1" flat @click.native="server_response = ''">Close</v-btn>
+            </v-card-actions>
+         </v-card>
       </v-dialog>
       <snackbar ref="snackbar"></snackbar>
    </div>
@@ -123,7 +123,7 @@ export default {
     },
     send(action) {
       console.log(action);
-      if (action === 'wipe_storage') {
+      if (action === "wipe_storage") {
         this.confirm_wipe = false;
       }
       Vue.axios
@@ -133,11 +133,11 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data.msg);
-          if (action === 'update') {
-            this.server_response = response.data.msg
+          //console.log(response.data.msg);
+          if (action === "update") {
+            this.server_response = response.data.msg;
           }
-          this.$refs.snackbar.update(response.data.msg, "success", 5000);
+          //this.$refs.snackbar.update(response.data.msg, "success", 5000);
         })
         .catch(error => {
           console.log(error);
