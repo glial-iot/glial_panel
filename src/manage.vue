@@ -46,9 +46,20 @@
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md4 justify-center>
-                  <v-btn color="secondary" @click.native="send('wipe_storage')">
+                <v-dialog v-model="confirm_wipe" persistent max-width="290">
+                  <v-btn color="secondary" slot="activator">
                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
                   </v-btn>
+                  <v-card>
+                    <v-card-title class="headline">Confirm wipe</v-card-title>
+                    <v-card-text>Do you want to wipe storage and stop the server?</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" flat @click.native="confirm_wipe = false">No</v-btn>
+                      <v-btn color="green darken-1" flat @click.native="send('wipe_storage')">Yes</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
                </v-flex>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
@@ -79,7 +90,8 @@ export default {
       server_address: "",
       server_port: "",
       server_scheme: "",
-      scheme_items: ["http", "https"]
+      scheme_items: ["http", "https"],
+      confirm_wipe: false
     };
   },
 
@@ -99,6 +111,9 @@ export default {
     },
     send(action) {
       console.log(action);
+      if (action === 'wipe_storage') {
+        this.confirm_wipe = false;
+      }
       Vue.axios
         .get(this.$store.getters.server_url + "/system_event", {
           params: {

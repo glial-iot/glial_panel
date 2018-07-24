@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import main_page from './main_page.vue'
-import controls from './controls.vue'
 import manage from './manage.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
