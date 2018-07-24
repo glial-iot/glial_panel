@@ -1,0 +1,155 @@
+
+<template>
+   <div>
+      <v-card>
+         <v-card-title>
+            <v-icon>fa-sliders-h</v-icon>
+            <v-toolbar-title>Settings</v-toolbar-title>
+         </v-card-title>
+         <v-divider> </v-divider>
+         <v-form>
+            <v-layout row wrap pl-3 pt-2>
+               <v-flex md2 pt-4>
+                  <v-icon>fa-globe</v-icon>
+                  <span>Server address</span>
+               </v-flex>
+               <v-spacer></v-spacer>
+               <v-flex md2 pt-1>
+                  <v-select label="server scheme" v-model="server_scheme" :items="scheme_items">
+                  </v-select>
+               </v-flex>
+               <v-spacer></v-spacer>
+               <v-flex md2 pt-1>
+                  <v-text-field label="server address" v-model="server_address">
+                  </v-text-field>
+               </v-flex>
+               <v-spacer></v-spacer>
+               <v-flex md2 pt-1 ml-1>
+                  <v-text-field label="port" v-model="server_port">
+                  </v-text-field>
+               </v-flex>
+               <v-spacer></v-spacer>
+               <v-flex md2 pt-2 ml-1>
+                  <v-btn @click="update">
+                     <v-icon left small>fa-arrow-alt-circle-right</v-icon> Save
+                  </v-btn>
+               </v-flex>
+            </v-layout>
+         </v-form>
+      </v-card>
+      <v-card class="mt-3">
+         <v-card-title>
+            <v-icon>fa-cogs</v-icon>
+            <v-toolbar-title>Controls</v-toolbar-title>
+         </v-card-title>
+         <v-divider> </v-divider>
+         <v-form>
+            <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
+               <v-flex md4 justify-center>
+                <v-dialog v-model="confirm_wipe" persistent max-width="290">
+                  <v-btn color="secondary" slot="activator">
+                    <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                  </v-btn>
+                  <v-card>
+                    <v-card-title class="headline">Confirm wipe</v-card-title>
+                    <v-card-text>Do you want to wipe storage and stop the server?</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="green darken-1" flat @click.native="confirm_wipe = false">No</v-btn>
+                      <v-btn color="green darken-1" flat @click.native="send('wipe_storage')">Yes</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+               </v-flex>
+               <v-flex md4 justify-center>
+                  <v-btn color="secondary" @click.native="send('tarantool_stop')">
+                    <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
+                  </v-btn>
+               </v-flex>
+               <v-flex md4 justify-center>
+                  <v-btn color="secondary" @click.native="send('update')">
+                    <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
+                  </v-btn>
+               </v-flex>
+            </v-layout>
+         </v-form>
+      </v-card>
+      <v-dialog :value="server_response.length > 0" persistent max-width="290">
+        <v-card>
+          <v-card-title class="headline">Server Response</v-card-title>
+          <v-card-text>{{server_response}}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" flat @click.native="server_response = ''">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <snackbar ref="snackbar"></snackbar>
+   </div>
+</template>
+<script>
+import Vue from "vue";
+import Axios from "axios";
+import VueAxios from "vue-axios";
+Vue.use(VueAxios, Axios);
+import snackbar from "./components/snackbar.vue";
+Vue.component("snackbar", snackbar);
+
+export default {
+  data() {
+    return {
+      server_address: "",
+      server_port: "",
+      server_scheme: "",
+      scheme_items: ["http", "https"],
+      confirm_wipe: false,
+      server_response: ""
+    };
+  },
+
+  created: function() {
+    this.server_address = this.$store.state.server_address;
+    this.server_port = this.$store.state.server_port;
+    this.server_scheme = this.$store.state.server_scheme;
+  },
+
+  methods: {
+    update() {
+      this.$store.dispatch("update_server_address", {
+        scheme: this.server_scheme,
+        address: this.server_address,
+        port: this.server_port
+      });
+    },
+    send(action) {
+      console.log(action);
+      if (action === 'wipe_storage') {
+        this.confirm_wipe = false;
+      }
+      Vue.axios
+        .get(this.$store.getters.server_url + "/system_event", {
+          params: {
+            action: action
+          }
+        })
+        .then(response => {
+          console.log(response.data.msg);
+          if (action === 'update') {
+            this.server_response = response.data.msg
+          }
+          this.$refs.snackbar.update(response.data.msg, "success", 5000);
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Network error");
+        });
+    }
+  }
+};
+</script>
+
+<style scoped>
+.justify-center {
+  display: flex;
+}
+</style>

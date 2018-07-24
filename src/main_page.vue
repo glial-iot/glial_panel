@@ -71,14 +71,8 @@ let menu = [
     color: "blue"
   },
   {
-    path: "/controls",
-    name: "Controls",
-    icon: "fa-cogs",
-    color: "brown"
-  },
-  {
-    path: "/settings",
-    name: "Settings",
+    path: "/manage",
+    name: "Manage",
     icon: "fa-sliders-h",
     color: "brown"
   },
