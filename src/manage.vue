@@ -74,6 +74,17 @@
             </v-layout>
          </v-form>
       </v-card>
+      <v-dialog :value="server_response.length > 0" persistent max-width="290">
+        <v-card>
+          <v-card-title class="headline">Server Response</v-card-title>
+          <v-card-text>{{server_response}}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" flat @click.native="server_response = ''">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <snackbar ref="snackbar"></snackbar>
    </div>
 </template>
 <script>
@@ -91,7 +102,8 @@ export default {
       server_port: "",
       server_scheme: "",
       scheme_items: ["http", "https"],
-      confirm_wipe: false
+      confirm_wipe: false,
+      server_response: ""
     };
   },
 
@@ -122,6 +134,9 @@ export default {
         })
         .then(response => {
           console.log(response.data.msg);
+          if (action === 'update') {
+            this.server_response = response.data.msg
+          }
           this.$refs.snackbar.update(response.data.msg, "success", 5000);
         })
         .catch(error => {
