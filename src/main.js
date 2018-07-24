@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import main_page from './main_page.vue'
 import controls from './controls.vue'
-import settings from './settings.vue'
+import manage from './manage.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
 import backups from './backups.vue'
@@ -62,11 +62,8 @@ const router = new VueRouter({
       path: '/scripts/timerevent',
       component: timer_scripts
    },  */{
-      path: '/controls',
-      component: controls,
-   }, {
-      path: '/settings',
-      component: settings,
+      path: '/manage',
+      component: manage,
    }, {
       path: '/backups',
       component: backups,
