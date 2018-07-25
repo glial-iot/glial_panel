@@ -153,4 +153,19 @@ table.v-table thead tr {
   display: flex;
   justify-content: flex-end;
 }
+
+.btn-icon {
+  margin: 0;
+}
+
+.btn-icon + .btn-icon {
+  margin-left: 8px;
+}
+
+.btn-icon:before {
+  height: 24px !important;
+  width: 24px !important;
+  left: -4px !important;
+  top: -4px !important;
+}  
 </style>
