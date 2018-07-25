@@ -42,7 +42,7 @@
                   <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div>
                   </td>
-                  <td class="justify-center layout px-0 button-sm">
+                  <td class="justify-center text-xs-center cell-flex">
                      <button-trash @click="topic_delete(props.item)"></button-trash>
                      <button-download v-show="props.item.tsdb_save" @click="tsdb_set(props.item)"></button-download>
                      <button-download-disabled v-show="!props.item.tsdb_save" @click="tsdb_set(props.item)"></button-download-disabled>
@@ -226,6 +226,10 @@ export default {
 
 .row-new:hover {
   background-color: rgb(155, 204, 255);
+}
+
+.cell-flex {
+  display: flex;
 }
 </style>
 
