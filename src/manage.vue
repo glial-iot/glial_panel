@@ -4,7 +4,7 @@
       <v-card>
          <v-card-title>
             <v-icon>fa-sliders-h</v-icon>
-            <v-toolbar-title>Settings</v-toolbar-title>
+            <v-toolbar-title>Panel settings</v-toolbar-title>
          </v-card-title>
          <v-divider> </v-divider>
          <v-form>
@@ -40,7 +40,7 @@
       <v-card class="mt-3">
          <v-card-title>
             <v-icon>fa-cogs</v-icon>
-            <v-toolbar-title>Controls</v-toolbar-title>
+            <v-toolbar-title>Glue controls</v-toolbar-title>
          </v-card-title>
          <v-divider> </v-divider>
          <v-form>
@@ -52,12 +52,12 @@
                </v-flex>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
-                    <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
+                     <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
                   </v-btn>
                </v-flex>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click.native="send('update')">
-                    <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
+                     <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
                   </v-btn>
                </v-flex>
             </v-layout>

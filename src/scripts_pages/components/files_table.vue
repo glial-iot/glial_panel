@@ -262,21 +262,13 @@ export default {
 .no-scroll table {
   table-layout: fixed;
 }
+</style>
 
+
+<style scoped>
 .btn-icon {
   height: 16px;
   width: 16px;
   position: relative;
 }
-
-.btn-icon:before {
-  height: 32px;
-  width: 32px;
-  left: -8px;
-  top: -8px;
-}
-</style>
-
-
-<style scoped>
 </style>

@@ -42,16 +42,10 @@
                   <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div>
                   </td>
-                  <td class="justify-center layout px-0 button-sm">
-                     <v-btn icon class="mx-0" @click="topic_delete(props.item)">
-                        <v-icon color="pink" small>fa-trash-alt</v-icon>
-                     </v-btn>
-                     <v-btn v-show="props.item.tsdb_save" icon class="ml-0 mr-2" @click="tsdb_set(props.item)">
-                        <v-icon color="green" small>fa-download</v-icon>
-                     </v-btn>
-                     <v-btn v-show="!props.item.tsdb_save" icon class="ml-0 mr-2" @click="tsdb_set(props.item)">
-                        <v-icon color="grey" small>fa-download</v-icon>
-                     </v-btn>
+                  <td class="justify-center text-xs-center cell-flex">
+                     <button-trash @click="topic_delete(props.item)"></button-trash>
+                     <button-download v-show="props.item.tsdb_save" @click="tsdb_set(props.item)"></button-download>
+                     <button-download-disabled v-show="!props.item.tsdb_save" @click="tsdb_set(props.item)"></button-download-disabled>
                   </td>
                </tr>
             </template>
@@ -77,9 +71,17 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import snackbar from "./components/snackbar.vue";
-Vue.component("snackbar", snackbar);
+import buttonTrash from "./components/buttons/button-trash.vue";
+import buttonDownload from "./components/buttons/button-download.vue";
+import buttonDownloadDisabled from "./components/buttons/button-download-disabled.vue";
 
 export default {
+  components: {
+    snackbar,
+    buttonTrash,
+    buttonDownload,
+    buttonDownloadDisabled
+  },
   data: () => ({
     update_interval: "2000",
     bus_values: [],
@@ -224,6 +226,10 @@ export default {
 
 .row-new:hover {
   background-color: rgb(155, 204, 255);
+}
+
+.cell-flex {
+  display: flex;
 }
 </style>
 
