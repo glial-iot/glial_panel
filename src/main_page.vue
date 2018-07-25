@@ -167,5 +167,6 @@ table.v-table thead tr {
   width: 24px !important;
   left: -4px !important;
   top: -4px !important;
+  border-radius: 0;
 }  
 </style>
