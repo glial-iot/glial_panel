@@ -1,11 +1,11 @@
 <template>
-   <v-dialog :value="text.length > 0" persistent max-width="290">
+   <v-dialog :value="visible" persistent max-width="290">
       <v-card>
-         <v-card-title class="headline">{{header}}</v-card-title>
-         <v-card-text>{{text}}</v-card-text>
+         <v-card-title class="headline">Server Response</v-card-title>
+         <v-card-text>{{message}}</v-card-text>
          <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click="close()">Close</v-btn>
+            <v-btn color="green darken-1" flat @click="hide()">Close</v-btn>
          </v-card-actions>
       </v-card>
    </v-dialog>
@@ -14,6 +14,18 @@
 
 <script>
 export default {
-  props: ["header", "text", "close"]
+  data: () => ({
+    visible: false,
+    message: ""
+  }),
+  methods: {
+    show(message) {
+      this.message = message;
+      this.visible = true;
+    },
+    hide() {
+      this.visible = false;
+    },
+  }
 };
 </script>

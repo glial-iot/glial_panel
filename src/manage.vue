@@ -46,7 +46,7 @@
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md4 justify-center>
-                  <v-btn color="secondary" @click="handle_open_confirm_wipe_modal()">
+                  <v-btn color="secondary" @click="$refs.confirm_modal.show()">
                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
                   </v-btn>
                </v-flex>
@@ -64,8 +64,8 @@
          </v-form>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
-      <server-response-modal header="Server Response" :text="server_response" :close="handle_server_response_modal_close"></server-response-modal>
-      <confirm-modal header="Confirm wipe" text="Do you want to wipe storage and stop the server?" :show="show_confirm_wipe" :close="handle_close_confirm_wipe_modal" :confirm="handle_wipe_confirmed"></confirm-modal>
+      <server-response-modal ref="server_response_modal"></server-response-modal>
+      <confirm-modal ref="confirm_modal"></confirm-modal>
    </div>
 </template>
 <script>
@@ -89,8 +89,6 @@ export default {
       server_port: "",
       server_scheme: "",
       scheme_items: ["http", "https"],
-      show_confirm_wipe: false,
-      server_response: ""
     };
   },
 
@@ -119,27 +117,15 @@ export default {
         .then(response => {
           console.log(response.data.msg);
           if (action === 'update') {
-            this.server_response = response.data.msg
+            this.$refs.server_response_modal.show(response.data.msg);
+          } else {
+            this.$refs.snackbar.update(response.data.msg, "success", 5000);
           }
-          this.$refs.snackbar.update(response.data.msg, "success", 5000);
         })
         .catch(error => {
           console.log(error);
           this.$refs.snackbar.update("Network error");
         });
-    },
-    handle_server_response_modal_close() {
-      this.server_response = '';
-    },
-    handle_open_confirm_wipe_modal() {
-      this.show_confirm_wipe = true;
-    },
-    handle_close_confirm_wipe_modal() {
-      this.show_confirm_wipe = false;
-    },
-    handle_wipe_confirmed() {
-      this.send('wipe_storage');
-      this.show_confirm_wipe = false;
     }
   }
 };
