@@ -19,6 +19,9 @@
                <v-btn @click.native="load_file">
                   <v-icon left small>fa-sync-alt</v-icon> Reload
                </v-btn>
+               <v-btn @click.native="restart_script">
+                  <v-icon left small>fa-sync</v-icon> Restart script
+               </v-btn>
             </div>
 
          </v-card-title>
@@ -56,7 +59,9 @@ export default {
     last_content: "",
     uuid: "",
     save_flag: true,
-    saved: false
+    saved: false,
+    name: "",
+    type: ""
   }),
   components: {
     editor
@@ -138,6 +143,25 @@ export default {
         .catch(error => {
           this.content = "";
           this.$refs.snackbar.update("Load file: network error");
+        });
+    },
+    restart_script: function() {
+      Vue.axios
+        .get(
+          this.$store.getters.server_url + this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "reload",
+              uuid: this.uuid
+            }
+          }
+        )
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Reload script error");
         });
     }
   },
