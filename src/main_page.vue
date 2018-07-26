@@ -163,8 +163,8 @@ table.v-table thead tr {
 }
 
 .btn-icon:before {
-  height: 24px !important;
-  width: 24px !important;
+  height: 25px !important;
+  width: 25px !important;
   left: -4px !important;
   top: -4px !important;
   border-radius: 0;
