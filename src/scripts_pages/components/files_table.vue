@@ -14,12 +14,16 @@
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
-                  <td class="text-xs-left" @click="$refs.scriptdetails.show(props.item)">
+                  <td class="text-xs-left">
                      <v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}
                   </td>
 
-                  <td class="text-xs-left" @click="$refs.scriptdetails.show(props.item)">
+                  <td class="text-xs-left">
                      {{ props.item.uuid }}
+                  </td>
+
+                  <td class="justify-center text-xs-center cell-flex">
+                    <button-info @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
@@ -93,28 +97,37 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
 import file_create_form from "./file_create_form.vue";
-Vue.component("file-create-form", file_create_form);
-
 import script_details from "./script_details.vue";
-Vue.component("script-details", script_details);
-
 import snackbar from "../../components/snackbar.vue";
-Vue.component("snackbar", snackbar);
+import buttonInfo from "../../components/buttons/button-info.vue";
 
 export default {
+  components: {
+    "file-create-form": file_create_form,
+    "script-details": script_details,
+    snackbar,
+    buttonInfo
+  },
   data: () => ({
     headers: [
       {
         text: "Name",
         value: "name",
         align: "left",
-        width: "30%"
+        width: "27%"
       },
       {
         text: "UUID",
         value: "uuid",
         align: "left",
-        width: "30%"
+        width: "27%"
+      },
+      {
+        text: "Info",
+        value: "info",
+        align: "center",
+        sortable: false,
+        width: "6%"
       },
       {
         text: "Status",

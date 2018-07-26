@@ -32,7 +32,7 @@
             </template>
 
             <template slot="items" slot-scope="props">
-               <tr @click="$refs.logrowdetails.show(props.item)">
+               <tr>
                   <td class="text-xs-center">
                      <div class="ellipsis">{{ props.item.level }}</div>
                   </td>
@@ -45,23 +45,21 @@
                   <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
                   </td>
+                  <td class="justify-center text-xs-center cell-flex">
+                    <button-info @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                  </td>
                </tr>
             </template>
-
          </v-data-table>
-
          <v-divider></v-divider>
-
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
             <span class="body-2 mx-4 grey--text"> Log records: {{table_values.length}} </span>
          </v-card-title>
       </v-card>
-
       <snackbar ref="snackbar_error"></snackbar>
       <snackbar ref="snackbar_msg"></snackbar>
       <logrowdetails ref="logrowdetails"></logrowdetails>
-
    </div>
 </template>
 
@@ -75,12 +73,15 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import snackbar from "./components/snackbar.vue";
-Vue.component("snackbar", snackbar);
-
 import logrowdetails from "./components/logrowdetails.vue";
-Vue.component("logrowdetails", logrowdetails);
+import buttonInfo from "./components/buttons/button-info.vue";
 
 export default {
+  components: {
+    snackbar,
+    logrowdetails,
+    buttonInfo
+  },
   data: () => ({
     search: "",
     time_format_rel: true,
@@ -111,6 +112,13 @@ export default {
         value: "entry",
         align: "left",
         sortable: false
+      },
+      {
+        text: "Info",
+        value: "info",
+        align: "center",
+        sortable: false,
+        width: "100px"
       }
     ],
     table_values: [],
@@ -202,11 +210,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>
-
-
-<style scoped>
-</style>
-
