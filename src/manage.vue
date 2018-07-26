@@ -46,20 +46,9 @@
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md4 justify-center>
-                  <v-dialog v-model="confirm_wipe" persistent max-width="290">
-                     <v-btn color="secondary" slot="activator">
-                        <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
-                     </v-btn>
-                     <v-card>
-                        <v-card-title class="headline">Confirm wipe</v-card-title>
-                        <v-card-text>Do you want to wipe storage and stop the server?</v-card-text>
-                        <v-card-actions>
-                           <v-spacer></v-spacer>
-                           <v-btn color="green darken-1" flat @click.native="confirm_wipe = false">No</v-btn>
-                           <v-btn color="red darken-1" flat @click.native="send('wipe_storage')">Yes</v-btn>
-                        </v-card-actions>
-                     </v-card>
-                  </v-dialog>
+                  <v-btn color="secondary" @click="$refs.confirm_modal.show()">
+                    <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                  </v-btn>
                </v-flex>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
@@ -74,17 +63,9 @@
             </v-layout>
          </v-form>
       </v-card>
-      <v-dialog :value="server_response.length > 0" persistent max-width="290">
-         <v-card>
-            <v-card-title class="headline">Server Response</v-card-title>
-            <v-card-text>{{server_response}}</v-card-text>
-            <v-card-actions>
-               <v-spacer></v-spacer>
-               <v-btn color="green darken-1" flat @click.native="server_response = ''">Close</v-btn>
-            </v-card-actions>
-         </v-card>
-      </v-dialog>
       <snackbar ref="snackbar"></snackbar>
+      <server-response-modal ref="server_response_modal"></server-response-modal>
+      <confirm-modal ref="confirm_modal"></confirm-modal>
    </div>
 </template>
 <script>
@@ -93,17 +74,21 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 import snackbar from "./components/snackbar.vue";
-Vue.component("snackbar", snackbar);
+import serverResponseModal from "./components/modals/server-response-modal.vue";
+import confirmModal from "./components/modals/confirm-modal.vue";
 
 export default {
+  components: {
+    snackbar,
+    serverResponseModal,
+    confirmModal
+  },
   data() {
     return {
       server_address: "",
       server_port: "",
       server_scheme: "",
       scheme_items: ["http", "https"],
-      confirm_wipe: false,
-      server_response: ""
     };
   },
 
@@ -123,9 +108,6 @@ export default {
     },
     send(action) {
       console.log(action);
-      if (action === "wipe_storage") {
-        this.confirm_wipe = false;
-      }
       Vue.axios
         .get(this.$store.getters.server_url + "/system_event", {
           params: {
@@ -133,11 +115,12 @@ export default {
           }
         })
         .then(response => {
-          //console.log(response.data.msg);
-          if (action === "update") {
-            this.server_response = response.data.msg;
+          console.log(response.data.msg);
+          if (action === 'update') {
+            this.$refs.server_response_modal.show(response.data.msg);
+          } else {
+            this.$refs.snackbar.update(response.data.msg, "success", 5000);
           }
-          //this.$refs.snackbar.update(response.data.msg, "success", 5000);
         })
         .catch(error => {
           console.log(error);
