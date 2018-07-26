@@ -29,7 +29,7 @@
 
          <div id="app">
             <v-flex xs12>
-               <editor :content="content" :lang="lang" v-on:content-update="update_last_editor_content" theme='crimson_editor' :height="'630px'"></editor>
+               <editor :content="content" :lang="lang" theme="crimson_editor" height="630px"></editor>
             </v-flex>
          </div>
       </v-card>
@@ -45,8 +45,6 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import snackbar from "../components/snackbar.vue";
-Vue.component("snackbar", snackbar);
-
 import editor from "../brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
@@ -56,15 +54,14 @@ export default {
   data: () => ({
     lang: "lua",
     content: "",
-    last_content: "",
     uuid: "",
-    save_flag: true,
-    saved: false,
+    saved: true,
     name: "",
     type: ""
   }),
   components: {
-    editor
+    editor,
+    snackbar
   },
   beforeRouteEnter(to, from, next) {
     if (Object.keys(to.query).length !== 0 && to.query.uuid !== undefined) {
@@ -75,22 +72,19 @@ export default {
     next();
   },
   beforeRouteLeave(to, from, next) {
-    /*     if (this.saved == false) {
-      const answer = window.confirm(
-        "Do you really want to leave? You have unsaved changes!"
-      );
-      if (answer) {
-        next();
-      } else {
+    if (!this.saved) {
+      const result = window.confirm("Do you really want to leave? You have unsaved changes!");
+      if (!result) {
         next(false);
+        return;
       }
-    } */
+    }
     next();
   },
 
   methods: {
     save_file: function(event) {
-      let data = new Blob([this.last_content], {
+      let data = new Blob([this.content], {
         type: "text/plain"
       });
       let reader = new FileReader();
@@ -117,15 +111,7 @@ export default {
           });
       };
     },
-    update_last_editor_content: function(content) {
-      if (this.last_content !== content) {
-        this.last_content = content;
-        this.saved = false;
-      }
-    },
-
     load_file: function() {
-      this.content = this.last_content;
       Vue.axios
         .get(this.$store.getters.server_url + "/scripts", {
           params: {
@@ -169,6 +155,22 @@ export default {
     uuid: function(uuid) {
       this.uuid = uuid;
       this.load_file();
+    },
+    content: function(value, oldValue) {
+      if (value !== oldValue) {
+        this.saved = false;
+      }
+    },
+    saved: function(value) {
+      if (value) {
+        window.onbeforeunload = null;
+      } else {
+        window.onbeforeunload = function(e) {
+          var dialogText = 'Dialog text here';
+          e.returnValue = dialogText;
+          return dialogText;
+        };
+      }
     }
   }
 };
