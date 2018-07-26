@@ -15,8 +15,8 @@
 }
 
 .btn-icon:before {
-  height: 24px !important;
-  width: 24px !important;
+  height: 25px !important;
+  width: 25px !important;
   left: 0px !important;
   top: 0px !important;
   border-radius: 0;
