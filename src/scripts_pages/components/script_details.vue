@@ -42,7 +42,7 @@
             <v-divider></v-divider>
             <v-card-actions>
                <v-btn color="warning" flat @click="restart">Restart</v-btn>
-               <v-btn color="warning" flat @click="$refs.rename_script.show(uuid, type)">Rename</v-btn>
+               <v-btn color="warning" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
                <v-btn color="primary" flat @click.stop="hide()">Close</v-btn>
             </v-card-actions>
          </v-card>
@@ -57,7 +57,7 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import renameScriptModal from '../../components/modals/rename-script-modal.vue'
+import renameScriptModal from "../../components/modals/rename-script-modal.vue";
 
 export default {
   components: {

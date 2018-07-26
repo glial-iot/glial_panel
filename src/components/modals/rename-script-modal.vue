@@ -1,24 +1,20 @@
 <template>
-  <div>
-    <v-dialog :value="visible" persistent max-width="290">
-      <v-card>
-        <v-card-title class="headline">Rename script</v-card-title>
-        <v-card-text>
-          <v-text-field
-            v-model="name"
-            label="Enter new name"
-            required
-          ></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="hide()">Cancel</v-btn>
-          <v-btn color="green darken-1" flat @click="submit()">Rename</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <snackbar ref="snackbar"></snackbar>
-  </div>
+   <div>
+      <v-dialog :value="visible" persistent max-width="290">
+         <v-card>
+            <v-card-title class="headline">Rename script</v-card-title>
+            <v-card-text>
+               <v-text-field v-model="name" label="Enter new name" required></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+               <v-spacer></v-spacer>
+               <v-btn color="green darken-1" flat @click="hide()">Cancel</v-btn>
+               <v-btn color="green darken-1" flat @click="submit()">Rename</v-btn>
+            </v-card-actions>
+         </v-card>
+      </v-dialog>
+      <snackbar ref="snackbar"></snackbar>
+   </div>
 </template>
 
 <script>
@@ -34,11 +30,12 @@ export default {
     name: "",
     uuid: "",
     type: "",
-    visible: false,
+    visible: false
   }),
   methods: {
-    show(uuid, type) {
+    show(uuid, type, name) {
       this.uuid = uuid;
+      this.name = name;
       this.type = type;
       this.visible = true;
     },
@@ -46,27 +43,22 @@ export default {
       this.visible = false;
     },
     submit() {
-      console.log('qwe', this.$store.getters.server_url + this.$store.state.endpoints[this.type])
       Vue.axios
-        .get(
-          this.$store.getters.server_url + this.$store.state.endpoints[this.type],
-          {
-            params: {
-              action: "rename",
-              uuid: this.uuid,
-              new_name: this.name
-            }
+        .get(this.$store.getters.server_url + "/scripts", {
+          params: {
+            action: "update",
+            uuid: this.uuid,
+            name: this.name
           }
-        )
+        })
         .then(response => {
-          console.log(response);
-          this.hide()
-          this.hideDetails()
+          this.hide();
+          this.hideDetails();
         })
         .catch(error => {
           console.log(error);
         });
-    },
+    }
   }
 };
 </script>
