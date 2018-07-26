@@ -37,16 +37,17 @@
                         </td>
                      </tr>
                   </template>
-
                </v-data-table>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
                <v-btn color="warning" flat @click="restart">Restart</v-btn>
-               <v-btn color="primary" flat @click.stop="visible=false">Close</v-btn>
+               <v-btn color="warning" flat @click="$refs.rename_script.show(uuid, type)">Rename</v-btn>
+               <v-btn color="primary" flat @click.stop="hide()">Close</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
+      <rename-script-modal ref="rename_script" :hideDetails="hide"></rename-script-modal>
    </div>
 </template>
 
@@ -56,7 +57,12 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
+import renameScriptModal from '../../components/modals/rename-script-modal.vue'
+
 export default {
+  components: {
+    renameScriptModal
+  },
   data: () => ({
     visible: false,
     name: "",
@@ -135,6 +141,9 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    hide() {
+      this.visible = false;
     }
   }
 };
