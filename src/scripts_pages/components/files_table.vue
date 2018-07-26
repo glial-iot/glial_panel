@@ -280,8 +280,8 @@ export default {
 
 <style scoped>
 .btn-icon {
-  height: 16px;
-  width: 16px;
+  height: 18px;
+  width: 18px;
   position: relative;
 }
 </style>
