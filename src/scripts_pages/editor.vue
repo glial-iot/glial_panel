@@ -89,32 +89,20 @@ export default {
       this.content = content
     },
     save_file: function(event) {
-      let data = new Blob([this.content], {
-        type: "text/plain"
-      });
-      let reader = new FileReader();
-      reader.readAsDataURL(data);
-      reader.onload = () => {
-        Vue.axios
-          .get(this.$store.getters.server_url + "/scripts", {
-            params: {
-              action: "update",
-              uuid: this.uuid,
-              body: reader.result
-            },
-            headers: {
-              "content-type": "multipart/form-data"
-            }
-          })
-          .then(response => {
-            this.$refs.snackbar.update("File saved", "success", 3000);
-            this.saved = true;
-          })
-          .catch(error => {
-            this.$refs.snackbar.update("File not saved");
-            console.log(error);
-          });
-      };
+      Vue.axios
+        .post(this.$store.getters.server_url + "/scripts", {
+          action: "update",
+          uuid: this.uuid,
+          body: this.content
+        })
+        .then(response => {
+          this.$refs.snackbar.update("File saved", "success", 3000);
+          this.saved = true;
+        })
+        .catch(error => {
+          this.$refs.snackbar.update("File not saved");
+          console.log(error);
+        });
     },
     load_file: function() {
       Vue.axios
