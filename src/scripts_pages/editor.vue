@@ -34,9 +34,38 @@
          </div>
       </v-card>
 
+      <v-card class="logs-card">
+         <v-card-title class="logs-title" @click="logs_visible = !logs_visible">
+            <h3>Logs</h3>
+            <v-spacer></v-spacer>
+            <v-btn icon class="mt-0 mr-0 mb-0 ml-0">
+              <v-icon>{{ logs_visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
+            </v-btn>
+         </v-card-title>
+         <v-divider></v-divider>
+         <v-card-text class="logs-text" v-if="logs_visible">
+            <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
+               <template slot="items" slot-scope="props">
+                  <tr>
+                     <td class="text-xs-center">
+                        <div class="ellipsis">{{ props.item.level }}</div>
+                     </td>
+                     <td class="text-xs-center">
+                        <div class="ellipsis" :title="props.item.date_abs">{{props.item.date_rel }}</div>
+                     </td>
+                     <td class="text-xs-left">
+                        <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
+                     </td>
+                  </tr>
+               </template>
+            </v-data-table>
+         </v-card-text>
+      </v-card>
+
       <snackbar ref="snackbar"></snackbar>
    </div>
 </template>
+
 
 <script>
 import Vue from "vue";
@@ -59,6 +88,30 @@ export default {
     loaded: false,
     name: "",
     type: "",
+    logs_visible: false,
+    logs: [],
+    headers: [
+      {
+        text: "Level",
+        value: "level",
+        align: "center",
+        sortable: false,
+        width: "15%"
+      },
+      {
+        text: "Date",
+        value: "date",
+        align: "center",
+        sortable: false,
+        width: "30%"
+      },
+      {
+        text: "Entry",
+        value: "entry",
+        align: "left",
+        sortable: false
+      }
+    ],
     prev_content: ""
   }),
   components: {
@@ -155,6 +208,23 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Reload script error");
         });
+    },
+    get_logs: function() {
+      Vue.axios
+        .get(this.$store.getters.server_url + "/logger", {
+          params: {
+            action: "get_logs",
+            uuid: this.uuid,
+            limit: 10
+          }
+        })
+        .then(response => {
+          this.logs = response.data;
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   watch: {
@@ -178,6 +248,13 @@ export default {
         };
       }
     },
+    logs_visible: function(value) {
+      if (value) {
+        this.get_logs();
+      } else {
+        this.logs = []
+      }
+    },
     loaded: function(value, oldValue) {
       if (!oldValue && value) {
         this.saved = true;
@@ -186,3 +263,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.logs-card {
+  margin-top: 16px;
+}
+
+.logs-title {
+  cursor: pointer;
+}
+
+.logs-text {
+  padding: 0;
+}
+
+.logs-title h3 {
+  font-weight: normal;
+}
+</style>
