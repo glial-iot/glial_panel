@@ -39,7 +39,7 @@
             <h3>Logs</h3>
             <v-spacer></v-spacer>
             <v-btn icon class="mt-0 mr-0 mb-0 ml-0">
-              <v-icon>{{ logs_visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
+               <v-icon>{{ logs_visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
             </v-btn>
          </v-card-title>
          <v-divider></v-divider>
@@ -128,7 +128,9 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (!this.saved) {
-      const result = window.confirm("Do you really want to leave? You have unsaved changes!");
+      const result = window.confirm(
+        "Do you really want to leave? You have unsaved changes!"
+      );
       if (!result) {
         next(false);
         return;
@@ -139,7 +141,7 @@ export default {
 
   methods: {
     update_content: function(content) {
-      this.content = content
+      this.content = content;
     },
     save_file: function(event) {
       let data = new Blob([this.content], {
@@ -193,7 +195,8 @@ export default {
     restart_script: function() {
       Vue.axios
         .get(
-          this.$store.getters.server_url + this.$store.state.endpoints[this.type],
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
           {
             params: {
               action: "reload",
@@ -242,7 +245,8 @@ export default {
         window.onbeforeunload = null;
       } else {
         window.onbeforeunload = function(e) {
-          var dialogText = 'Do you really want to leave? You have unsaved changes!';
+          var dialogText =
+            "Do you really want to leave? You have unsaved changes!";
           e.returnValue = dialogText;
           return dialogText;
         };
@@ -252,7 +256,7 @@ export default {
       if (value) {
         this.get_logs();
       } else {
-        this.logs = []
+        this.logs = [];
       }
     },
     loaded: function(value, oldValue) {
