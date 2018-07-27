@@ -29,7 +29,7 @@
 
          <div id="app">
             <v-flex xs12>
-               <editor :content="content" :lang="lang" theme="crimson_editor" height="630px"></editor>
+               <editor :content="content" v-on:content-update="update_content" :lang="lang" theme="crimson_editor" height="630px"></editor>
             </v-flex>
          </div>
       </v-card>
@@ -85,6 +85,7 @@ export default {
     content: "",
     uuid: "",
     saved: true,
+    loaded: false,
     name: "",
     type: "",
     logs_visible: false,
@@ -110,7 +111,8 @@ export default {
         align: "left",
         sortable: false
       }
-    ]
+    ],
+    prev_content: ""
   }),
   components: {
     editor,
@@ -136,6 +138,9 @@ export default {
   },
 
   methods: {
+    update_content: function(content) {
+      this.content = content
+    },
     save_file: function(event) {
       let data = new Blob([this.content], {
         type: "text/plain"
@@ -178,6 +183,7 @@ export default {
           this.type = response.data.type;
           this.$refs.snackbar.update("File loaded", "success", 2000);
           this.saved = true;
+          this.loaded = true;
         })
         .catch(error => {
           this.content = "";
@@ -236,7 +242,7 @@ export default {
         window.onbeforeunload = null;
       } else {
         window.onbeforeunload = function(e) {
-          var dialogText = 'Dialog text here';
+          var dialogText = 'Do you really want to leave? You have unsaved changes!';
           e.returnValue = dialogText;
           return dialogText;
         };
@@ -247,6 +253,11 @@ export default {
         this.get_logs();
       } else {
         this.logs = []
+      }
+    },
+    loaded: function(value, oldValue) {
+      if (!oldValue && value) {
+        this.saved = true;
       }
     }
   }
