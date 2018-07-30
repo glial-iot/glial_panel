@@ -154,10 +154,12 @@ export default {
       this.$forceUpdate();
     },
     update_content: function(content) {
-      this.content = content;
+      if (this.prev_content !== content) {
+        this.prev_content = content;
+      }
     },
     save_file: function(event) {
-      let data = new Blob([this.content], {
+      let data = new Blob([this.prev_content], {
         type: "text/plain"
       });
       let reader = new FileReader();
@@ -250,8 +252,6 @@ export default {
       const logs_height = document.querySelector('#logs-card') ? document.querySelector('#logs-card').offsetHeight + 16 : 250
       const content_padding = 48
       let height = window.innerHeight - (header_height + editor_title_height + content_padding)
-
-      console.log('logs_height', logs_height)
 
       if (this.logs_visible) {
         height = height - logs_height
