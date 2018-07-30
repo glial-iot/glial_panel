@@ -1,7 +1,7 @@
 <template>
    <div>
       <v-card class="elevation-3">
-         <v-card-title class="py-1 px-1">
+         <v-card-title id="editor-card-title" class="py-1 px-1">
             <div class="text-xs-left">
                <v-btn @click.native="$router.go(-1)">
                   <v-icon left small>fa-arrow-left</v-icon> Back
@@ -16,6 +16,9 @@
                <v-btn @click.native="save_file">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
+               <v-btn @click.native="logs_visible = !logs_visible">
+                  <v-icon left small>fa-file-alt</v-icon> Show Logs
+               </v-btn>
                <v-btn @click.native="load_file">
                   <v-icon left small>fa-sync-alt</v-icon> Reload file
                </v-btn>
@@ -29,20 +32,12 @@
 
          <div id="app">
             <v-flex xs12>
-               <editor :content="content" v-on:content-update="update_content" :lang="lang" theme="crimson_editor" height="630px"></editor>
+               <editor :content="content" v-on:content-update="update_content" :lang="lang" theme="crimson_editor" :height="editor_height()"></editor>
             </v-flex>
          </div>
       </v-card>
 
-      <v-card class="logs-card">
-         <v-card-title class="logs-title" @click="logs_visible = !logs_visible">
-            <h3>Logs</h3>
-            <v-spacer></v-spacer>
-            <v-btn icon class="mt-0 mr-0 mb-0 ml-0">
-               <v-icon>{{ logs_visible ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
-            </v-btn>
-         </v-card-title>
-         <v-divider></v-divider>
+      <v-card id="logs-card" class="logs-card">
          <v-card-text class="logs-text" v-if="logs_visible">
             <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
                <template slot="items" slot-scope="props">
@@ -72,6 +67,8 @@ import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+import VueTimers from "vue-timers";
+Vue.use(VueTimers);
 
 import snackbar from "../components/snackbar.vue";
 import editor from "../brace/index.js";
@@ -118,6 +115,20 @@ export default {
     editor,
     snackbar
   },
+  timers: {
+    get_logs: {
+      autostart: false,
+      time: 1000,
+      immediate: true,
+      repeat: true
+    }
+  },
+  mounted: function () {
+    window.addEventListener('resize', this.force_update)
+  },
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.force_update)
+  },
   beforeRouteEnter(to, from, next) {
     if (Object.keys(to.query).length !== 0 && to.query.uuid !== undefined) {
       next(vm => {
@@ -138,13 +149,17 @@ export default {
     }
     next();
   },
-
   methods: {
+    force_update: function() {
+      this.$forceUpdate();
+    },
     update_content: function(content) {
-      this.content = content;
+      if (this.prev_content !== content) {
+        this.prev_content = content;
+      }
     },
     save_file: function(event) {
-      let data = new Blob([this.content], {
+      let data = new Blob([this.prev_content], {
         type: "text/plain"
       });
       let reader = new FileReader();
@@ -193,6 +208,8 @@ export default {
         });
     },
     restart_script: function() {
+      this.logs_visible = true;
+
       Vue.axios
         .get(
           this.$store.getters.server_url +
@@ -228,6 +245,19 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    editor_height: function() {
+      const header_height = document.querySelector('nav.v-toolbar') ? document.querySelector('nav.v-toolbar').offsetHeight : 64
+      const editor_title_height = document.querySelector('#editor-card-title') ? document.querySelector('#editor-card-title').offsetHeight : 56
+      const logs_height = document.querySelector('#logs-card') ? document.querySelector('#logs-card').offsetHeight + 16 : 250
+      const content_padding = 48
+      let height = window.innerHeight - (header_height + editor_title_height + content_padding)
+
+      if (this.logs_visible) {
+        height = height - logs_height
+      }
+
+      return `${height}px`
     }
   },
   watch: {
@@ -254,8 +284,9 @@ export default {
     },
     logs_visible: function(value) {
       if (value) {
-        this.get_logs();
+        this.$timer.start("get_logs");
       } else {
+        this.$timer.stop("get_logs");
         this.logs = [];
       }
     },
@@ -273,15 +304,20 @@ export default {
   margin-top: 16px;
 }
 
-.logs-title {
-  cursor: pointer;
-}
-
 .logs-text {
   padding: 0;
 }
 
 .logs-title h3 {
   font-weight: normal;
+}
+
+table.v-table tbody td {
+  font-size: 11px;
+}
+
+table.v-table tbody td, 
+table.v-table tbody th {
+  height: 20px !important;
 }
 </style>
