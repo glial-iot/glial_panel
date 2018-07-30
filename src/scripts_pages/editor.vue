@@ -196,6 +196,7 @@ export default {
         })
         .then(response => {
           this.content = response.data.body;
+          this.prev_content = response.data.body;
           this.name = response.data.name;
           this.type = response.data.type;
           this.$refs.snackbar.update("File loaded", "success", 2000);
@@ -265,7 +266,7 @@ export default {
       this.uuid = uuid;
       this.load_file();
     },
-    content: function(value, oldValue) {
+    prev_content: function(value, oldValue) {
       if (value !== oldValue) {
         this.saved = false;
       }
