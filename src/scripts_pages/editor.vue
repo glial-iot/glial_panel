@@ -123,11 +123,11 @@ export default {
       repeat: true
     }
   },
-  mounted: function () {
-    window.addEventListener('resize', this.force_update)
+  mounted: function() {
+    window.addEventListener("resize", this.force_update);
   },
-  beforeDestroy: function () {
-    window.removeEventListener('resize', this.force_update)
+  beforeDestroy: function() {
+    window.removeEventListener("resize", this.force_update);
   },
   beforeRouteEnter(to, from, next) {
     if (Object.keys(to.query).length !== 0 && to.query.uuid !== undefined) {
@@ -248,17 +248,25 @@ export default {
         });
     },
     editor_height: function() {
-      const header_height = document.querySelector('nav.v-toolbar') ? document.querySelector('nav.v-toolbar').offsetHeight : 64
-      const editor_title_height = document.querySelector('#editor-card-title') ? document.querySelector('#editor-card-title').offsetHeight : 56
-      const logs_height = document.querySelector('#logs-card') ? document.querySelector('#logs-card').offsetHeight + 16 : 250
-      const content_padding = 48
-      let height = window.innerHeight - (header_height + editor_title_height + content_padding)
+      const header_height = document.querySelector("nav.v-toolbar")
+        ? document.querySelector("nav.v-toolbar").offsetHeight
+        : 64;
+      const editor_title_height = document.querySelector("#editor-card-title")
+        ? document.querySelector("#editor-card-title").offsetHeight
+        : 56;
+      const logs_height = document.querySelector("#logs-card")
+        ? document.querySelector("#logs-card").offsetHeight + 16
+        : 250;
+      const content_padding = 48;
+      let height =
+        window.innerHeight -
+        (header_height + editor_title_height + content_padding);
 
       if (this.logs_visible) {
-        height = height - logs_height
+        height = height - logs_height;
       }
 
-      return `${height}px`
+      return `${height}px`;
     }
   },
   watch: {
@@ -317,7 +325,7 @@ table.v-table tbody td {
   font-size: 11px;
 }
 
-table.v-table tbody td, 
+table.v-table tbody td,
 table.v-table tbody th {
   height: 20px !important;
 }
