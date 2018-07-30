@@ -17,10 +17,7 @@
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
                <v-btn @click.native="logs_visible = !logs_visible">
-                  <v-icon left small>fa-file-alt</v-icon> Show Logs
-               </v-btn>
-               <v-btn @click.native="load_file">
-                  <v-icon left small>fa-sync-alt</v-icon> Reload file
+                  <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
                <v-btn @click.native="restart_script">
                   <v-icon left small>fa-sync</v-icon> Restart script
