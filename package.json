@@ -26,7 +26,7 @@
         "vue-fontawesome": "0.0.2",
         "vue-localstorage": "^0.6.2",
         "vue-router": "^3.0.1",
-        "vue-timers": "^1.7.2",
+        "vue-timers": "^1.7.3",
         "vue2-ace-editor": "0.0.10",
         "vuetify": "^1.1.1",
         "vuex": "^3.0.1"
