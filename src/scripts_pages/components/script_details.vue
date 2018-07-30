@@ -4,6 +4,8 @@
          <v-card>
             <v-card-title>
                <div class="title text-xs-center">Details {{type}} script: "{{name}}"</div>
+               <v-spacer></v-spacer>
+               <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -41,8 +43,7 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-               <v-btn color="warning" flat @click="restart">Restart</v-btn>
-               <v-btn color="warning" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
+
                <v-btn color="primary" flat @click.stop="hide()">Close</v-btn>
             </v-card-actions>
          </v-card>
@@ -105,25 +106,6 @@ export default {
       this.active_flag = item.active_flag;
       this.visible = true;
       this.get_logs();
-    },
-    restart() {
-      Vue.axios
-        .get(
-          this.$store.getters.server_url +
-            this.$store.state.endpoints[this.type],
-          {
-            params: {
-              action: "reload",
-              uuid: this.uuid
-            }
-          }
-        )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
     get_logs() {
       Vue.axios
