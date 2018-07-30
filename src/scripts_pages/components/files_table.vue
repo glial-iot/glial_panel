@@ -14,31 +14,20 @@
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
-                  <td class="text-xs-left">
-                     <v-icon color="primary" small right class="mr-1">fa-file-code</v-icon> {{ props.item.name }}
+
+                  <td class="text-xs-center">
+                     <v-icon color="green" small v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">fa-check-circle</v-icon>
+                     <v-icon color="yellow darken-1" small v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">fa-exclamation-circle</v-icon>
+                     <v-icon color="red" small v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">fa-times-circle</v-icon>
+                     <v-icon color="grey" small v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">fa-dot-circle</v-icon>
                   </td>
 
                   <td class="text-xs-left">
-                     {{ props.item.uuid }}
+                     {{ props.item.name }}
                   </td>
 
                   <td class="justify-center text-xs-center cell-flex">
-                    <button-info @click.native="$refs.scriptdetails.show(props.item)"></button-info>
-                  </td>
-
-                  <td class="justify-center text-xs-center px-0 button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">
-                        <v-icon color="green" small>fa-check-circle</v-icon>
-                     </v-btn>
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">
-                        <v-icon color="yellow darken-1" small>fa-exclamation-circle</v-icon>
-                     </v-btn>
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">
-                        <v-icon color="red" small>fa-times-circle</v-icon>
-                     </v-btn>
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">
-                        <v-icon color="grey" small>fa-dot-circle</v-icon>
-                     </v-btn>
+                     <button-info @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
@@ -111,16 +100,15 @@ export default {
   data: () => ({
     headers: [
       {
-        text: "Name",
-        value: "name",
-        align: "left",
-        width: "27%"
+        text: "Status",
+        align: "center",
+        sortable: false,
+        width: "6%"
       },
       {
-        text: "UUID",
-        value: "uuid",
-        align: "left",
-        width: "27%"
+        text: "Name",
+        value: "name",
+        align: "left"
       },
       {
         text: "Info",
@@ -130,34 +118,28 @@ export default {
         width: "6%"
       },
       {
-        text: "Status",
-        sortable: false,
-        align: "center",
-        width: "7%"
-      },
-      {
         text: "Active",
         sortable: false,
         align: "center",
-        width: "7%"
+        width: "6%"
       },
       {
         text: "Edit",
         sortable: false,
         align: "center",
-        width: "7%"
+        width: "6%"
       },
       {
         text: "Delete",
         sortable: false,
         align: "center",
-        width: "7%"
+        width: "6%"
       },
       {
         text: "Restart",
         sortable: false,
         align: "center",
-        width: "7%"
+        width: "6%"
       }
     ],
     files_table: []
