@@ -27,7 +27,7 @@
                   </td>
 
                   <td class="justify-center text-xs-center cell-flex">
-                     <button-info @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                     <button-info :item="props" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">

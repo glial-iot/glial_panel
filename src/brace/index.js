@@ -75,6 +75,10 @@ module.exports = {
 
       lang: function (newLang) {
          this.editor.getSession().setMode('ace/mode/' + newLang);
+      },
+
+      height: function () {
+         setTimeout(() => window.dispatchEvent(new Event('resize')), 10)
       }
    }
 };
