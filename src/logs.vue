@@ -46,7 +46,7 @@
                      <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
                   </td>
                   <td class="justify-center text-xs-center cell-flex">
-                    <button-info @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                    <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
                   </td>
                </tr>
             </template>
