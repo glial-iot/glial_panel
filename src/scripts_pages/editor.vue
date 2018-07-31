@@ -16,7 +16,7 @@
                <v-btn @click.native="save_file">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
-               <v-btn @click.native="logs_visible = !logs_visible">
+               <v-btn @click.native="toggle_logs_visible">
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
                <v-btn @click.native="restart_script">
@@ -36,7 +36,7 @@
 
       <v-card id="logs-card" class="logs-card">
          <v-card-text class="logs-text" v-if="logs_visible">
-            <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
+            <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll" :pagination.sync="pagination">
                <template slot="items" slot-scope="props">
                   <tr>
                      <td class="text-xs-center">
@@ -51,6 +51,11 @@
                   </tr>
                </template>
             </v-data-table>
+            <v-flex v-if="pagination.totalItems > pagination.rowsPerPage" d-block>
+              <v-card class="no-shadow pagination-block">
+                <v-pagination class="custom-pagination" v-model="pagination.page" :length="pages()"></v-pagination>
+              </v-card>
+            </v-flex>
          </v-card-text>
       </v-card>
 
@@ -66,6 +71,7 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 import VueTimers from "vue-timers";
 Vue.use(VueTimers);
+import {mapState} from 'vuex'
 
 import snackbar from "../components/snackbar.vue";
 import editor from "../brace/index.js";
@@ -75,6 +81,7 @@ import "brace/theme/crimson_editor";
 
 export default {
   data: () => ({
+    pagination: { rowsPerPage: 6 },
     lang: "lua",
     content: "",
     uuid: "",
@@ -82,7 +89,6 @@ export default {
     loaded: false,
     name: "",
     type: "",
-    logs_visible: false,
     logs: [],
     headers: [
       {
@@ -120,6 +126,9 @@ export default {
       repeat: true
     }
   },
+  computed: mapState({
+    logs_visible: state => state.logs_visible
+  }),
   mounted: function() {
     window.addEventListener("resize", this.force_update);
   },
@@ -147,6 +156,16 @@ export default {
     next();
   },
   methods: {
+    pages() {
+      if (this.pagination.rowsPerPage == null || this.pagination.totalItems == null) {
+        return 0;
+      }
+
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
+    },
+    toggle_logs_visible: function() {
+      this.$store.commit('logs_visible', !this.logs_visible)
+    },
     force_update: function() {
       this.$forceUpdate();
     },
@@ -206,7 +225,7 @@ export default {
         });
     },
     restart_script: function() {
-      this.logs_visible = true;
+      this.$store.commit('logs_visible', true)
 
       Vue.axios
         .get(
@@ -233,7 +252,7 @@ export default {
           params: {
             action: "get_logs",
             uuid: this.uuid,
-            limit: 10
+            limit: 60
           }
         })
         .then(response => {
@@ -251,9 +270,10 @@ export default {
       const editor_title_height = document.querySelector("#editor-card-title")
         ? document.querySelector("#editor-card-title").offsetHeight
         : 56;
-      const logs_height = document.querySelector("#logs-card")
+      const logs_height = document.querySelector("#logs-card") 
+        && document.querySelector("#logs-card").offsetHeight > 100
         ? document.querySelector("#logs-card").offsetHeight + 16
-        : 250;
+        : 217;
       const content_padding = 48;
       let height =
         window.innerHeight -
@@ -270,6 +290,10 @@ export default {
     uuid: function(uuid) {
       this.uuid = uuid;
       this.load_file();
+
+      if (this.logs_visible) {
+        this.$timer.start("get_logs");
+      }
     },
     prev_content: function(value, oldValue) {
       if (value !== oldValue) {
@@ -325,5 +349,11 @@ table.v-table tbody td {
 table.v-table tbody td,
 table.v-table tbody th {
   height: 20px !important;
+}
+
+.pagination-block {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px;
 }
 </style>
