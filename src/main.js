@@ -81,7 +81,7 @@ const store = new Vuex.Store({
       server_port: Vue.localStorage.get("server_port", "8080"),
       server_scheme: Vue.localStorage.get("server_scheme", "http"),
       server_history: Vue.localStorage.get("server_history") ? JSON.parse(Vue.localStorage.get("server_history")) : [],
-      logs_visible: Vue.localStorage.get("logs_visible") === 'true',
+      logs_visible: Vue.localStorage.get("logs_visible") !== null ? Vue.localStorage.get("logs_visible") === 'true' : true,
       endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
