@@ -52,9 +52,9 @@
                </template>
             </v-data-table>
             <v-flex v-if="pagination.totalItems > pagination.rowsPerPage" d-block>
-              <v-card class="no-shadow pagination-block">
-                <v-pagination class="custom-pagination" v-model="pagination.page" :length="pages()"></v-pagination>
-              </v-card>
+               <v-card class="no-shadow pagination-block">
+                  <v-pagination class="custom-pagination" v-model="pagination.page" :length="pages()"></v-pagination>
+               </v-card>
             </v-flex>
          </v-card-text>
       </v-card>
@@ -71,7 +71,7 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 import VueTimers from "vue-timers";
 Vue.use(VueTimers);
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 
 import snackbar from "../components/snackbar.vue";
 import editor from "../brace/index.js";
@@ -157,14 +157,19 @@ export default {
   },
   methods: {
     pages() {
-      if (this.pagination.rowsPerPage == null || this.pagination.totalItems == null) {
+      if (
+        this.pagination.rowsPerPage == null ||
+        this.pagination.totalItems == null
+      ) {
         return 0;
       }
 
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage);
+      return Math.ceil(
+        this.pagination.totalItems / this.pagination.rowsPerPage
+      );
     },
     toggle_logs_visible: function() {
-      this.$store.commit('logs_visible', !this.logs_visible)
+      this.$store.commit("logs_visible", !this.logs_visible);
     },
     force_update: function() {
       this.$forceUpdate();
@@ -219,7 +224,7 @@ export default {
         });
     },
     restart_script: function() {
-      this.$store.commit('logs_visible', true)
+      this.$store.commit("logs_visible", true);
 
       Vue.axios
         .get(
@@ -264,10 +269,11 @@ export default {
       const editor_title_height = document.querySelector("#editor-card-title")
         ? document.querySelector("#editor-card-title").offsetHeight
         : 56;
-      const logs_height = document.querySelector("#logs-card")
-        && document.querySelector("#logs-card").offsetHeight > 100
-        ? document.querySelector("#logs-card").offsetHeight + 16
-        : 217;
+      const logs_height =
+        document.querySelector("#logs-card") &&
+        document.querySelector("#logs-card").offsetHeight > 100
+          ? document.querySelector("#logs-card").offsetHeight + 16
+          : 217;
       const content_padding = 48;
       let height =
         window.innerHeight -
