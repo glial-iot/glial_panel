@@ -175,23 +175,17 @@ export default {
       }
     },
     save_file: function(event) {
-      let data = new Blob([this.prev_content], {
+      let data = new Blob([this.content], {
         type: "text/plain"
       });
       let reader = new FileReader();
       reader.readAsDataURL(data);
       reader.onload = () => {
         Vue.axios
-          .get(this.$store.getters.server_url + "/scripts", {
-            params: {
-              action: "update",
-              uuid: this.uuid,
-              body: reader.result
-            },
-            headers: {
-              "content-type": "multipart/form-data"
-            }
-          })
+          .post(
+            this.$store.getters.server_url + "/scripts_body?uuid=" + this.uuid,
+            reader.result
+          )
           .then(response => {
             this.$refs.snackbar.update("File saved", "success", 3000);
             this.saved = true;
@@ -270,7 +264,7 @@ export default {
       const editor_title_height = document.querySelector("#editor-card-title")
         ? document.querySelector("#editor-card-title").offsetHeight
         : 56;
-      const logs_height = document.querySelector("#logs-card") 
+      const logs_height = document.querySelector("#logs-card")
         && document.querySelector("#logs-card").offsetHeight > 100
         ? document.querySelector("#logs-card").offsetHeight + 16
         : 217;
