@@ -329,6 +329,26 @@ export default {
 };
 </script>
 
+<style>
+.pagination-block .v-pagination__navigation {
+  height: 18px;
+  width: 18px;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+.pagination-block .v-pagination__navigation .v-icon {
+  font-size: 18px;
+}
+
+.pagination-block .v-pagination__item {
+  height: 24px;
+  width: 24px;
+  font-size: 12px;
+  margin: 2px;
+}
+</style>
+
 <style scoped>
 .logs-card {
   margin-top: 16px;
