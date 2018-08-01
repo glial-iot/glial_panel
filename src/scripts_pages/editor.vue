@@ -175,7 +175,7 @@ export default {
       }
     },
     save_file: function(event) {
-      let data = new Blob([this.content], {
+      let data = new Blob([this.prev_content], {
         type: "text/plain"
       });
       let reader = new FileReader();
