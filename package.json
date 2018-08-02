@@ -19,6 +19,7 @@
         "html-webpack-plugin": "^3.2.0",
         "liquor-tree": "^0.2.30",
         "material-design-icons-iconfont": "^3.0.3",
+        "moment": "^2.22.2",
         "npm": "^6.2.0",
         "vue": "^2.5.11",
         "vue-axios": "^2.1.1",

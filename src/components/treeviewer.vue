@@ -1,8 +1,8 @@
 <template>
    <div class="json-viewer">
       <tree :data="treeData" :options="treeOptions">
-         <span slot-scope="{ node }" class="viewer-item" :class="[node.data.type]">
-            <span v-if="node.hasChildren()" class="viewer-item__key">
+         <div slot-scope="{ node }" class="viewer-item" :class="[node.data.type]">
+            <div v-if="node.hasChildren()" class="viewer-item__key">
                {{ node.text }}
                <span v-if="node.collapsed()">
                   <template v-if="node.data.type == 'array'">
@@ -12,11 +12,14 @@
                      { {{ node.children.length }} }
                   </template>
                </span>
-            </span>
-            <span v-else class="viewer-item__prop">
-               <span class="viewer-item__key">{{ node.text }}</span>: <span class="viewer-item__value">{{ node.data.objectKey }}</span>
-            </span>
-         </span>
+            </div>
+            <div v-else class="viewer-item__prop">
+               <div class="viewer-item__key">{{ node.text }}</div>
+               <div class="viewer-item__key">Topic: {{ node.data.objectKey.topic }}</div>
+               <div class="viewer-item__key">Value: {{ node.data.objectKey.value }}</div>
+               <div class="viewer-item__key">Update time: {{ format_time(node.data.objectKey.update_time) }}</div>
+            </div>
+         </div>
       </tree>
    </div>
 </template>
@@ -25,6 +28,7 @@
 <script>
 import Vue from 'Vue'
 import LiquorTree from 'liquor-tree'
+import moment from 'moment'
 
 export default {
    components: {
@@ -70,8 +74,15 @@ export default {
 
          return value.constructor.prototype.hasOwnProperty('isPrototypeOf') === true
       },
+      isEndNode(value) {
+         if (typeof value === 'object' && (value.hasOwnProperty('topic') || value.hasOwnProperty('update_time') || value.hasOwnProperty('value'))) {
+            return true
+         }
+
+         return false
+      },
       isIterable(value) {
-         return this.isArray(value) || this.isPlainObject(value)
+         return (this.isArray(value) || this.isPlainObject(value)) && !this.isEndNode(value)
       },
       map(obj, fn) {
          return Object.keys(obj).map((key) => {
@@ -91,7 +102,8 @@ export default {
          } else {
             obj.data = {
                'objectKey': prop || `${prop}`,
-               'type': this.getType(prop)
+               'type': this.getType(prop),
+               'data': prop
             }
          }
 
@@ -125,6 +137,9 @@ export default {
             data: {type: 'root'},
             children: this.map(obj, this.transformObject)
          }]
+      },
+      format_time(value) {
+         return moment.unix(value).format('YYYY-MM-DD, HH:mm:ss')
       }
    }
 };
