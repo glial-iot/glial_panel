@@ -51,7 +51,8 @@
             </template>
          </v-data-table>
          <v-divider></v-divider>
-
+         <treeviewer :json="treeJson"></treeviewer>
+         <v-divider></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
             <span class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
@@ -74,15 +75,18 @@ import snackbar from "./components/snackbar.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
 import buttonDownload from "./components/buttons/button-download.vue";
 import buttonDownloadDisabled from "./components/buttons/button-download-disabled.vue";
+import treeviewer from "./components/treeviewer.vue";
 
 export default {
   components: {
     snackbar,
     buttonTrash,
     buttonDownload,
-    buttonDownloadDisabled
+    buttonDownloadDisabled,
+    treeviewer
   },
   data: () => ({
+    treeJson: require('./system_bus_action.json'),
     update_interval: "2000",
     bus_values: [],
     all_tsdb: { topic: "*", tsdb_save: false },
