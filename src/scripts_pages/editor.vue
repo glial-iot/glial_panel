@@ -52,9 +52,7 @@
                </template>
             </v-data-table>
             <v-flex v-if="pagination.totalItems > pagination.rowsPerPage" d-block>
-               <v-card class="no-shadow pagination-block">
-                  <v-pagination class="custom-pagination" v-model="pagination.page" :length="pages()"></v-pagination>
-               </v-card>
+               <v-pagination class="custom-pagination custom-pagination-hide-inactive" v-model="pagination.page" :length="pages()"></v-pagination>
             </v-flex>
          </v-card-text>
       </v-card>
@@ -271,7 +269,7 @@ export default {
         : 56;
       const logs_height =
         document.querySelector("#logs-card") &&
-        document.querySelector("#logs-card").offsetHeight > 100
+        document.querySelector("#logs-card").offsetHeight > 51
           ? document.querySelector("#logs-card").offsetHeight + 16
           : 217;
       const content_padding = 48;
@@ -330,32 +328,48 @@ export default {
 </script>
 
 <style>
-.pagination-block .v-pagination__navigation {
+.custom-pagination .v-pagination__navigation {
   height: 18px;
   width: 18px;
   margin-right: 4px;
   margin-left: 4px;
 }
 
-.pagination-block .v-pagination__navigation .v-icon {
+.custom-pagination .v-pagination__navigation .v-icon {
   font-size: 18px;
 }
 
-.pagination-block .v-pagination__item {
-  height: 24px;
-  width: 24px;
+.custom-pagination .v-pagination__item {
+  height: 20px;
+  width: 20px;
   font-size: 12px;
   margin: 2px;
+}
+
+.custom-pagination-hide-inactive .v-pagination__item:not(.v-pagination__item--active) {
+  display: none;
+}
+
+.custom-pagination-hide-inactive .v-pagination__item--active.primary {
+  color: #000;
+  background-color: #fff !important;
+  border-color: initial !important;
 }
 </style>
 
 <style scoped>
+.custom-pagination {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
 .logs-card {
   margin-top: 16px;
 }
 
 .logs-text {
   padding: 0;
+  position: relative;
 }
 
 .logs-title h3 {
