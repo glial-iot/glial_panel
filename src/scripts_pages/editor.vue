@@ -12,13 +12,21 @@
             <span class=".display-1"> {{this.type}} {{this.name}} </span>
             <v-spacer></v-spacer>
 
-            <div class="text-xs-left">
+            <div class="text-xs-left buttons">
                <v-btn @click.native="save_file">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
                <v-btn @click.native="toggle_logs_visible">
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
+               <div class="logs-size-block">
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')">
+                     <v-icon small>fa-arrow-up</v-icon>
+                  </v-btn>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')">
+                     <v-icon small>fa-arrow-down</v-icon>
+                  </v-btn>
+               </div>
                <v-btn @click.native="restart_script">
                   <v-icon left small>fa-sync</v-icon> Restart script
                </v-btn>
@@ -282,6 +290,15 @@ export default {
       }
 
       return `${height}px`;
+    },
+    change_logs_size(dir) {
+      let increment = 1
+
+      if (dir === "-") {
+        increment = -1
+      }
+
+      this.pagination.rowsPerPage = this.pagination.rowsPerPage + increment
     }
   },
   watch: {
@@ -389,5 +406,21 @@ table.v-table tbody th {
   display: flex;
   justify-content: space-around;
   padding: 4px;
+}
+
+.logs-size-block {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.logs-buttons {
+  min-width: auto;
+  height: auto;
+  margin: 2px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
 }
 </style>
