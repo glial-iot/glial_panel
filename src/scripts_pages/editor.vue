@@ -3,7 +3,7 @@
       <v-card class="elevation-3">
          <v-card-title id="editor-card-title" class="py-1 px-1">
             <div class="text-xs-left">
-               <v-btn @click.native="$router.go(-1)">
+               <v-btn :small="true" @click.native="$router.go(-1)">
                   <v-icon left small>fa-arrow-left</v-icon> Back
                </v-btn>
             </div>
@@ -13,21 +13,21 @@
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
-               <v-btn @click.native="save_file">
+               <v-btn :small="true" @click.native="save_file">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
-               <v-btn @click.native="toggle_logs_visible">
+               <v-btn :small="true" @click.native="toggle_logs_visible">
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
                <div class="logs-size-block">
                   <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')">
-                     <v-icon small>fa-arrow-up</v-icon>
+                     <v-icon  :size="12">fa-arrow-up</v-icon>
                   </v-btn>
                   <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')">
-                     <v-icon small>fa-arrow-down</v-icon>
+                     <v-icon  :size="12">fa-arrow-down</v-icon>
                   </v-btn>
                </div>
-               <v-btn @click.native="restart_script">
+               <v-btn :small="true" @click.native="restart_script">
                   <v-icon left small>fa-sync</v-icon> Restart script
                </v-btn>
             </div>
@@ -271,16 +271,16 @@ export default {
     editor_height: function() {
       const header_height = document.querySelector("nav.v-toolbar")
         ? document.querySelector("nav.v-toolbar").offsetHeight
-        : 64;
+        : 48;
       const editor_title_height = document.querySelector("#editor-card-title")
         ? document.querySelector("#editor-card-title").offsetHeight
         : 56;
       const logs_height =
         document.querySelector("#logs-card") &&
         document.querySelector("#logs-card").offsetHeight > 51
-          ? document.querySelector("#logs-card").offsetHeight + 16
+          ? document.querySelector("#logs-card").offsetHeight + 12
           : 217;
-      const content_padding = 48;
+      const content_padding = 24;
       let height =
         window.innerHeight -
         (header_height + editor_title_height + content_padding);
@@ -381,7 +381,7 @@ export default {
   right: 2px;
 }
 .logs-card {
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .logs-text {
