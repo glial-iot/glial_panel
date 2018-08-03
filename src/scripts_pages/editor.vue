@@ -102,14 +102,14 @@ export default {
         value: "level",
         align: "center",
         sortable: false,
-        width: "15%"
+        width: "10%"
       },
       {
         text: "Date",
         value: "date",
         align: "center",
         sortable: false,
-        width: "30%"
+        width: "15%"
       },
       {
         text: "Entry",
