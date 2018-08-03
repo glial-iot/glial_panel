@@ -28,7 +28,7 @@
                   </v-btn>
                </div>
                <v-btn :small="true" @click.native="restart_script">
-                  <v-icon left small>fa-sync</v-icon> Restart script
+                  <v-icon left small>fa-sync</v-icon> Save and restart script
                </v-btn>
             </div>
 
@@ -230,6 +230,29 @@ export default {
           this.content = "";
           this.$refs.snackbar.update("Load file: network error");
         });
+    },
+    save_and_restart: function() {
+      let data = new Blob([this.prev_content], {
+        type: "text/plain"
+      });
+      let reader = new FileReader();
+      reader.readAsDataURL(data);
+      reader.onload = () => {
+        Vue.axios
+          .post(
+            this.$store.getters.server_url + "/scripts_body?uuid=" + this.uuid,
+            reader.result
+          )
+          .then(response => {
+            this.$refs.snackbar.update("File saved", "success", 3000);
+            this.saved = true;
+            this.restart_script();
+          })
+          .catch(error => {
+            this.$refs.snackbar.update("File not saved");
+            console.log(error);
+          });
+      };
     },
     restart_script: function() {
       this.$store.commit("logs_visible", true);
