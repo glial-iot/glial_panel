@@ -116,7 +116,7 @@ const store = new Vuex.Store({
          const servers = [...state.server_history]
          const filteredServers = servers.filter((item) => JSON.stringify(item) !== JSON.stringify(server))
          const newServers = [newServer, ...filteredServers]
-         
+
          state.server_history = newServers
          Vue.localStorage.set("server_history", JSON.stringify(newServers));
       },
@@ -134,23 +134,23 @@ const store = new Vuex.Store({
       }
    },
    actions: {
-      update_server_address: ({commit}, server) => {
+      update_server_address: ({ commit }, server) => {
          commit("server_scheme", server.scheme)
          commit("server_address", server.address)
          commit("server_port", server.port)
          commit("add_server_to_history", server)
       },
-      change_server: ({commit}, server) => {
+      change_server: ({ commit }, server) => {
          commit("server_scheme", server.scheme)
          commit("server_address", server.address)
          commit("server_port", server.port)
          commit("sort_server_history", server)
       },
-      increase_editor_log_size: ({commit, state}) => {
+      increase_editor_log_size: ({ commit, state }) => {
          const size = state.editor_log_size + 1
          commit("editor_log_size", size)
       },
-      decrease_editor_log_size: ({commit, state}) => {
+      decrease_editor_log_size: ({ commit, state }) => {
          const size = state.editor_log_size - 1
          commit("editor_log_size", size)
       }

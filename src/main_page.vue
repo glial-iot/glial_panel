@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 
 let menu = [
   {
@@ -110,7 +110,7 @@ export default {
     server_scheme: state => state.server_scheme,
     server_address: state => state.server_address,
     server_port: state => state.server_port,
-    server_history: state => state.server_history,
+    server_history: state => state.server_history
   }),
   methods: {
     change_server(server) {
@@ -162,7 +162,7 @@ table.v-table thead tr {
   left: -4px !important;
   top: -4px !important;
   border-radius: 0;
-}  
+}
 
 .v-navigation-drawer .v-list__tile {
   padding: 0 12px;

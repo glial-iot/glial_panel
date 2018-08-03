@@ -138,7 +138,7 @@ export default {
   }),
   mounted: function() {
     window.addEventListener("resize", this.force_update);
-    this.pagination.rowsPerPage = this.editor_log_size
+    this.pagination.rowsPerPage = this.editor_log_size;
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
@@ -294,9 +294,9 @@ export default {
       return `${height}px`;
     },
     change_logs_size(dir) {
-      let action = "increase_editor_log_size"
+      let action = "increase_editor_log_size";
       if (dir === "-") {
-        action = "decrease_editor_log_size"
+        action = "decrease_editor_log_size";
       }
       this.$store.dispatch(action);
     }
@@ -341,7 +341,7 @@ export default {
       }
     },
     editor_log_size: function(value) {
-      this.pagination.rowsPerPage = value
+      this.pagination.rowsPerPage = value;
     }
   }
 };
@@ -366,7 +366,8 @@ export default {
   margin: 2px;
 }
 
-.custom-pagination-hide-inactive .v-pagination__item:not(.v-pagination__item--active) {
+.custom-pagination-hide-inactive
+  .v-pagination__item:not(.v-pagination__item--active) {
   display: none;
 }
 
