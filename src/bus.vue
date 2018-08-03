@@ -40,7 +40,7 @@
                      <div class="ellipsis" :title="props.item.value">{{ props.item.value }}</div>
                   </td>
                   <td class="text-xs-left">
-                     <div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div>
+                     <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
                   </td>
                   <td class="justify-center text-xs-center cell-flex">
                      <button-trash @click="topic_delete(props.item)"></button-trash>
@@ -102,7 +102,7 @@ export default {
       },
       {
         text: "Update time",
-        value: "timestamp",
+        value: "text_time",
         align: "center",
         width: "30%"
       },
@@ -142,7 +142,7 @@ export default {
   methods: {
     tsdb_set(item) {
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus_action", {
+        .get(this.$store.getters.server_url + "/system_bus", {
           params: {
             action: "update_tsdb_attribute",
             topic: item.topic,
@@ -160,7 +160,7 @@ export default {
     },
     topic_delete(item) {
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus_action", {
+        .get(this.$store.getters.server_url + "/system_bus", {
           params: {
             action: "delete_topics",
             topic: item.topic
@@ -177,7 +177,11 @@ export default {
     },
     table_update() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus_data")
+        .get(this.$store.getters.server_url + "/system_bus", {
+          params: {
+            action: "get_bus"
+          }
+        })
         .then(response => {
           this.bus_values = this.set_update_attr(response.data);
           //console.log(this.bus_values)
