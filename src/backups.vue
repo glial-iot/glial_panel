@@ -2,7 +2,7 @@
    <div>
       <v-card class="elevation-3">
 
-         <v-data-table :headers="headers" :items="table_values" hide-actions must-sort class="no-scroll">
+         <v-data-table :headers="headers" :items="table_values" must-sort class="no-scroll">
 
             <template slot="items" slot-scope="props">
                <td class="text-xs-left">
@@ -27,7 +27,7 @@
 
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
-            <span class="body-2 mx-4 grey--text"> Files: {{table_values.length}} </span>
+            <span class="body-2 mx-4 grey--text"> Backups: {{table_values.length}} </span>
          </v-card-title>
       </v-card>
 

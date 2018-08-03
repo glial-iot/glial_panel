@@ -77,12 +77,6 @@ let menu = [
     color: "brown"
   },
   {
-    path: "/backups",
-    name: "Backups",
-    icon: "fa-archive",
-    color: "brown"
-  },
-  {
     path: "/scripts/drivers",
     name: "Drivers",
     icon: "fa-screwdriver",

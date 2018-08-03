@@ -64,9 +64,6 @@ const router = new VueRouter({
       path: '/manage',
       component: manage,
    }, {
-      path: '/backups',
-      component: backups,
-   }, {
       path: '/editor',
       component: editor
    }, {

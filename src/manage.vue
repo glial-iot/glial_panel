@@ -61,6 +61,7 @@
                   </v-btn>
                </v-flex>
             </v-layout>
+            <backups ref="backups"></backups>
          </v-form>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
@@ -76,6 +77,9 @@ Vue.use(VueAxios, Axios);
 import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
+
+import backups from "./backups.vue";
+Vue.component("backups", backups);
 
 export default {
   components: {
