@@ -1,5 +1,5 @@
 <template>
-   <v-snackbar :timeout="timeout" :top="true" :right="true" v-model="visible" :color='color'>
+   <v-snackbar :timeout="timeout" :top="true" v-model="visible" :color='color'>
       {{text}}
       <v-btn flat @click.native="visible = false">Close</v-btn>
    </v-snackbar>
@@ -28,8 +28,5 @@ export default {
 </script>
 
 <style>
-.v-snack--top {
-  top: 64px;
-}
 </style>
 
