@@ -15,9 +15,13 @@
             </div>
             <div v-else class="viewer-item__prop">
                <div class="viewer-item__key">{{ node.text }}</div>
-               <div class="viewer-item__key">Topic: {{ node.data.objectKey.topic }}</div>
-               <div class="viewer-item__key">Value: {{ node.data.objectKey.value }}</div>
-               <div class="viewer-item__key">Update time: {{ format_time(node.data.objectKey.update_time) }}</div>
+               <div class="viewer-item__key__info">
+                  <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
+                  <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                  <div class="viewer-item__key__actions">
+                     <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
+                  </div>
+               </div>
             </div>
          </div>
       </tree>
@@ -29,20 +33,21 @@
 import Vue from 'Vue'
 import LiquorTree from 'liquor-tree'
 import moment from 'moment'
+import buttonTrash from "../components/buttons/button-trash.vue";
 
 export default {
    components: {
-      "tree": LiquorTree
+      "tree": LiquorTree,
+      buttonTrash
    },
-   props: ["json"],
+   props: ["json", "topicDelete"],
    data() {
       return {
          treeData: this.parser(this.json),
-         treeOptions: {}
+         treeOptions: {
+            paddingLeft: 10
+         }
       }
-   },
-   mounted: function() {
-      console.log('data', this.treeData)
    },
    methods: {
       isString(value) {
@@ -99,6 +104,7 @@ export default {
             obj.data = {
                'type': this.isArray(prop) ? 'array' : this.isPlainObject(prop) ? 'object' : 'unknown'
             }
+            obj.state = {expanded: false}
          } else {
             obj.data = {
                'objectKey': prop || `${prop}`,
@@ -145,3 +151,55 @@ export default {
 };
 
 </script>
+
+<style>
+.tree-content {
+   padding: 0 4px;
+}
+
+.tree-anchor {
+   line-height: 20px;
+}
+
+.tree-arrow {
+   height: 16px;
+   width: 16px;
+}
+
+.viewer-item,
+.viewer-item__prop {
+   width: 100%;
+}
+
+.tree-arrow:not(.has-child) {
+   display: none;
+}
+
+.viewer-item__prop {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.viewer-item__key__info {
+   display: flex;
+   align-items: center;
+}
+
+.viewer-item__key__info > * {
+   flex-shrink: 0;
+   text-align: center;
+}
+
+.viewer-item__key__value {
+   width: 300px;
+}
+
+.viewer-item__key__update {
+   width: 200px;
+}
+
+.viewer-item__key__actions {
+   width: 100px;
+}
+</style>

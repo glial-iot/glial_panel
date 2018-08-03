@@ -51,7 +51,7 @@
             </template>
          </v-data-table>
          <v-divider></v-divider>
-         <treeviewer :json="treeJson"></treeviewer>
+         <treeviewer :json="treeJson" :topicDelete="topic_delete"></treeviewer>
          <v-divider></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
