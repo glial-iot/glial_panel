@@ -133,10 +133,12 @@ export default {
     }
   },
   computed: mapState({
-    logs_visible: state => state.logs_visible
+    logs_visible: state => state.logs_visible,
+    editor_log_size: state => state.editor_log_size
   }),
   mounted: function() {
     window.addEventListener("resize", this.force_update);
+    this.pagination.rowsPerPage = this.editor_log_size
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
@@ -292,13 +294,11 @@ export default {
       return `${height}px`;
     },
     change_logs_size(dir) {
-      let increment = 1
-
+      let action = "increase_editor_log_size"
       if (dir === "-") {
-        increment = -1
+        action = "decrease_editor_log_size"
       }
-
-      this.pagination.rowsPerPage = this.pagination.rowsPerPage + increment
+      this.$store.dispatch(action);
     }
   },
   watch: {
@@ -339,6 +339,9 @@ export default {
       if (!oldValue && value) {
         this.saved = true;
       }
+    },
+    editor_log_size: function(value) {
+      this.pagination.rowsPerPage = value
     }
   }
 };
