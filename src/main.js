@@ -82,6 +82,7 @@ const store = new Vuex.Store({
       server_scheme: Vue.localStorage.get("server_scheme", "http"),
       server_history: Vue.localStorage.get("server_history") ? JSON.parse(Vue.localStorage.get("server_history")) : [],
       logs_visible: Vue.localStorage.get("logs_visible") !== null ? Vue.localStorage.get("logs_visible") === 'true' : true,
+      editor_log_size: parseInt(Vue.localStorage.get("editor_log_size", 6)),
       endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
@@ -121,6 +122,10 @@ const store = new Vuex.Store({
          
          state.server_history = newServers
          Vue.localStorage.set("server_history", JSON.stringify(newServers));
+      },
+      editor_log_size(state, size) {
+         state.editor_log_size = size
+         Vue.localStorage.set("editor_log_size", size);
       }
    },
    getters: {
@@ -143,6 +148,14 @@ const store = new Vuex.Store({
          commit("server_address", server.address)
          commit("server_port", server.port)
          commit("sort_server_history", server)
+      },
+      increase_editor_log_size: ({commit, state}) => {
+         const size = state.editor_log_size + 1
+         commit("editor_log_size", size)
+      },
+      decrease_editor_log_size: ({commit, state}) => {
+         const size = state.editor_log_size - 1
+         commit("editor_log_size", size)
       }
    }
 })
