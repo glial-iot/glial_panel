@@ -26,6 +26,10 @@
                      {{ props.item.name }}
                   </td>
 
+                  <td class="text-xs-left">
+                     {{ props.item.object }}
+                  </td>
+
                   <td class="justify-center text-xs-center cell-flex">
                      <button-info :item="props" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
@@ -108,6 +112,11 @@ export default {
       {
         text: "Name",
         value: "name",
+        align: "left"
+      },
+      {
+        text: "Object",
+        value: "object",
         align: "left"
       },
       {
