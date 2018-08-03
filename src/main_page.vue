@@ -1,7 +1,7 @@
 <template>
    <v-app id="inspire">
 
-      <v-navigation-drawer fixed app clipped disable-resize-watcher permanent touchless width=200>
+      <v-navigation-drawer fixed app clipped disable-resize-watcher permanent touchless width=150>
          <v-list dense>
             <v-list-tile v-for="item in menuitems" :to="{path: item.path}" :key="item.path">
                <v-list-tile-action>
@@ -14,7 +14,7 @@
          </v-list>
       </v-navigation-drawer>
 
-      <v-toolbar color="primary" dark app fixed clipped-left>
+      <v-toolbar color="primary" dark app fixed clipped-left height=48>
          <v-layout row wrap>
             <v-flex>
                <v-menu>
@@ -169,4 +169,16 @@ table.v-table thead tr {
   top: -4px !important;
   border-radius: 0;
 }  
+
+.v-navigation-drawer .v-list__tile {
+  padding: 0 12px;
+}
+
+.v-navigation-drawer .v-list__tile__action {
+  min-width: 36px;
+}
+
+.container {
+  padding: 12px;
+}
 </style>

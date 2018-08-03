@@ -3,7 +3,7 @@
       <v-card class="elevation-3">
          <v-card-title id="editor-card-title" class="py-1 px-1">
             <div class="text-xs-left">
-               <v-btn @click.native="$router.go(-1)">
+               <v-btn :small="true" @click.native="$router.go(-1)">
                   <v-icon left small>fa-arrow-left</v-icon> Back
                </v-btn>
             </div>
@@ -12,14 +12,22 @@
             <span class=".display-1"> {{this.type}} {{this.name}} </span>
             <v-spacer></v-spacer>
 
-            <div class="text-xs-left">
-               <v-btn @click.native="save_file">
+            <div class="text-xs-left buttons">
+               <v-btn :small="true" @click.native="save_file">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
-               <v-btn @click.native="toggle_logs_visible">
+               <v-btn :small="true" @click.native="toggle_logs_visible">
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
-               <v-btn @click.native="restart_script">
+               <div class="logs-size-block">
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')">
+                     <v-icon  :size="12">fa-arrow-up</v-icon>
+                  </v-btn>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')">
+                     <v-icon  :size="12">fa-arrow-down</v-icon>
+                  </v-btn>
+               </div>
+               <v-btn :small="true" @click.native="restart_script">
                   <v-icon left small>fa-sync</v-icon> Restart script
                </v-btn>
             </div>
@@ -52,9 +60,7 @@
                </template>
             </v-data-table>
             <v-flex v-if="pagination.totalItems > pagination.rowsPerPage" d-block>
-               <v-card class="no-shadow pagination-block">
-                  <v-pagination class="custom-pagination" v-model="pagination.page" :length="pages()"></v-pagination>
-               </v-card>
+               <v-pagination class="custom-pagination custom-pagination-hide-inactive" v-model="pagination.page" :length="pages()"></v-pagination>
             </v-flex>
          </v-card-text>
       </v-card>
@@ -127,10 +133,12 @@ export default {
     }
   },
   computed: mapState({
-    logs_visible: state => state.logs_visible
+    logs_visible: state => state.logs_visible,
+    editor_log_size: state => state.editor_log_size
   }),
   mounted: function() {
     window.addEventListener("resize", this.force_update);
+    this.pagination.rowsPerPage = this.editor_log_size
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
@@ -265,16 +273,16 @@ export default {
     editor_height: function() {
       const header_height = document.querySelector("nav.v-toolbar")
         ? document.querySelector("nav.v-toolbar").offsetHeight
-        : 64;
+        : 48;
       const editor_title_height = document.querySelector("#editor-card-title")
         ? document.querySelector("#editor-card-title").offsetHeight
         : 56;
       const logs_height =
         document.querySelector("#logs-card") &&
-        document.querySelector("#logs-card").offsetHeight > 100
-          ? document.querySelector("#logs-card").offsetHeight + 16
+        document.querySelector("#logs-card").offsetHeight > 51
+          ? document.querySelector("#logs-card").offsetHeight + 12
           : 217;
-      const content_padding = 48;
+      const content_padding = 24;
       let height =
         window.innerHeight -
         (header_height + editor_title_height + content_padding);
@@ -284,6 +292,13 @@ export default {
       }
 
       return `${height}px`;
+    },
+    change_logs_size(dir) {
+      let action = "increase_editor_log_size"
+      if (dir === "-") {
+        action = "decrease_editor_log_size"
+      }
+      this.$store.dispatch(action);
     }
   },
   watch: {
@@ -324,38 +339,57 @@ export default {
       if (!oldValue && value) {
         this.saved = true;
       }
+    },
+    editor_log_size: function(value) {
+      this.pagination.rowsPerPage = value
     }
   }
 };
 </script>
 
 <style>
-.pagination-block .v-pagination__navigation {
+.custom-pagination .v-pagination__navigation {
   height: 18px;
   width: 18px;
   margin-right: 4px;
   margin-left: 4px;
 }
 
-.pagination-block .v-pagination__navigation .v-icon {
+.custom-pagination .v-pagination__navigation .v-icon {
   font-size: 18px;
 }
 
-.pagination-block .v-pagination__item {
-  height: 24px;
-  width: 24px;
+.custom-pagination .v-pagination__item {
+  height: 20px;
+  width: 20px;
   font-size: 12px;
   margin: 2px;
+}
+
+.custom-pagination-hide-inactive .v-pagination__item:not(.v-pagination__item--active) {
+  display: none;
+}
+
+.custom-pagination-hide-inactive .v-pagination__item--active.primary {
+  color: #000;
+  background-color: #fff !important;
+  border-color: initial !important;
 }
 </style>
 
 <style scoped>
+.custom-pagination {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
 .logs-card {
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .logs-text {
   padding: 0;
+  position: relative;
 }
 
 .logs-title h3 {
@@ -375,5 +409,21 @@ table.v-table tbody th {
   display: flex;
   justify-content: space-around;
   padding: 4px;
+}
+
+.logs-size-block {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.logs-buttons {
+  min-width: auto;
+  height: auto;
+  margin: 2px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
 }
 </style>
