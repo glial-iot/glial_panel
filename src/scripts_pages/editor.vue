@@ -20,11 +20,11 @@
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
                <div class="logs-size-block">
-                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')">
-                     <v-icon  :size="12">fa-arrow-up</v-icon>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')" v-if="logs_visible">
+                     <v-icon :size="12">fa-arrow-up</v-icon>
                   </v-btn>
-                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')">
-                     <v-icon  :size="12">fa-arrow-down</v-icon>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')" v-if="logs_visible">
+                     <v-icon :size="12">fa-arrow-down</v-icon>
                   </v-btn>
                </div>
                <v-btn :small="true" @click.native="restart_script">
