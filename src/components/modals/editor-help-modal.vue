@@ -1,9 +1,42 @@
-<template>
+<template type:html>
    <div>
       <v-dialog :value="visible" max-width="500">
          <v-card>
-            <v-card-title class="headline">Script editor help</v-card-title>
-            <v-card-text>If you want to save the script, you need to press the button "Save".</v-card-text>
+            <v-card-title class="headline">Glue help</v-card-title>
+            <v-card-text>
+               <h2>Logging:</h2>
+               <b>log_info()</b>: the function of adding to the log record level "INFO"
+               <br>
+               <b>log_warning()</b>: the function of adding to the log record level "WARNING"
+               <br>
+               <b>log_error()</b>: the function of adding to the log record level "ERROR"
+               <br>
+               <b>log_user()</b>: the function of adding to the log record level "USER"
+               <br>
+               <b>log()</b>: alias for log_user()
+               <br>
+               <b>print()</b>: alias for log_user()
+               <br>
+               <br>
+               <h2>Scripts:</h2>
+               <b>_script_name</b>: variable with the name of the current script
+               <br>
+               <b>_script_uuid</b>: variable with uuid of the current script
+               <br>
+               <b>store</b>: A table unique for each script, for storing temporary data (for example, when you restart scripts). You can use it simply as a variable:
+               <br> store.value = 5
+               <br> print(store.value)
+               <br><br>
+               <h2>Work with bus:</h2>
+               <b>update_value(topic, value)</b>: Updates the topic "topic" with a value from the variable "value"
+               <br>
+               <b>shadow_update_value(topic, value)</b>: Updates topic "topic" value from the variable "value", but does not launch the event-scripts assigned to this topic
+               <br>
+               <b>get_value(topic)</b>: Gets the topic value "topic"
+               <br>
+               <b>bus_serialize(pattern)</b>: Gets the contents of the bus as a table. With the "pattern" variable, only the bus part can be selected.
+               <br>
+            </v-card-text>
          </v-card>
       </v-dialog>
    </div>
