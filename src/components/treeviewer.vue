@@ -1,30 +1,43 @@
 <template>
-   <div class="json-viewer">
-      <tree :data="treeData" :options="treeOptions">
-         <div slot-scope="{ node }" class="viewer-item" :class="[node.data.type]">
-            <div v-if="node.hasChildren()" class="viewer-item__key">
-               {{ node.text }}
-               <span v-if="node.collapsed()">
-                  <template v-if="node.data.type == 'array'">
-                     [ {{ node.children.length }} ]
-                  </template>
-                  <template v-else>
-                     { {{ node.children.length }} }
-                  </template>
-               </span>
-            </div>
-            <div v-else class="viewer-item__prop">
-               <div class="viewer-item__key">{{ node.text }}</div>
-               <div class="viewer-item__key__info">
-                  <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
-                  <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
-                  <div class="viewer-item__key__actions">
-                     <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
+   <div>
+      <div class="json-viewer-head">
+         <div>
+            <div class="json-viewer-header-cell">Topic</div>
+         </div>
+         <div class="viewer-item__key__info">
+            <div class="viewer-item__key__value json-viewer-header-cell">Value</div>
+            <div class="viewer-item__key__update json-viewer-header-cell">Update time</div>
+            <div class="viewer-item__key__actions json-viewer-header-cell">Actions</div>
+         </div>
+      </div>
+      <hr class="v-divider">
+      <div class="json-viewer">
+         <tree :data="treeData" :options="treeOptions">
+            <div slot-scope="{ node }" class="viewer-item" :class="[node.data.type]">
+               <div v-if="node.hasChildren()" class="viewer-item__key">
+                  {{ node.text }}
+                  <span v-if="node.collapsed()">
+                     <template v-if="node.data.type == 'array'">
+                        [ {{ node.children.length }} ]
+                     </template>
+                     <template v-else>
+                        { {{ node.children.length }} }
+                     </template>
+                  </span>
+               </div>
+               <div v-else class="viewer-item__prop">
+                  <div class="viewer-item__key">{{ node.text }}</div>
+                  <div class="viewer-item__key__info">
+                     <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
+                     <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                     <div class="viewer-item__key__actions">
+                        <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
-      </tree>
+         </tree>
+      </div>
    </div>
 </template>
 
@@ -153,12 +166,16 @@ export default {
 </script>
 
 <style>
+.json-viewer {
+   font-size: 13px;
+}
+
 .tree-content {
    padding: 0 4px;
 }
 
 .tree-anchor {
-   line-height: 20px;
+   line-height: 18px;
 }
 
 .tree-arrow {
@@ -191,17 +208,31 @@ export default {
 }
 
 .viewer-item__key__value {
-   width: 300px;
+   width: 150px;
    text-align: left;
 }
 
 .viewer-item__key__update {
-   width: 200px;
+   width: 150px;
    text-align: left;
 }
 
 .viewer-item__key__actions {
    width: 100px;
    text-align: center;
+}
+
+.json-viewer-head {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 0 14px;
+}
+
+.json-viewer-header-cell {
+   padding: 4px 0;
+   color: rgba(0,0,0,.54);
+   font-weight: 500;
+   font-size: 12px;
 }
 </style>

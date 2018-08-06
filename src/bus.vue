@@ -57,6 +57,38 @@
             </template>
          </v-data-table>
          <v-divider></v-divider>
+         <v-divider></v-divider>
+         <v-card-title class="py-0 px-0 small_title">
+            <v-spacer></v-spacer>
+            <span class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
+         </v-card-title>
+      </v-card>
+
+      <v-card class="elevation-3">
+         <v-card-title class="py-1 px-1">
+            <div class="pl-2">
+               <v-btn-toggle v-model="update_interval">
+                  <v-btn flat value="500">0.5s</v-btn>
+                  <v-btn flat value="1000">1s</v-btn>
+                  <v-btn flat value="2000">2s</v-btn>
+                  <v-btn flat value="5000">5s</v-btn>
+                  <v-btn flat value="0">None</v-btn>
+               </v-btn-toggle>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+               <v-btn value="selected" @click="topic_delete(all_tsdb)">
+                  <v-icon color="pink" left>fa-trash-alt</v-icon> Delete all from Bus
+               </v-btn>
+               <v-btn value="selected" @click="tsdb_set(all_tsdb)">
+                  <v-icon color="green" left>fa-download</v-icon> All TSDB
+               </v-btn>
+               <v-btn value="selected" @click="tsdb_set(none_tsdb)">
+                  <v-icon color="grey" left>fa-download</v-icon> None TSDB
+               </v-btn>
+            </div>
+         </v-card-title>
+         <v-divider></v-divider>
          <treeviewer :json="treeJson" :topicDelete="topic_delete"></treeviewer>
          <v-divider></v-divider>
          <v-card-title class="py-0 px-0 small_title">
@@ -259,6 +291,10 @@ export default {
 
 .cell-flex {
   display: flex;
+}
+
+.elevation-3 + .elevation-3 {
+  margin-top: 12px;
 }
 </style>
 
