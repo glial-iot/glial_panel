@@ -45,17 +45,22 @@
          <v-divider> </v-divider>
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
-               <v-flex md4 justify-center>
+               <v-flex md3 justify-center>
+                  <v-btn color="secondary" @click="topic_delete()">
+                     <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
+                  </v-btn>
+               </v-flex>
+               <v-flex md3 justify-center>
                   <v-btn color="secondary" @click="$refs.confirm_modal.show()">
                      <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
                   </v-btn>
                </v-flex>
-               <v-flex md4 justify-center>
+               <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
                      <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
                   </v-btn>
                </v-flex>
-               <v-flex md4 justify-center>
+               <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('update')">
                      <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
                   </v-btn>
@@ -132,7 +137,23 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Network error");
         });
-    }
+    },
+    topic_delete(item) {
+      Vue.axios
+        .get(this.$store.getters.server_url + "/system_bus", {
+          params: {
+            action: "delete_topics",
+            topic: "*"
+          }
+        })
+        .then(response => {
+          this.$refs.snackbar.update("");
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Delete topic: network error");
+        });
+    },
   }
 };
 </script>
