@@ -31,7 +31,8 @@
         "vue-timers": "^1.7.3",
         "vue2-ace-editor": "0.0.10",
         "vuetify": "^1.1.1",
-        "vuex": "^3.0.1"
+        "vuex": "^3.0.1",
+        "git-revision-webpack-plugin": "^2.5.1"
     },
     "browserslist": [
         "> 1%",
