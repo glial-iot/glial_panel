@@ -12,6 +12,17 @@
                </v-list-tile-content>
             </v-list-tile>
          </v-list>
+         <div class="version-block">
+            <div class="version-row">
+               Glue: {{backend_version}}
+            </div>
+            <div class="version-row">
+               GApp: {{frontend_version}}
+            </div>
+            <div class="version-row">
+               2018 © Nokia IoT Laboratory
+            </div>
+         </div>
       </v-navigation-drawer>
 
       <v-toolbar color="primary" dark app fixed clipped-left height=48>
@@ -55,6 +66,11 @@
 </template>
 
 <script>
+import Vue from "vue";
+import Axios from "axios";
+import VueAxios from "vue-axios";
+Vue.use(VueAxios, Axios);
+
 import { mapState } from "vuex";
 
 let menu = [
@@ -104,7 +120,9 @@ let menu = [
 
 export default {
   data: () => ({
-    menuitems: menu
+    menuitems: menu,
+    frontend_version: VERSION,
+    backend_version: ''
   }),
   computed: mapState({
     server_scheme: state => state.server_scheme,
@@ -112,9 +130,30 @@ export default {
     server_port: state => state.server_port,
     server_history: state => state.server_history
   }),
+  mounted: function() {
+    this.get_backend_version();
+  },
   methods: {
     change_server(server) {
       this.$store.dispatch("change_server", server);
+    },
+    get_backend_version() {
+      Vue.axios
+        .get(this.$store.getters.server_url + "/system_event", {
+          params: {
+            action: "get_git_version"
+          }
+        })
+        .then(response => {
+          if (response.data && response.data.version) {
+            this.backend_version = response.data.version
+          } else {
+            throw new Error('Cant find version')
+          }
+        })
+        .catch(error => {
+          console.log('error while getting backend version', error);
+        });
     }
   }
 };
@@ -164,6 +203,12 @@ table.v-table thead tr {
   border-radius: 0;
 }
 
+.v-navigation-drawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .v-navigation-drawer .v-list__tile {
   padding: 0 12px;
 }
@@ -174,5 +219,16 @@ table.v-table thead tr {
 
 .container {
   padding: 12px;
+}
+
+.version-block {
+   display: flex;
+   flex-direction: column;
+   padding: 8px;
+   font-size: 10px;
+}
+
+.version-row {
+   white-space: nowrap;
 }
 </style>
