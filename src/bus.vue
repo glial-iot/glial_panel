@@ -11,9 +11,13 @@
                   <v-btn flat value="0">None</v-btn>
                </v-btn-toggle>
             </div>
-
             <v-spacer></v-spacer>
-
+            <div class="pr-2">
+               <v-btn-toggle v-model="bus_type">
+                  <v-btn flat value="tree">Tree View</v-btn>
+                  <v-btn flat value="linear">Linear View</v-btn>
+               </v-btn-toggle>
+            </div>
             <div>
                <v-btn value="selected" @click="tsdb_set(all_tsdb)">
                   <v-icon color="green" left>fa-download</v-icon> All TSDB
@@ -23,11 +27,8 @@
                </v-btn>
             </div>
          </v-card-title>
-
          <v-divider></v-divider>
-
-         <v-data-table :headers="headers" :items="bus_values" hide-actions class="no-scroll">
-
+         <v-data-table v-if="bus_type === 'linear'" :headers="headers" :items="bus_values" hide-actions class="no-scroll">
             <template slot="items" slot-scope="props">
                <tr :class="props.item.new_attr ? 'row-new' : ''">
                   <td class="text-xs-left">
@@ -53,40 +54,7 @@
                </tr>
             </template>
          </v-data-table>
-         <v-divider></v-divider>
-         <v-divider></v-divider>
-         <v-card-title class="py-0 px-0 small_title">
-            <v-spacer></v-spacer>
-            <span class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
-         </v-card-title>
-      </v-card>
-
-      <v-card class="elevation-3">
-         <v-card-title class="py-1 px-1">
-            <div class="pl-2">
-               <v-btn-toggle v-model="update_interval">
-                  <v-btn flat value="500">0.5s</v-btn>
-                  <v-btn flat value="1000">1s</v-btn>
-                  <v-btn flat value="2000">2s</v-btn>
-                  <v-btn flat value="5000">5s</v-btn>
-                  <v-btn flat value="0">None</v-btn>
-               </v-btn-toggle>
-            </div>
-            <v-spacer></v-spacer>
-            <div>
-               <v-btn value="selected" @click="topic_delete(all_tsdb)">
-                  <v-icon color="pink" left>fa-trash-alt</v-icon> Delete all from Bus
-               </v-btn>
-               <v-btn value="selected" @click="tsdb_set(all_tsdb)">
-                  <v-icon color="green" left>fa-download</v-icon> All TSDB
-               </v-btn>
-               <v-btn value="selected" @click="tsdb_set(none_tsdb)">
-                  <v-icon color="grey" left>fa-download</v-icon> None TSDB
-               </v-btn>
-            </div>
-         </v-card-title>
-         <v-divider></v-divider>
-         <treeviewer :json="treeJson" :topicDelete="topic_delete"></treeviewer>
+         <treeviewer v-if="bus_type === 'tree'" :json="treeJson" :topicDelete="topic_delete"></treeviewer>
          <v-divider></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
@@ -105,6 +73,8 @@ Vue.use(VueTimers);
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+
+import { mapState } from "vuex";
 
 import snackbar from "./components/snackbar.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
@@ -166,6 +136,17 @@ export default {
       }
     ]
   }),
+
+  computed: {
+    bus_type: {
+      get() { 
+        return this.$store.state.bus_type; 
+      },
+      set(value) { 
+        this.$store.commit('bus_type', value); 
+      },
+    },
+  },
 
   beforeRouteLeave(to, from, next) {
     this.$timer.stop("table_update");
@@ -269,7 +250,10 @@ export default {
         }
       }
       return values;
-    }
+    },
+    set_bus_type: function(type) {
+      this.$store.commit("bus_type", type);
+    },
   }
 };
 </script>
@@ -288,10 +272,6 @@ export default {
 
 .cell-flex {
   display: flex;
-}
-
-.elevation-3 + .elevation-3 {
-  margin-top: 12px;
 }
 </style>
 
