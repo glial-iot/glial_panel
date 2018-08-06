@@ -13,6 +13,9 @@
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
+               <v-btn :small="true" @click.native="$refs.help.show()">
+                  <v-icon left small>fa-question-circle</v-icon> Help
+               </v-btn>
                <v-btn :small="true" @click.native="save_file">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
@@ -66,6 +69,7 @@
       </v-card>
 
       <snackbar ref="snackbar"></snackbar>
+      <editor-help-modal ref="help"></editor-help-modal>
    </div>
 </template>
 
@@ -80,6 +84,7 @@ Vue.use(VueTimers);
 import { mapState } from "vuex";
 
 import snackbar from "../components/snackbar.vue";
+import editorHelpModal from "../components/modals/editor-help-modal.vue";
 import editor from "../brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
@@ -122,7 +127,8 @@ export default {
   }),
   components: {
     editor,
-    snackbar
+    snackbar,
+    editorHelpModal
   },
   timers: {
     get_logs: {
