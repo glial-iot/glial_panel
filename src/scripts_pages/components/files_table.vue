@@ -16,10 +16,10 @@
                <tr :key="props.item.uuid">
 
                   <td class="text-xs-center">
-                     <v-icon color="green" small v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">fa-check-circle</v-icon>
-                     <v-icon color="yellow darken-1" small v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">fa-exclamation-circle</v-icon>
-                     <v-icon color="red" small v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">fa-times-circle</v-icon>
-                     <v-icon color="grey" small v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">fa-dot-circle</v-icon>
+                     <icon-normal v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">fa-check-circle</icon-normal>
+                     <icon-warning v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">fa-exclamation-circle</icon-warning>
+                     <icon-error v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">fa-times-circle</icon-error>
+                     <icon-stopped v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">fa-dot-circle</icon-stopped>
                   </td>
 
                   <td class="text-xs-left">
@@ -93,13 +93,21 @@ import file_create_form from "./file_create_form.vue";
 import script_details from "./script_details.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import iconError from "../../components/icons/icon-status-error.vue";
+import iconNormal from "../../components/icons/icon-status-normal.vue";
+import iconStopped from "../../components/icons/icon-status-stopped.vue";
+import iconWarning from "../../components/icons/icon-status-warning.vue";
 
 export default {
   components: {
     "file-create-form": file_create_form,
     "script-details": script_details,
     snackbar,
-    buttonInfo
+    buttonInfo,
+    iconError,
+    iconNormal,
+    iconStopped,
+    iconWarning
   },
   data: () => ({
     headers: [
