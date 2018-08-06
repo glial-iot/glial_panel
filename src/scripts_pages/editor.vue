@@ -27,7 +27,7 @@
                      <v-icon :size="12">fa-arrow-down</v-icon>
                   </v-btn>
                </div>
-               <v-btn :small="true" @click.native="restart_script">
+               <v-btn :small="true" @click.native="save_and_restart">
                   <v-icon left small>fa-sync</v-icon> Save and restart script
                </v-btn>
             </div>
