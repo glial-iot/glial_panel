@@ -36,16 +36,22 @@
                   <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div>
                   </td>
-                  <td class="text-xs-left">
+                  <td class="text-xs-right">
                      <div class="ellipsis" :title="props.item.value">{{ props.item.value }}</div>
                   </td>
                   <td class="text-xs-left">
-                     <div class="ellipsis" :title="props.item.timestamp">{{ props.item.timestamp }}</div>
+                     <div class="ellipsis" :title="props.item.type">{{ props.item.type }}</div>
+                  </td>
+                  <td class="text-xs-center">
+                     <div class="ellipsis" :title="props.item.tags">{{ props.item.tags }}</div>
+                  </td>
+                  <td class="text-xs-left">
+                     <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
                   </td>
                   <td class="justify-center text-xs-center cell-flex">
-                     <button-trash @click="topic_delete(props.item)"></button-trash>
-                     <button-download v-show="props.item.tsdb_save" @click="tsdb_set(props.item)"></button-download>
-                     <button-download-disabled v-show="!props.item.tsdb_save" @click="tsdb_set(props.item)"></button-download-disabled>
+                     <button-trash @click.native="topic_delete(props.item)"></button-trash>
+                     <button-download v-show="props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download>
+                     <button-download-disabled v-show="!props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download-disabled>
                   </td>
                </tr>
             </template>
@@ -89,26 +95,40 @@ export default {
     treeJson: require('./system_bus_action.json'),
     update_interval: "2000",
     bus_values: [],
-    all_tsdb: { topic: "*", tsdb_save: false },
-    none_tsdb: { topic: "*", tsdb_save: true },
+    all_tsdb: { topic: "*", tsdb: false },
+    none_tsdb: { topic: "*", tsdb: true },
     headers: [
       {
         text: "Topic",
         value: "topic",
-        align: "left",
-        width: "50%"
+        align: "left"
       },
       {
         text: "Value",
         value: "value",
         sortable: false,
+        align: "right",
+        width: "15%"
+      },
+      {
+        text: "Type",
+        value: "type",
+        sortable: false,
+        align: "left",
         width: "10%"
       },
       {
-        text: "Update time",
-        value: "timestamp",
+        text: "Tags",
+        value: "value",
+        sortable: false,
         align: "center",
-        width: "30%"
+        width: "5%"
+      },
+      {
+        text: "Update time",
+        value: "text_time",
+        align: "center",
+        width: "28%"
       },
       {
         text: "Actions",
@@ -145,16 +165,17 @@ export default {
 
   methods: {
     tsdb_set(item) {
+      console.log(item);
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus_action", {
+        .get(this.$store.getters.server_url + "/system_bus", {
           params: {
             action: "update_tsdb_attribute",
             topic: item.topic,
-            value: !item.tsdb_save
+            value: !item.tsdb
           }
         })
         .then(response => {
-          if (item.topic !== "*") item.tsdb_save = !item.tsdb_save;
+          if (item.topic !== "*") item.tsdb = !item.tsdb;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
@@ -164,7 +185,7 @@ export default {
     },
     topic_delete(item) {
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus_action", {
+        .get(this.$store.getters.server_url + "/system_bus", {
           params: {
             action: "delete_topics",
             topic: item.topic
@@ -181,10 +202,14 @@ export default {
     },
     table_update() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus_data")
+        .get(this.$store.getters.server_url + "/system_bus", {
+          params: {
+            action: "get_bus"
+          }
+        })
         .then(response => {
           this.bus_values = this.set_update_attr(response.data);
-          //console.log(this.bus_values)
+          //console.log(this.bus_values);
           this.$timer.stop("table_update");
           if (+this.update_interval > 0) {
             this.timers.table_update.time = +this.update_interval;

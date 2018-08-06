@@ -31,7 +31,7 @@
 
 <script>
 import Vue from "vue";
-import {nl2br} from "../utils/index.js";
+import { nl2br } from "../utils/index.js";
 
 export default {
   data: () => ({
@@ -54,7 +54,7 @@ export default {
       this.visible = true;
     },
     format_text(text) {
-      return nl2br(text)
+      return nl2br(text);
     }
   }
 };

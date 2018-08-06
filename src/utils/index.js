@@ -1,6 +1,6 @@
 export function nl2br(str, is_xhtml) {
    if (typeof str === "undefined" || str === null) {
-     return "";
+      return "";
    }
 
    var breakTag = is_xhtml || typeof is_xhtml === "undefined" ? "<br />" : "<br>";

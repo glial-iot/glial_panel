@@ -20,15 +20,15 @@
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
                <div class="logs-size-block">
-                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')">
-                     <v-icon  :size="12">fa-arrow-up</v-icon>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')" v-if="logs_visible">
+                     <v-icon :size="12">fa-arrow-up</v-icon>
                   </v-btn>
-                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')">
-                     <v-icon  :size="12">fa-arrow-down</v-icon>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')" v-if="logs_visible">
+                     <v-icon :size="12">fa-arrow-down</v-icon>
                   </v-btn>
                </div>
                <v-btn :small="true" @click.native="restart_script">
-                  <v-icon left small>fa-sync</v-icon> Restart script
+                  <v-icon left small>fa-sync</v-icon> Save and restart script
                </v-btn>
             </div>
 
@@ -102,14 +102,14 @@ export default {
         value: "level",
         align: "center",
         sortable: false,
-        width: "15%"
+        width: "10%"
       },
       {
         text: "Date",
         value: "date",
         align: "center",
         sortable: false,
-        width: "30%"
+        width: "15%"
       },
       {
         text: "Entry",
@@ -138,7 +138,7 @@ export default {
   }),
   mounted: function() {
     window.addEventListener("resize", this.force_update);
-    this.pagination.rowsPerPage = this.editor_log_size
+    this.pagination.rowsPerPage = this.editor_log_size;
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
@@ -231,6 +231,29 @@ export default {
           this.$refs.snackbar.update("Load file: network error");
         });
     },
+    save_and_restart: function() {
+      let data = new Blob([this.prev_content], {
+        type: "text/plain"
+      });
+      let reader = new FileReader();
+      reader.readAsDataURL(data);
+      reader.onload = () => {
+        Vue.axios
+          .post(
+            this.$store.getters.server_url + "/scripts_body?uuid=" + this.uuid,
+            reader.result
+          )
+          .then(response => {
+            this.$refs.snackbar.update("File saved", "success", 3000);
+            this.saved = true;
+            this.restart_script();
+          })
+          .catch(error => {
+            this.$refs.snackbar.update("File not saved");
+            console.log(error);
+          });
+      };
+    },
     restart_script: function() {
       this.$store.commit("logs_visible", true);
 
@@ -294,9 +317,9 @@ export default {
       return `${height}px`;
     },
     change_logs_size(dir) {
-      let action = "increase_editor_log_size"
+      let action = "increase_editor_log_size";
       if (dir === "-") {
-        action = "decrease_editor_log_size"
+        action = "decrease_editor_log_size";
       }
       this.$store.dispatch(action);
     }
@@ -341,7 +364,7 @@ export default {
       }
     },
     editor_log_size: function(value) {
-      this.pagination.rowsPerPage = value
+      this.pagination.rowsPerPage = value;
     }
   }
 };
@@ -366,7 +389,8 @@ export default {
   margin: 2px;
 }
 
-.custom-pagination-hide-inactive .v-pagination__item:not(.v-pagination__item--active) {
+.custom-pagination-hide-inactive
+  .v-pagination__item:not(.v-pagination__item--active) {
   display: none;
 }
 

@@ -2,7 +2,9 @@
    <v-dialog :value="visible" persistent max-width="290">
       <v-card>
          <v-card-title class="headline">Server Response</v-card-title>
-         <v-card-text><span v-html="format_text(message)"></span></v-card-text>
+         <v-card-text>
+            <span v-html="format_text(message)"></span>
+         </v-card-text>
          <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" flat @click="hide()">Close</v-btn>
@@ -13,7 +15,7 @@
 
 
 <script>
-import {nl2br} from "../../utils/index.js";
+import { nl2br } from "../../utils/index.js";
 
 export default {
   data: () => ({
@@ -29,7 +31,7 @@ export default {
       this.visible = false;
     },
     format_text(text) {
-      return nl2br(text)
+      return nl2br(text);
     }
   }
 };

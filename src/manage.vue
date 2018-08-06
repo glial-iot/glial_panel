@@ -47,7 +47,7 @@
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md4 justify-center>
                   <v-btn color="secondary" @click="$refs.confirm_modal.show()">
-                    <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
                   </v-btn>
                </v-flex>
                <v-flex md4 justify-center>
@@ -60,9 +60,12 @@
                      <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
                   </v-btn>
                </v-flex>
+
             </v-layout>
+            <backups ref="backups"></backups>
          </v-form>
       </v-card>
+
       <snackbar ref="snackbar"></snackbar>
       <server-response-modal ref="server_response_modal"></server-response-modal>
       <confirm-modal ref="confirm_modal"></confirm-modal>
@@ -77,6 +80,9 @@ import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
 
+import backups from "./backups.vue";
+Vue.component("backups", backups);
+
 export default {
   components: {
     snackbar,
@@ -88,7 +94,7 @@ export default {
       server_address: "",
       server_port: "",
       server_scheme: "",
-      scheme_items: ["http", "https"],
+      scheme_items: ["http", "https"]
     };
   },
 
@@ -116,7 +122,7 @@ export default {
         })
         .then(response => {
           console.log(response.data.msg);
-          if (action === 'update') {
+          if (action === "update") {
             this.$refs.server_response_modal.show(response.data.msg);
           } else {
             this.$refs.snackbar.update(response.data.msg, "success", 5000);
