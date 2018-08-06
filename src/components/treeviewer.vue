@@ -188,18 +188,20 @@ export default {
 
 .viewer-item__key__info > * {
    flex-shrink: 0;
-   text-align: center;
 }
 
 .viewer-item__key__value {
    width: 300px;
+   text-align: left;
 }
 
 .viewer-item__key__update {
    width: 200px;
+   text-align: left;
 }
 
 .viewer-item__key__actions {
    width: 100px;
+   text-align: center;
 }
 </style>
