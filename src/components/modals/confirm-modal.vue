@@ -3,11 +3,11 @@
       <v-dialog :value="visible" persistent max-width="290">
          <v-card>
             <v-card-title class="headline">Confirm wipe</v-card-title>
-            <v-card-text>Do you want to wipe storage and stop the server?</v-card-text>
+            <v-card-text>Do you want to delete database and storage? <br> All scripts, logs, data bus will be deleted! <br> Backups will not be deleted</v-card-text>
             <v-card-actions>
+               <v-btn color="error" flat @click="wipe()">Wipe</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="green darken-1" flat @click="hide()">No</v-btn>
-               <v-btn color="green darken-1" flat @click="wipe()">Yes</v-btn>
+               <v-btn color="green darken-1" dark @click="hide()">No</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
