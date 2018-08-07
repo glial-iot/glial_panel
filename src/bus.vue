@@ -14,8 +14,8 @@
             <v-spacer></v-spacer>
             <div class="pr-2">
                <v-btn-toggle v-model="bus_type">
-                  <v-btn flat value="tree">Tree View</v-btn>
-                  <v-btn flat value="linear">Linear View</v-btn>
+                  <v-btn flat :value="BUS_TYPE_TREE">Tree View</v-btn>
+                  <v-btn flat :value="BUS_TYPE_LINEAR">Linear View</v-btn>
                </v-btn-toggle>
             </div>
             <div>
@@ -28,7 +28,7 @@
             </div>
          </v-card-title>
          <v-divider></v-divider>
-         <v-data-table v-if="bus_type === 'linear'" :headers="headers" :items="bus_values" hide-actions class="no-scroll">
+         <v-data-table v-if="bus_type === BUS_TYPE_LINEAR" :headers="headers" :items="bus_values" hide-actions class="no-scroll">
             <template slot="items" slot-scope="props">
                <tr :class="props.item.new_attr ? 'row-new' : ''">
                   <td class="text-xs-left">
@@ -54,11 +54,11 @@
                </tr>
             </template>
          </v-data-table>
-         <treeviewer v-if="bus_type === 'tree'" :json="treeJson" :topicDelete="topic_delete"></treeviewer>
+         <treeviewer v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete"></treeviewer>
          <v-divider></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
-            <span class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
+            <span v-if="bus_type === BUS_TYPE_LINEAR" class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
          </v-card-title>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
@@ -74,7 +74,7 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import { mapState } from "vuex";
+import { BUS_TYPE_LINEAR, BUS_TYPE_TREE } from "./utils/constants.js";
 
 import snackbar from "./components/snackbar.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
@@ -91,7 +91,8 @@ export default {
     treeviewer
   },
   data: () => ({
-    treeJson: require('./system_bus_action.json'),
+    BUS_TYPE_LINEAR,
+    BUS_TYPE_TREE,
     update_interval: "2000",
     bus_values: [],
     all_tsdb: { topic: "*", tsdb: false },
@@ -163,6 +164,9 @@ export default {
         this.timers.table_update.time = +this.update_interval;
         this.table_update();
       }
+    },
+    bus_type() {
+      this.bus_values = []
     }
   },
 
@@ -211,14 +215,22 @@ export default {
         });
     },
     table_update() {
+      let action = "get_bus"
+
+      if (this.bus_type === BUS_TYPE_TREE) {
+        action = "get_bus_serialized"
+      }
+
       Vue.axios
         .get(this.$store.getters.server_url + "/system_bus", {
-          params: {
-            action: "get_bus"
-          }
+          params: {action}
         })
         .then(response => {
-          this.bus_values = this.set_update_attr(response.data);
+          if (this.bus_type === BUS_TYPE_TREE) {
+            this.bus_values = response.data
+          } else {
+            this.bus_values = this.set_update_attr(response.data);
+          }
           //console.log(this.bus_values);
           this.$timer.stop("table_update");
           if (+this.update_interval > 0) {
@@ -250,9 +262,6 @@ export default {
         }
       }
       return values;
-    },
-    set_bus_type: function(type) {
-      this.$store.commit("bus_type", type);
     },
   }
 };

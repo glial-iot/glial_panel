@@ -12,7 +12,7 @@
       </div>
       <hr class="v-divider">
       <div class="json-viewer">
-         <tree :data="treeData" :options="treeOptions">
+         <tree ref="tree" :data="treeData" :options="treeOptions">
             <div slot-scope="{ node }" class="viewer-item" :class="[node.data.type]">
                <div v-if="node.hasChildren()" class="viewer-item__key">
                   {{ node.text }}
@@ -56,13 +56,28 @@ export default {
    props: ["json", "topicDelete"],
    data() {
       return {
-         treeData: this.parser(this.json),
          treeOptions: {
             paddingLeft: 10
          }
       }
    },
+   computed: {
+      treeData: function() {
+         return this.parser(this.json)
+      }
+   },
+   watch: {
+      treeData: function(value) {
+         const tree = this.$refs.tree.tree
+         let model = tree.parse(value)
+         this.$set(this.$refs.tree, 'model', model)
+         tree.setModel(model)
+      }
+   },
    methods: {
+      isObjectEmpty(obj) {
+         return Object.keys(obj).length === 0
+      },
       isString(value) {
          return 'string' == typeof value
       },
@@ -150,6 +165,10 @@ export default {
          }
       },
       parser(obj) {
+         if (this.isObjectEmpty(obj)) {
+            return
+         }
+
          return [{
             text: 'root',
             state: {expanded: true},
