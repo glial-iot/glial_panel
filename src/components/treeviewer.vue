@@ -56,20 +56,17 @@ export default {
    props: ["json", "topicDelete"],
    data() {
       return {
+         treeData: this.parser(this.json),
          treeOptions: {
             paddingLeft: 10
          }
       }
    },
-   computed: {
-      treeData: function() {
-         return this.parser(this.json)
-      }
-   },
    watch: {
-      treeData: function(value) {
+      json: function() {
+         this.treeData = this.parser(this.json)
          const tree = this.$refs.tree.tree
-         let model = tree.parse(value)
+         let model = tree.parse(this.treeData)
          this.$set(this.$refs.tree, 'model', model)
          tree.setModel(model)
       }
@@ -132,7 +129,6 @@ export default {
             obj.data = {
                'type': this.isArray(prop) ? 'array' : this.isPlainObject(prop) ? 'object' : 'unknown'
             }
-            obj.state = {expanded: false}
          } else {
             obj.data = {
                'objectKey': prop || `${prop}`,
