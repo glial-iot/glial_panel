@@ -227,7 +227,7 @@ export default {
         })
         .then(response => {
           if (this.bus_type === BUS_TYPE_TREE) {
-            this.bus_values = response.data
+            this.bus_values = response.data.bus
           } else {
             this.bus_values = this.set_update_attr(response.data);
           }

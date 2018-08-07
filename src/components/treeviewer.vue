@@ -166,9 +166,9 @@ export default {
          }
 
          return [{
-            text: 'root',
+            text: 'bus',
             state: {expanded: true},
-            data: {type: 'root'},
+            data: {type: 'bus'},
             children: this.map(obj, this.transformObject)
          }]
       },
