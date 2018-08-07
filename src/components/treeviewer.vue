@@ -187,6 +187,7 @@ export default {
 
 .tree-content {
    padding: 0 4px;
+   border-bottom: 1px solid rgba(0,0,0,.12);
 }
 
 .tree-anchor {
@@ -249,5 +250,9 @@ export default {
    color: rgba(0,0,0,.54);
    font-weight: 500;
    font-size: 12px;
+}
+
+.tree-root {
+   padding: 0 !important;
 }
 </style>

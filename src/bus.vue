@@ -55,7 +55,7 @@
             </template>
          </v-data-table>
          <treeviewer v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete"></treeviewer>
-         <v-divider></v-divider>
+         <v-divider v-if="bus_type === BUS_TYPE_LINEAR"></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
             <span v-if="bus_type === BUS_TYPE_LINEAR" class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
