@@ -121,7 +121,7 @@ export default {
         value: "value",
         sortable: false,
         align: "center",
-        width: "5%"
+        width: "10%"
       },
       {
         text: "Update time",
