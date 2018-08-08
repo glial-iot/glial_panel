@@ -37,6 +37,7 @@
             </v-layout>
          </v-form>
       </v-card>
+      <export-block></export-block>
       <v-card class="mt-3">
          <v-card-title>
             <v-icon>fa-cogs</v-icon>
@@ -85,16 +86,17 @@ import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
 import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue"
-
 import backups from "./backups.vue";
-Vue.component("backups", backups);
+import exportBlock from "./components/blocks/manage/export.vue";
 
 export default {
   components: {
     snackbar,
     serverResponseModal,
     confirmModal,
-    resetBusModal
+    resetBusModal,
+    backups,
+    exportBlock
   },
   data() {
     return {
@@ -104,13 +106,11 @@ export default {
       scheme_items: ["http", "https"]
     };
   },
-
   created: function() {
     this.server_address = this.$store.state.server_address;
     this.server_port = this.$store.state.server_port;
     this.server_scheme = this.$store.state.server_scheme;
   },
-
   methods: {
     update() {
       this.$store.dispatch("update_server_address", {
@@ -139,8 +139,24 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Network error");
         });
+    },
+    topic_delete(item) {
+      Vue.axios
+        .get(this.$store.getters.server_url + "/system_bus", {
+          params: {
+            action: "delete_topics",
+            topic: "*"
+          }
+        })
+        .then(response => {
+          this.$refs.snackbar.update("");
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Delete topic: network error");
+        });
     }
-  }
+  },
 };
 </script>
 
