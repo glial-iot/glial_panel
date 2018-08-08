@@ -26,7 +26,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="bus_values" hide-actions class="no-scroll">
+         <v-data-table :headers="headers" :items="bus_values" hide-actions class="no-scroll bus-table">
 
             <template slot="items" slot-scope="props">
                <tr :class="props.item.new_attr ? 'row-new' : ''">
@@ -127,12 +127,12 @@ export default {
         text: "Update time",
         value: "text_time",
         align: "center",
-        width: "28%"
+        width: "280px"
       },
       {
         text: "Actions",
         sortable: false,
-        width: "10%"
+        width: "136px"
       }
     ]
   }),
@@ -244,9 +244,6 @@ export default {
 };
 </script>
 
-<style>
-</style>
-
 <style scoped>
 .row-new {
   background-color: rgb(155, 204, 255);
@@ -258,6 +255,11 @@ export default {
 
 .cell-flex {
   display: flex;
+}
+
+.bus-table table.v-table tbody td:not(:first-child), 
+.bus-table table.v-table thead th:not(:first-child) {
+   padding: 0 4px;
 }
 </style>
 
