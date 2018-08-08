@@ -257,9 +257,9 @@ export default {
   display: flex;
 }
 
-.bus-table table.v-table tbody td:not(:first-child), 
+.bus-table table.v-table tbody td:not(:first-child),
 .bus-table table.v-table thead th:not(:first-child) {
-   padding: 0 4px;
+  padding: 0 4px;
 }
 </style>
 
