@@ -46,6 +46,7 @@
                      <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
                   </td>
                   <td class="justify-center text-xs-center cell-flex">
+                     <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
                      <button-trash @click.native="topic_delete(props.item)"></button-trash>
                      <button-download v-show="props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download>
                      <button-download-disabled v-show="!props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download-disabled>
@@ -61,6 +62,7 @@
          </v-card-title>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
+      <edit-bus-modal ref="edit_bus"></edit-bus-modal>
    </div>
 </template>
 
@@ -74,16 +76,20 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import snackbar from "./components/snackbar.vue";
+import editBusModal from "./components/modals/edit-bus-modal.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
 import buttonDownload from "./components/buttons/button-download.vue";
 import buttonDownloadDisabled from "./components/buttons/button-download-disabled.vue";
+import buttonInfo from "./components/buttons/button-info.vue";
 
 export default {
   components: {
     snackbar,
     buttonTrash,
     buttonDownload,
-    buttonDownloadDisabled
+    buttonDownloadDisabled,
+    buttonInfo,
+    editBusModal
   },
   data: () => ({
     update_interval: "2000",
@@ -115,7 +121,7 @@ export default {
         value: "value",
         sortable: false,
         align: "center",
-        width: "5%"
+        width: "10%"
       },
       {
         text: "Update time",

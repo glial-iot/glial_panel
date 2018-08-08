@@ -71,26 +71,25 @@
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md3 justify-center>
-                  <v-btn color="secondary" @click="topic_delete()">
-                     <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
-                  </v-btn>
-               </v-flex>
-               <v-flex md3 justify-center>
-                  <v-btn color="secondary" @click="$refs.confirm_modal.show()">
-                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
-                  </v-btn>
-               </v-flex>
-               <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
-                     <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
+                     <v-icon left small>fa-stop-circle</v-icon> Glue restart
                   </v-btn>
                </v-flex>
                <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('update')">
-                     <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
+                     <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and restart
                   </v-btn>
                </v-flex>
-
+               <v-flex md3 justify-center>
+                  <v-btn color="warning" @click="topic_delete()">
+                     <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
+                  </v-btn>
+               </v-flex>
+               <v-flex md3 justify-center>
+                  <v-btn color="error" @click="$refs.confirm_modal.show()">
+                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                  </v-btn>
+               </v-flex>
             </v-layout>
             <backups ref="backups"></backups>
          </v-form>
