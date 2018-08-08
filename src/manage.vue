@@ -37,31 +37,7 @@
             </v-layout>
          </v-form>
       </v-card>
-      <v-card class="mt-3">
-         <v-card-title>
-            <v-icon>fa-sliders-h</v-icon>
-            <v-toolbar-title>Export settings</v-toolbar-title>
-         </v-card-title>
-         <v-divider> </v-divider>
-         <v-form>
-            <v-layout row wrap pl-3 pt-2>
-               <v-flex md2 pt-4>
-                  <v-checkbox
-                     label="Save to Influx"
-                     :disabled="!influx_initialized"
-                     v-model="influx_export"
-                  ></v-checkbox>
-               </v-flex>
-               <v-flex md2 pt-4>
-                  <v-checkbox
-                     label="Send to Impact"
-                     :disabled="!impact_initialized"
-                     v-model="impact_export"
-                  ></v-checkbox>
-               </v-flex>
-            </v-layout>
-         </v-form>
-      </v-card>
+      <export-block></export-block>
       <v-card class="mt-3">
          <v-card-title>
             <v-icon>fa-cogs</v-icon>
@@ -109,51 +85,31 @@ Vue.use(VueAxios, Axios);
 import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
-import {EXPORT_TYPE_INFLUX, EXPORT_TYPE_IMPACT} from './utils/constants.js'
 import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue"
-
 import backups from "./backups.vue";
-Vue.component("backups", backups);
+import exportBlock from "./components/blocks/manage/export.vue";
 
 export default {
   components: {
     snackbar,
     serverResponseModal,
     confirmModal,
-    resetBusModal
+    resetBusModal,
+    backups,
+    exportBlock
   },
   data() {
     return {
       server_address: "",
       server_port: "",
       server_scheme: "",
-      scheme_items: ["http", "https"],
-      influx_export: false,
-      impact_export: false,
-      influx_initialized: true,
-      impact_initialized: true,
+      scheme_items: ["http", "https"]
     };
   },
   created: function() {
     this.server_address = this.$store.state.server_address;
     this.server_port = this.$store.state.server_port;
     this.server_scheme = this.$store.state.server_scheme;
-  },
-  mounted: function() {
-    this.get_export(EXPORT_TYPE_INFLUX)
-    this.get_export(EXPORT_TYPE_IMPACT)
-  },
-  watch: {
-    influx_export: function(value) {
-      if (this.influx_initialized) {
-        this.set_export(EXPORT_TYPE_INFLUX, value)
-      }
-    },
-    impact_export: function(value) {
-      if (this.influx_initialized) {
-        this.set_export(EXPORT_TYPE_IMPACT, value)
-      }
-    }
   },
   methods: {
     update() {
@@ -199,42 +155,7 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Delete topic: network error");
         });
-    },
-    get_export(type) {
-      Vue.axios
-        .get(this.$store.getters.server_url + "/export", {
-          params: {action: "get", type}
-        })
-        .then(response => {
-          switch (type) {
-            case EXPORT_TYPE_IMPACT:
-              this.impact_export = response.data.value
-              this.impact_initialized = true
-              break
-            case EXPORT_TYPE_INFLUX:
-              this.influx_export = response.data.value
-              this.influx_initialized = true
-              break
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Network error");
-        });
-    },
-    set_export(type, value) {
-      Vue.axios
-        .get(this.$store.getters.server_url + "/export", {
-          params: {action: "set", type, value}
-        })
-        .then(response => {
-          this.$refs.snackbar.update("Export value successfuly updated", "success", 5000);
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Network error");
-        });
-    },
+    }
   },
 };
 </script>
