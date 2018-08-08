@@ -127,12 +127,12 @@ export default {
         text: "Update time",
         value: "text_time",
         align: "center",
-        width: "280px"
+        width: "240px"
       },
       {
         text: "Actions",
         sortable: false,
-        width: "136px"
+        width: "100px"
       }
     ]
   }),
