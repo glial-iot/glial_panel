@@ -81,7 +81,7 @@
                   </v-btn>
                </v-flex>
                <v-flex md3 justify-center>
-                  <v-btn color="warning" @click="topic_delete()">
+                  <v-btn color="warning" @click="$refs.reset_bus.show()">
                      <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
                   </v-btn>
                </v-flex>
@@ -98,6 +98,7 @@
       <snackbar ref="snackbar"></snackbar>
       <server-response-modal ref="server_response_modal"></server-response-modal>
       <confirm-modal ref="confirm_modal"></confirm-modal>
+      <reset-bus-modal ref="reset_bus"></reset-bus-modal>
    </div>
 </template>
 <script>
@@ -109,6 +110,7 @@ import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
 import {EXPORT_TYPE_INFLUX, EXPORT_TYPE_IMPACT} from './utils/constants.js'
+import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue"
 
 import backups from "./backups.vue";
 Vue.component("backups", backups);
@@ -117,7 +119,8 @@ export default {
   components: {
     snackbar,
     serverResponseModal,
-    confirmModal
+    confirmModal,
+    resetBusModal
   },
   data() {
     return {
