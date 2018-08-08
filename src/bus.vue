@@ -127,7 +127,7 @@ export default {
         text: "Update time",
         value: "text_time",
         align: "center",
-        width: "240px"
+        width: "28%"
       },
       {
         text: "Actions",
