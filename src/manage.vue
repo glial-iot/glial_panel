@@ -37,6 +37,7 @@
             </v-layout>
          </v-form>
       </v-card>
+      <export-block></export-block>
       <v-card class="mt-3">
          <v-card-title>
             <v-icon>fa-cogs</v-icon>
@@ -46,26 +47,25 @@
          <v-form>
             <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md3 justify-center>
-                  <v-btn color="secondary" @click="topic_delete()">
-                     <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
-                  </v-btn>
-               </v-flex>
-               <v-flex md3 justify-center>
-                  <v-btn color="secondary" @click="$refs.confirm_modal.show()">
-                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
-                  </v-btn>
-               </v-flex>
-               <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
-                     <v-icon left small>fa-stop-circle</v-icon> Tarantool stop
+                     <v-icon left small>fa-stop-circle</v-icon> Glue restart
                   </v-btn>
                </v-flex>
                <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('update')">
-                     <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and stop
+                     <v-icon left small>fa-cloud-download-alt</v-icon> GLUE update and restart
                   </v-btn>
                </v-flex>
-
+               <v-flex md3 justify-center>
+                  <v-btn color="warning" @click="$refs.reset_bus.show()">
+                     <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
+                  </v-btn>
+               </v-flex>
+               <v-flex md3 justify-center>
+                  <v-btn color="error" @click="$refs.confirm_modal.show()">
+                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                  </v-btn>
+               </v-flex>
             </v-layout>
             <backups ref="backups"></backups>
          </v-form>
@@ -74,6 +74,7 @@
       <snackbar ref="snackbar"></snackbar>
       <server-response-modal ref="server_response_modal"></server-response-modal>
       <confirm-modal ref="confirm_modal"></confirm-modal>
+      <reset-bus-modal ref="reset_bus"></reset-bus-modal>
    </div>
 </template>
 <script>
@@ -84,15 +85,18 @@ Vue.use(VueAxios, Axios);
 import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
-
+import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue"
 import backups from "./backups.vue";
-Vue.component("backups", backups);
+import exportBlock from "./components/blocks/manage/export.vue";
 
 export default {
   components: {
     snackbar,
     serverResponseModal,
-    confirmModal
+    confirmModal,
+    resetBusModal,
+    backups,
+    exportBlock
   },
   data() {
     return {
@@ -102,13 +106,11 @@ export default {
       scheme_items: ["http", "https"]
     };
   },
-
   created: function() {
     this.server_address = this.$store.state.server_address;
     this.server_port = this.$store.state.server_port;
     this.server_scheme = this.$store.state.server_scheme;
   },
-
   methods: {
     update() {
       this.$store.dispatch("update_server_address", {
@@ -153,8 +155,8 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Delete topic: network error");
         });
-    },
-  }
+    }
+  },
 };
 </script>
 

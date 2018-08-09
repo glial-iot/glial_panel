@@ -28,7 +28,7 @@
             </div>
          </v-card-title>
          <v-divider></v-divider>
-         <v-data-table v-if="bus_type === BUS_TYPE_LINEAR" :headers="headers" :items="bus_values" hide-actions class="no-scroll">
+         <v-data-table v-if="bus_type === BUS_TYPE_LINEAR" :headers="headers" :items="bus_values" hide-actions class="no-scroll bus-table">
             <template slot="items" slot-scope="props">
                <tr :class="props.item.new_attr ? 'row-new' : ''">
                   <td class="text-xs-left">
@@ -47,6 +47,7 @@
                      <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
                   </td>
                   <td class="justify-center text-xs-center cell-flex">
+                     <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
                      <button-trash @click.native="topic_delete(props.item)"></button-trash>
                      <button-download v-show="props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download>
                      <button-download-disabled v-show="!props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download-disabled>
@@ -62,6 +63,7 @@
          </v-card-title>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
+      <edit-bus-modal ref="edit_bus"></edit-bus-modal>
    </div>
 </template>
 
@@ -77,10 +79,12 @@ Vue.use(VueAxios, Axios);
 import { BUS_TYPE_LINEAR, BUS_TYPE_TREE } from "./utils/constants.js";
 
 import snackbar from "./components/snackbar.vue";
+import editBusModal from "./components/modals/edit-bus-modal.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
 import buttonDownload from "./components/buttons/button-download.vue";
 import buttonDownloadDisabled from "./components/buttons/button-download-disabled.vue";
 import treeviewer from "./components/treeviewer.vue";
+import buttonInfo from "./components/buttons/button-info.vue";
 
 export default {
   components: {
@@ -88,7 +92,9 @@ export default {
     buttonTrash,
     buttonDownload,
     buttonDownloadDisabled,
-    treeviewer
+    treeviewer,
+    buttonInfo,
+    editBusModal
   },
   data: () => ({
     BUS_TYPE_LINEAR,
@@ -122,7 +128,7 @@ export default {
         value: "value",
         sortable: false,
         align: "center",
-        width: "5%"
+        width: "10%"
       },
       {
         text: "Update time",
@@ -133,7 +139,7 @@ export default {
       {
         text: "Actions",
         sortable: false,
-        width: "10%"
+        width: "100px"
       }
     ]
   }),
@@ -267,9 +273,6 @@ export default {
 };
 </script>
 
-<style>
-</style>
-
 <style scoped>
 .row-new {
   background-color: rgb(155, 204, 255);
@@ -281,6 +284,11 @@ export default {
 
 .cell-flex {
   display: flex;
+}
+
+.bus-table table.v-table tbody td:not(:first-child),
+.bus-table table.v-table thead th:not(:first-child) {
+  padding: 0 4px;
 }
 </style>
 

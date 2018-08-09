@@ -2,10 +2,10 @@
    <div>
       <v-dialog :value="visible" persistent max-width="290">
          <v-card>
-            <v-card-title class="headline">Confirm wipe</v-card-title>
-            <v-card-text>Do you want to delete database and storage? <br> All scripts, logs, data bus will be deleted! <br> Backups will not be deleted</v-card-text>
+            <v-card-title class="headline">Confirm delete all from bus</v-card-title>
+            <v-card-text>Do you want to delete all from bus?</v-card-text>
             <v-card-actions>
-               <v-btn color="error" flat @click="wipe()">Wipe</v-btn>
+               <v-btn color="error" flat @click="delete_all()">Delete</v-btn>
                <v-spacer></v-spacer>
                <v-btn color="green darken-1" dark @click="hide()">No</v-btn>
             </v-card-actions>
@@ -34,22 +34,23 @@ export default {
     hide() {
       this.visible = false;
     },
-    wipe() {
+    delete_all() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/system_event", {
+        .get(this.$store.getters.server_url + "/system_bus", {
           params: {
-            action: "wipe_storage"
+            action: "delete_topics",
+            topic: "*"
           }
         })
         .then(response => {
-          console.log(response.data.msg);
-          this.$refs.snackbar.update(response.data.msg, "success", 5000);
-          this.hide();
+          this.$refs.snackbar.update("");
+          if (response.data.result) {
+            this.visible = false;
+          }
         })
         .catch(error => {
           console.log(error);
-          this.$refs.snackbar.update("Network error");
-          this.hide();
+          this.$refs.snackbar.update("Delete topic: network error");
         });
     }
   }
