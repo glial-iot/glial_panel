@@ -228,7 +228,6 @@ export default {
           this.prev_content = response.data.body;
           this.name = response.data.name;
           this.type = response.data.type;
-          this.$refs.snackbar.update("File loaded", "success", 2000);
           this.saved = true;
           this.loaded = true;
         })
