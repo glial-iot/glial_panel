@@ -16,10 +16,18 @@
                <tr :key="props.item.uuid">
 
                   <td class="text-xs-center">
-                     <icon-normal v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">fa-check-circle</icon-normal>
-                     <icon-warning v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">fa-exclamation-circle</icon-warning>
-                     <icon-error v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">fa-times-circle</icon-error>
-                     <icon-stopped v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">fa-dot-circle</icon-stopped>
+                     <div :title="props.item.status_msg">
+                        <icon-normal v-show="props.item.status == 'NORMAL'">fa-check-circle</icon-normal>
+                     </div>
+                     <div :title="props.item.status_msg">
+                        <icon-warning v-show="props.item.status == 'WARNING'">fa-exclamation-circle</icon-warning>
+                     </div>
+                     <div :title="props.item.status_msg">
+                        <icon-error v-show="props.item.status == 'ERROR'">fa-times-circle</icon-error>
+                     </div>
+                     <div :title="props.item.status_msg">
+                        <icon-stopped v-show="props.item.status == 'STOPPED'">fa-dot-circle</icon-stopped>
+                     </div>
                   </td>
 
                   <td class="text-xs-left">
@@ -31,7 +39,7 @@
                   </td>
 
                   <td class="justify-center text-xs-center cell-flex">
-                     <button-info :item="props" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                     <button-info :item="props" title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
