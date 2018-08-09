@@ -9,10 +9,10 @@
          <v-form>
             <v-layout row wrap pl-3 pt-2>
                <v-flex md2 pt-4>
-                  <v-checkbox label="Save to Influx" :disabled="!influx_initialized" v-model="influx_export"></v-checkbox>
+                  <v-checkbox label="Save to Influx" :disabled="influx_export === undefined" v-model="influx_export"></v-checkbox>
                </v-flex>
                <v-flex md2 pt-4>
-                  <v-checkbox label="Send to Impact" :disabled="!impact_initialized" v-model="impact_export"></v-checkbox>
+                  <v-checkbox label="Send to Impact" :disabled="impact_export === undefined" v-model="impact_export"></v-checkbox>
                </v-flex>
             </v-layout>
          </v-form>
@@ -37,10 +37,8 @@ export default {
   },
   data() {
     return {
-      influx_export: false,
-      impact_export: false,
-      influx_initialized: false,
-      impact_initialized: false
+      influx_export: undefined,
+      impact_export: undefined
     };
   },
   mounted: function() {
@@ -48,14 +46,14 @@ export default {
     this.get_export(EXPORT_TYPE_IMPACT);
   },
   watch: {
-    influx_export: function(value) {
-      if (this.influx_initialized) {
-        this.set_export(EXPORT_TYPE_INFLUX, value);
+    influx_export: function(value, oldValue) {
+      if (oldValue !== undefined) {
+        this.set_export(EXPORT_TYPE_INFLUX, value)
       }
     },
-    impact_export: function(value) {
-      if (this.influx_initialized) {
-        this.set_export(EXPORT_TYPE_IMPACT, value);
+    impact_export: function(value, oldValue) {
+      if (oldValue !== undefined) {
+        this.set_export(EXPORT_TYPE_IMPACT, value)
       }
     }
   },
@@ -68,13 +66,11 @@ export default {
         .then(response => {
           switch (type) {
             case EXPORT_TYPE_IMPACT:
-              this.impact_export = response.data.value;
-              this.impact_initialized = true;
-              break;
+              this.impact_export = response.data.value
+              break
             case EXPORT_TYPE_INFLUX:
-              this.influx_export = response.data.value;
-              this.influx_initialized = true;
-              break;
+              this.influx_export = response.data.value
+              break
           }
         })
         .catch(error => {
