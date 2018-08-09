@@ -3,35 +3,39 @@
       <v-card class="elevation-3">
          <v-card-title id="editor-card-title" class="py-1 px-1">
             <div class="text-xs-left">
-               <v-btn :small="true" @click.native="$router.go(-1)">
+               <v-btn :small="true" @click.native="$router.go(-1)" title="Go to script list">
                   <v-icon left small>fa-arrow-left</v-icon> Back
                </v-btn>
             </div>
 
             <v-spacer></v-spacer>
-            <span class=".display-1"> {{this.type}} {{this.name}} </span>
+            <span class=".display-1" :title="'UUID: ' + this.uuid"> {{type2string(type)}} "{{name}}" </span>
+            <v-spacer></v-spacer>
+            <span class=".display-1" v-show="object !== undefined"> Object "{{object}}" </span>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
-               <v-btn :small="true" @click.native="$refs.help.show()">
-                  <v-icon left small>fa-question-circle</v-icon> Help
-               </v-btn>
-               <v-btn :small="true" @click.native="save_file">
+
+               <v-btn :small="true" @click.native="save_file" title="Save script">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
-               <v-btn :small="true" @click.native="toggle_logs_visible">
+               <v-btn :small="true" @click.native="save_and_restart" title="Save script and restart">
+                  <v-icon left small>fa-sync</v-icon> Save and restart
+               </v-btn>
+               <v-btn :small="true" @click.native="toggle_logs_visible" title="Show/hide logs window">
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
                <div class="logs-size-block">
-                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')" v-if="logs_visible">
-                     <v-icon :size="12">fa-arrow-up</v-icon>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('+')" v-if="logs_visible" title="Increase logs windows size">
+                     <v-icon :size="11">fa-arrow-up</v-icon>
                   </v-btn>
-                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')" v-if="logs_visible">
-                     <v-icon :size="12">fa-arrow-down</v-icon>
+                  <v-btn :small="true" class="logs-buttons" @click="change_logs_size('-')" v-if="logs_visible" title="Decrease logs windows size">
+                     <v-icon :size="11">fa-arrow-down</v-icon>
                   </v-btn>
                </div>
-               <v-btn :small="true" @click.native="save_and_restart">
-                  <v-icon left small>fa-sync</v-icon> Save and restart script
+
+               <v-btn :small="true" @click.native="$refs.help.show()" title="Show glue scripts help">
+                  <v-icon left small>fa-question-circle</v-icon> Help
                </v-btn>
             </div>
 
@@ -83,6 +87,7 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 import { mapState } from "vuex";
 
+import { script_type2string } from "../utils/index.js";
 import snackbar from "../components/snackbar.vue";
 import editorHelpModal from "../components/modals/editor-help-modal.vue";
 import editor from "../brace/index.js";
@@ -99,6 +104,7 @@ export default {
     saved: true,
     loaded: false,
     name: "",
+    object: "",
     type: "",
     logs: [],
     headers: [
@@ -182,6 +188,9 @@ export default {
         this.pagination.totalItems / this.pagination.rowsPerPage
       );
     },
+    type2string(type) {
+      return script_type2string(type);
+    },
     toggle_logs_visible: function() {
       this.$store.commit("logs_visible", !this.logs_visible);
     },
@@ -227,6 +236,7 @@ export default {
           this.content = response.data.body;
           this.prev_content = response.data.body;
           this.name = response.data.name;
+          this.object = response.data.object;
           this.type = response.data.type;
           this.saved = true;
           this.loaded = true;
