@@ -184,12 +184,7 @@ export default {
             return
          }
 
-         return [{
-            text: 'bus',
-            state: {expanded: true},
-            data: {type: 'bus'},
-            children: this.map(obj, this.transformObject)
-         }]
+         return this.map(obj, this.transformObject)
       },
       format_time(value) {
          return moment.unix(value).format('YYYY-MM-DD, HH:mm:ss')
