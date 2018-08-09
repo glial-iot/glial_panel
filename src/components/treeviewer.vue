@@ -64,14 +64,33 @@ export default {
    },
    watch: {
       json: function() {
-         this.treeData = this.parser(this.json)
+         const oldTree = this.$refs.tree.toJSON()
+         const newTree = this.parser(this.json)
          const tree = this.$refs.tree.tree
-         let model = tree.parse(this.treeData)
-         this.$set(this.$refs.tree, 'model', model)
-         tree.setModel(model)
+         let mergedTree
+
+         if (oldTree && newTree) {
+            mergedTree = this.merge(oldTree, newTree)
+         } else {
+            mergedTree = newTree
+         }
+
+         this.treeData = mergedTree
+         this.$set(this.$refs.tree, 'model', mergedTree)
+         tree.setModel(mergedTree)
       }
    },
    methods: {
+      merge(target, source) {
+         for (let key of Object.keys(source)) {
+            if (source[key] instanceof Object && key in target) {
+               Object.assign(source[key], this.merge(target[key], source[key]))
+            }
+         }
+
+         Object.assign(target || {}, source)
+         return target
+      },
       isObjectEmpty(obj) {
          return Object.keys(obj).length === 0
       },
