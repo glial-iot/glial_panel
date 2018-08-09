@@ -11,14 +11,14 @@
                <v-flex md2 pt-4>
                   <v-checkbox
                      label="Save to Influx"
-                     :disabled="!influx_initialized"
+                     :disabled="influx_export === undefined"
                      v-model="influx_export"
                   ></v-checkbox>
                </v-flex>
                <v-flex md2 pt-4>
                   <v-checkbox
                      label="Send to Impact"
-                     :disabled="!impact_initialized"
+                     :disabled="impact_export === undefined"
                      v-model="impact_export"
                   ></v-checkbox>
                </v-flex>
@@ -43,10 +43,8 @@ export default {
   },
   data() {
     return {
-      influx_export: false,
-      impact_export: false,
-      influx_initialized: false,
-      impact_initialized: false,
+      influx_export: undefined,
+      impact_export: undefined
     };
   },
   mounted: function() {
@@ -54,13 +52,13 @@ export default {
     this.get_export(EXPORT_TYPE_IMPACT)
   },
   watch: {
-    influx_export: function(value) {
-      if (this.influx_initialized) {
+    influx_export: function(value, oldValue) {
+      if (oldValue !== undefined) {
         this.set_export(EXPORT_TYPE_INFLUX, value)
       }
     },
-    impact_export: function(value) {
-      if (this.influx_initialized) {
+    impact_export: function(value, oldValue) {
+      if (oldValue !== undefined) {
         this.set_export(EXPORT_TYPE_IMPACT, value)
       }
     }
@@ -75,11 +73,9 @@ export default {
           switch (type) {
             case EXPORT_TYPE_IMPACT:
               this.impact_export = response.data.value
-              this.impact_initialized = true
               break
             case EXPORT_TYPE_INFLUX:
               this.influx_export = response.data.value
-              this.influx_initialized = true
               break
           }
         })
