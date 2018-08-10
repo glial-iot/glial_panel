@@ -58,7 +58,7 @@
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Delete script" @click="script_delete(props.item)">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Delete script" @click="$refs.remove_modal.show(props.item)">
                         <v-icon color="pink" small>fa-trash-alt</v-icon>
                      </v-btn>
                   </td>
@@ -83,6 +83,7 @@
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <script-details ref="scriptdetails"></script-details>
+      <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
    </div>
 </template>
 
@@ -105,6 +106,7 @@ import iconError from "../../components/icons/icon-status-error.vue";
 import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
 import iconWarning from "../../components/icons/icon-status-warning.vue";
+import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
 
 export default {
   components: {
@@ -115,7 +117,8 @@ export default {
     iconError,
     iconNormal,
     iconStopped,
-    iconWarning
+    iconWarning,
+    confirmRemoveScriptModal
   },
   data: () => ({
     headers: [
@@ -194,23 +197,6 @@ export default {
         path: "/editor",
         query: { uuid: table_item.uuid }
       });
-    },
-    script_delete(table_item) {
-      Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "delete",
-            uuid: table_item.uuid
-          }
-        })
-        .then(response => {
-          this.table_update();
-          this.$refs.snackbar.update("");
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Delete script error");
-        });
     },
     script_restart(table_item) {
       Vue.axios
