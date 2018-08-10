@@ -21,7 +21,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="table_values" :search="search" :custom-filter="customFilter" hide-actions must-sort class="no-scroll">
+         <v-data-table :headers="headers" :items="table_values" :search="search" :custom-filter="customFilter" hide-actions must-sort class="no-scroll" no-data-text="No log entries">
 
             <template slot="headers" slot-scope="props">
                <tr>
@@ -122,6 +122,7 @@ export default {
       }
     ],
     table_values: [],
+    loaded: false,
     update_time: 1000
   }),
   timers: {
@@ -170,6 +171,7 @@ export default {
         .then(response => {
           this.table_values = response.data;
           this.timers.table_update.time = this.update_time;
+          this.loaded = true;
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
           this.$refs.snackbar_error.update("");
@@ -178,6 +180,8 @@ export default {
           this.timers.table_update.time = this.update_time;
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
+          this.table_values = [];
+          this.loaded = false;
           console.log(error);
           this.$refs.snackbar_error.update("Table update: network error");
         });
@@ -200,12 +204,18 @@ export default {
         );
       }
     },
-
     customFilter(items, search, filter) {
       if (search.length === 0) {
         return items;
       }
       return items.filter(item => item.level === search);
+    },
+    get_empty_text() {
+      if (!this.loaded) {
+        return 'No data available'
+      }
+
+      return 'No log entries'
     }
   }
 };

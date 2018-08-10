@@ -2,7 +2,7 @@
    <div>
       <v-card class="elevation-3">
 
-         <v-data-table :headers="headers" :items="table_values" must-sort class="no-scroll">
+         <v-data-table :headers="headers" :items="table_values" must-sort class="no-scroll" :no-data-text="get_empty_text()">
 
             <template slot="items" slot-scope="props">
                <td class="text-xs-left">
@@ -80,7 +80,8 @@ export default {
         width: "10%"
       }
     ],
-    table_values: []
+    table_values: [],
+    loaded: false
   }),
 
   mounted: function() {
@@ -122,10 +123,20 @@ export default {
         })
         .then(response => {
           this.table_values = response.data;
+          this.loaded = true;
         })
         .catch(error => {
           console.log(error);
+          this.table_values = [];
+          this.loaded = false;
         });
+    },
+    get_empty_text() {
+      if (!this.loaded) {
+        return 'No data available'
+      }
+
+      return 'No backups'
     }
   }
 };

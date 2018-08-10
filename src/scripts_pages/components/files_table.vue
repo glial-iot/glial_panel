@@ -10,7 +10,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll">
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll" :no-data-text="get_empty_text()">
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
@@ -167,7 +167,8 @@ export default {
         width: "6%"
       }
     ],
-    files_table: []
+    files_table: [],
+    loaded: false
   }),
   props: ["type"],
 
@@ -262,6 +263,7 @@ export default {
         .then(response => {
           console.log(response.data);
           Vue.set(this, "files_table", response.data);
+          this.loaded = true;
           this.$refs.snackbar.update("");
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
@@ -272,7 +274,15 @@ export default {
           this.$refs.snackbar.update("Get script list error");
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
+          this.loaded = false;
         });
+    },
+    get_empty_text() {
+      if (!this.loaded) {
+        return 'No data available'
+      }
+
+      return 'No Scripts'
     }
   }
 };
