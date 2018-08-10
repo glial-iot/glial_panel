@@ -50,6 +50,7 @@
 import Vue from 'Vue'
 import LiquorTree from 'liquor-tree'
 import moment from 'moment'
+import merge from '../../../utils/deepmerge'
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
@@ -98,16 +99,6 @@ export default {
       }
    },
    methods: {
-      merge(target, source) {
-         for (let key of Object.keys(source)) {
-            if (source[key] instanceof Object && key in target) {
-               Object.assign(source[key], this.merge(target[key], source[key]))
-            }
-         }
-
-         Object.assign(target || {}, source)
-         return target
-      },
       isObjectEmpty(obj) {
          return Object.keys(obj).length === 0
       },
