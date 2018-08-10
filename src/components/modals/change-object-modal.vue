@@ -2,14 +2,14 @@
    <div>
       <v-dialog :value="visible" persistent max-width="290">
          <v-card>
-            <v-card-title class="headline">Rename script</v-card-title>
+            <v-card-title class="headline">Change script object</v-card-title>
             <v-card-text>
-               <v-text-field v-model="name" label="Enter new name" required></v-text-field>
+               <v-text-field v-model="object" label="Enter new object" required></v-text-field>
             </v-card-text>
             <v-card-actions>
                <v-spacer></v-spacer>
                <v-btn color="green darken-1" flat @click="hide()">Cancel</v-btn>
-               <v-btn color="green darken-1" flat @click="submit()">Rename</v-btn>
+               <v-btn color="green darken-1" flat @click="submit()">Change object</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
@@ -25,18 +25,16 @@ Vue.use(VueAxios, Axios);
 import snackbar from "../snackbar.vue";
 
 export default {
-  props: ["hideDetails", "updateName"],
+  props: ['updateObject'],
   data: () => ({
-    name: "",
+    object: "",
     uuid: "",
-    type: "",
     visible: false
   }),
   methods: {
-    show(uuid, type, name) {
+    show(uuid, object) {
       this.uuid = uuid;
-      this.name = name;
-      this.type = type;
+      this.object = object;
       this.visible = true;
     },
     hide() {
@@ -48,17 +46,14 @@ export default {
           params: {
             action: "update",
             uuid: this.uuid,
-            name: this.name
+            object: this.object
           }
         })
         .then(response => {
+          if (this.updateObject && response.data.object) {
+            this.updateObject(response.data.object);
+          }
           this.hide();
-          if (this.hideDetails) {
-            this.hideDetails();
-          }
-          if (this.updateName && response.data.name) {
-            this.updateName(response.data.name);
-          }
         })
         .catch(error => {
           console.log(error);
