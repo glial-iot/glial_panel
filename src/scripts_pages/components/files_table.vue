@@ -5,7 +5,7 @@
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
 
-            <file-create-form @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update()" :type="type"></file-create-form>
+            <create-script-modal @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update()" :type="type"></create-script-modal>
          </v-card-title>
 
          <v-divider></v-divider>
@@ -98,7 +98,7 @@ Vue.use(VueAxios, Axios);
 import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
-import file_create_form from "./file_create_form.vue";
+import createScriptModal from "../../components/modals/create_script_modal.vue";
 import script_details from "./script_details.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
@@ -110,7 +110,7 @@ import confirmRemoveScriptModal from "../../components/modals/confirm-remove-scr
 
 export default {
   components: {
-    "file-create-form": file_create_form,
+    createScriptModal,
     "script-details": script_details,
     snackbar,
     buttonInfo,
@@ -265,10 +265,10 @@ export default {
     },
     get_empty_text() {
       if (!this.loaded) {
-        return 'No data available'
+        return "No data available";
       }
 
-      return 'No Scripts'
+      return "No scripts";
     }
   }
 };

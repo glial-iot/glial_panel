@@ -3,9 +3,9 @@
       <v-dialog :value="visible" persistent max-width="290">
          <v-card>
             <v-card-title class="headline">Confirm remove script</v-card-title>
-            <v-card-text>Do you really want to remove {{item.name}} script?</v-card-text>
+            <v-card-text>Do you really want to remove script "{{item.name}}"?</v-card-text>
             <v-card-actions>
-               <v-btn color="error" flat @click="script_delete()">Del</v-btn>
+               <v-btn color="error" flat @click="script_delete()">Delete</v-btn>
                <v-spacer></v-spacer>
                <v-btn color="green darken-1" dark @click="hide()">No</v-btn>
             </v-card-actions>
@@ -27,7 +27,7 @@ export default {
     visible: false,
     item: {}
   }),
-  props: ['update'],
+  props: ["update"],
   methods: {
     show(item) {
       this.visible = true;
@@ -46,7 +46,11 @@ export default {
           }
         })
         .then(response => {
-          this.$refs.snackbar.update(`${this.item.name} successfuly removed`, "success", 5000);
+          this.$refs.snackbar.update(
+            `Script "${this.item.name}" successfuly removed`,
+            "success",
+            5000
+          );
           this.update();
           this.hide();
         })
@@ -54,7 +58,7 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Delete script error");
         });
-    },
+    }
   }
 };
 </script>
