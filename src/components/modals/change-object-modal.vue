@@ -4,12 +4,12 @@
          <v-card>
             <v-card-title class="headline">Change script object</v-card-title>
             <v-card-text>
-               <v-text-field v-model="object" label="Enter new object" required></v-text-field>
+               <v-text-field v-model="object" label="Change object" required></v-text-field>
             </v-card-text>
             <v-card-actions>
+               <v-btn color="error" flat @click="hide()">Cancel</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="green darken-1" flat @click="hide()">Cancel</v-btn>
-               <v-btn color="green darken-1" flat @click="submit()">Change object</v-btn>
+               <v-btn color="green darken-1" flat @click="submit()">Change</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
@@ -25,7 +25,7 @@ Vue.use(VueAxios, Axios);
 import snackbar from "../snackbar.vue";
 
 export default {
-  props: ['updateObject'],
+  props: ["updateObject"],
   data: () => ({
     object: "",
     uuid: "",

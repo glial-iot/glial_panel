@@ -4,11 +4,11 @@
          <v-card>
             <v-card-title class="headline">Rename script</v-card-title>
             <v-card-text>
-               <v-text-field v-model="name" label="Enter new name" required></v-text-field>
+               <v-text-field v-model="name" label="Edit name" required></v-text-field>
             </v-card-text>
             <v-card-actions>
+               <v-btn color="error" flat @click="hide()">Cancel</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="green darken-1" flat @click="hide()">Cancel</v-btn>
                <v-btn color="green darken-1" flat @click="submit()">Rename</v-btn>
             </v-card-actions>
          </v-card>

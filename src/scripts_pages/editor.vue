@@ -9,9 +9,9 @@
             </div>
 
             <v-spacer></v-spacer>
-            <span class=".display-1 pointer" :title="'UUID: ' + this.uuid" @click="$refs.rename.show(uuid, type, name)"> {{type2string(type)}} "{{name}}" </span>
+            <span class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{type2string(type)}} "{{name}}" </span>
             <v-spacer></v-spacer>
-            <span class=".display-1 pointer" v-show="object !== undefined" @click="$refs.change_object.show(uuid, object)"> Object "{{object}}" </span>
+            <span class=".display-1 pointer" title="Click to edit object" v-show="object !== undefined" @click="$refs.change_object.show(uuid, object)"> Object "{{object}}" </span>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
