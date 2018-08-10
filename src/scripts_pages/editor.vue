@@ -9,9 +9,9 @@
             </div>
 
             <v-spacer></v-spacer>
-            <span class=".display-1" :title="'UUID: ' + this.uuid"> {{type2string(type)}} "{{name}}" </span>
+            <span class=".display-1 pointer" :title="'UUID: ' + this.uuid" @click="$refs.rename.show(uuid, type, name)"> {{type2string(type)}} "{{name}}" </span>
             <v-spacer></v-spacer>
-            <span class=".display-1" v-show="object !== undefined"> Object "{{object}}" </span>
+            <span class=".display-1 pointer" v-show="object !== undefined" @click="$refs.change_object.show(uuid, object)"> Object "{{object}}" </span>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
@@ -74,6 +74,8 @@
 
       <snackbar ref="snackbar"></snackbar>
       <editor-help-modal ref="help"></editor-help-modal>
+      <rename-script-modal ref="rename" :updateName="update_name"></rename-script-modal>
+      <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
    </div>
 </template>
 
@@ -90,6 +92,8 @@ import { mapState } from "vuex";
 import { script_type2string } from "../utils/index.js";
 import snackbar from "../components/snackbar.vue";
 import editorHelpModal from "../components/modals/editor-help-modal.vue";
+import renameScriptModal from "../components/modals/rename-script-modal.vue";
+import changeObjectModal from "../components/modals/change-object-modal.vue";
 import editor from "../brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
@@ -134,7 +138,9 @@ export default {
   components: {
     editor,
     snackbar,
-    editorHelpModal
+    editorHelpModal,
+    renameScriptModal,
+    changeObjectModal
   },
   timers: {
     get_logs: {
@@ -337,6 +343,12 @@ export default {
         action = "decrease_editor_log_size";
       }
       this.$store.dispatch(action);
+    },
+    update_name(value) {
+      this.name = value;
+    },
+    update_object(value) {
+      this.object = value;
     }
   },
   watch: {
@@ -464,5 +476,9 @@ table.v-table tbody th {
 .buttons {
   display: flex;
   align-items: center;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>
