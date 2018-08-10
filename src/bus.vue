@@ -26,7 +26,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="bus_values" hide-actions class="no-scroll bus-table">
+         <v-data-table :headers="headers" :items="bus_values" hide-actions class="no-scroll bus-table" :no-data-text="get_empty_text()">
 
             <template slot="items" slot-scope="props">
                <tr :class="props.item.new_attr ? 'row-new' : ''">
@@ -134,7 +134,8 @@ export default {
         sortable: false,
         width: "100px"
       }
-    ]
+    ],
+    loaded: false
   }),
 
   beforeRouteLeave(to, from, next) {
@@ -214,6 +215,7 @@ export default {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
+          this.loaded = true;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
@@ -224,6 +226,7 @@ export default {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
+          this.loaded = false;
           this.$refs.snackbar.update("Update table: network error");
         });
     },
@@ -239,6 +242,13 @@ export default {
         }
       }
       return values;
+    },
+    get_empty_text() {
+      if (!this.loaded) {
+        return 'No data available'
+      }
+
+      return 'No bus topics'
     }
   }
 };
