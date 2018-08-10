@@ -31,13 +31,17 @@
                      <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
                      <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
                      <div class="viewer-item__key__actions">
+                        <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
+                        <button-download v-show="node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download>
+                        <button-download-disabled v-show="!node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download-disabled>
                      </div>
                   </div>
                </div>
             </div>
          </tree>
       </div>
+      <edit-bus-modal ref="edit_bus"></edit-bus-modal>
    </div>
 </template>
 
@@ -46,14 +50,27 @@
 import Vue from 'Vue'
 import LiquorTree from 'liquor-tree'
 import moment from 'moment'
-import buttonTrash from "../components/buttons/button-trash.vue";
+
+import editBusModal from "../../modals/edit-bus-modal.vue";
+import buttonTrash from "../../buttons/button-trash.vue";
+import buttonDownload from "../../buttons/button-download.vue";
+import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
+import buttonInfo from "../../buttons/button-info.vue";
 
 export default {
    components: {
       "tree": LiquorTree,
-      buttonTrash
+      editBusModal,
+      buttonTrash,
+      buttonDownload,
+      buttonDownloadDisabled,
+      buttonInfo
    },
-   props: ["json", "topicDelete"],
+   props: [
+      "json", 
+      "topicDelete",
+      "tsdbSet"
+   ],
    data() {
       return {
          treeData: this.parser(this.json),

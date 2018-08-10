@@ -28,34 +28,8 @@
             </div>
          </v-card-title>
          <v-divider></v-divider>
-         <v-data-table v-if="bus_type === BUS_TYPE_LINEAR" :headers="headers" :items="bus_values" hide-actions class="no-scroll bus-table">
-            <template slot="items" slot-scope="props">
-               <tr :class="props.item.new_attr ? 'row-new' : ''">
-                  <td class="text-xs-left">
-                     <div class="ellipsis" :title="props.item.topic">{{ props.item.topic }}</div>
-                  </td>
-                  <td class="text-xs-right">
-                     <div class="ellipsis" :title="props.item.value">{{ props.item.value }}</div>
-                  </td>
-                  <td class="text-xs-left">
-                     <div class="ellipsis" :title="props.item.type">{{ props.item.type }}</div>
-                  </td>
-                  <td class="text-xs-center">
-                     <div class="ellipsis" :title="props.item.tags">{{ props.item.tags }}</div>
-                  </td>
-                  <td class="text-xs-left">
-                     <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
-                  </td>
-                  <td class="justify-center text-xs-center cell-flex">
-                     <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
-                     <button-trash @click.native="topic_delete(props.item)"></button-trash>
-                     <button-download v-show="props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download>
-                     <button-download-disabled v-show="!props.item.tsdb" @click.native="tsdb_set(props.item)"></button-download-disabled>
-                  </td>
-               </tr>
-            </template>
-         </v-data-table>
-         <treeviewer v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete"></treeviewer>
+         <bus-tree v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-tree>
+         <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-linear>
          <v-divider v-if="bus_type === BUS_TYPE_LINEAR"></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
@@ -79,22 +53,24 @@ Vue.use(VueAxios, Axios);
 import { BUS_TYPE_LINEAR, BUS_TYPE_TREE } from "./utils/constants.js";
 
 import snackbar from "./components/snackbar.vue";
+import busTree from "./components/blocks/bus/bus-tree.vue";
+import busLinear from "./components/blocks/bus/bus-linear.vue";
 import editBusModal from "./components/modals/edit-bus-modal.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
 import buttonDownload from "./components/buttons/button-download.vue";
 import buttonDownloadDisabled from "./components/buttons/button-download-disabled.vue";
-import treeviewer from "./components/treeviewer.vue";
 import buttonInfo from "./components/buttons/button-info.vue";
 
 export default {
   components: {
     snackbar,
+    busTree,
+    busLinear,
+    editBusModal,
     buttonTrash,
     buttonDownload,
     buttonDownloadDisabled,
-    treeviewer,
-    buttonInfo,
-    editBusModal
+    buttonInfo
   },
   data: () => ({
     BUS_TYPE_LINEAR,
@@ -103,47 +79,7 @@ export default {
     bus_values: [],
     all_tsdb: { topic: "*", tsdb: false },
     none_tsdb: { topic: "*", tsdb: true },
-    headers: [
-      {
-        text: "Topic",
-        value: "topic",
-        align: "left"
-      },
-      {
-        text: "Value",
-        value: "value",
-        sortable: false,
-        align: "right",
-        width: "15%"
-      },
-      {
-        text: "Type",
-        value: "type",
-        sortable: false,
-        align: "left",
-        width: "10%"
-      },
-      {
-        text: "Tags",
-        value: "value",
-        sortable: false,
-        align: "center",
-        width: "10%"
-      },
-      {
-        text: "Update time",
-        value: "text_time",
-        align: "center",
-        width: "28%"
-      },
-      {
-        text: "Actions",
-        sortable: false,
-        width: "100px"
-      }
-    ]
   }),
-
   computed: {
     bus_type: {
       get() { 
@@ -154,14 +90,10 @@ export default {
       },
     },
   },
-
   beforeRouteLeave(to, from, next) {
     this.$timer.stop("table_update");
     next();
   },
-
-  mounted: function() {},
-
   watch: {
     update_interval() {
       this.$timer.stop("table_update");
@@ -175,14 +107,12 @@ export default {
       this.bus_values = []
     }
   },
-
   timers: {
     table_update: {
       autostart: true,
       time: 0
     }
   },
-
   methods: {
     tsdb_set(item) {
       console.log(item);
@@ -212,7 +142,9 @@ export default {
           }
         })
         .then(response => {
-          Vue.delete(this.bus_values, this.bus_values.indexOf(item));
+          if (this.bus_type === BUS_TYPE_LINEAR) {
+            Vue.delete(this.bus_values, this.bus_values.indexOf(item));
+          }
           this.$refs.snackbar.update("");
         })
         .catch(error => {
@@ -272,23 +204,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.row-new {
-  background-color: rgb(155, 204, 255);
-}
-
-.row-new:hover {
-  background-color: rgb(155, 204, 255);
-}
-
-.cell-flex {
-  display: flex;
-}
-
-.bus-table table.v-table tbody td:not(:first-child),
-.bus-table table.v-table thead th:not(:first-child) {
-  padding: 0 4px;
-}
-</style>
-
