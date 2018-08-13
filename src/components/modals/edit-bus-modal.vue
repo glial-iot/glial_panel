@@ -17,7 +17,7 @@
             <v-card-text>
                <div class="subheading">Type</div>
                <div class="subheading subheading-value" v-if="!edit_type">
-                  <span>{{get_text(item.type)}}</span>
+                  <v-text-field :value="get_text(item.type)" disabled></v-text-field>
                   <v-btn small color="green darken-1" flat @click="edit('type')">Edit</v-btn>
                </div>
                <div class="subheading edit-form" v-if="edit_type">
@@ -30,7 +30,7 @@
             <v-card-text>
                <div class="subheading">Tags</div>
                <div class="subheading subheading-value" v-if="!edit_tags">
-                  <span>{{get_text(item.tags)}}</span>
+                  <v-text-field :value="get_text(item.tags)" disabled></v-text-field>
                   <v-btn small color="green darken-1" flat @click="edit('tags')">Edit</v-btn>
                </div>
                <div class="subheading edit-form" v-if="edit_tags">
@@ -43,7 +43,7 @@
             <v-card-text>
                <div class="subheading">Value</div>
                <div class="subheading subheading-value" v-if="!edit_value">
-                  <span>{{get_text(item.value)}}</span>
+                  <v-text-field :value="get_text(item.value)" disabled></v-text-field>
                   <v-btn small color="green darken-1" flat @click="edit('value')">Edit</v-btn>
                </div>
                <div class="subheading edit-form" v-if="edit_value">

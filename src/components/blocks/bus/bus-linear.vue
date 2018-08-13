@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-data-table :headers="headers" :items="items" hide-actions class="no-scroll bus-table">
+      <v-data-table :headers="headers" :items="items" hide-actions class="no-scroll bus-table" :no-data-text="get_empty_text()">
          <template slot="items" slot-scope="props">
             <tr :class="props.item.new_attr ? 'row-new' : ''">
                <td class="text-xs-left">
@@ -52,7 +52,8 @@ export default {
    props: [
       "items",
       "topicDelete",
-      "tsdbSet"
+      "tsdbSet",
+      "loaded"
    ],
    data() {
       return {
@@ -95,6 +96,15 @@ export default {
                width: "100px"
             }
          ]
+      }
+   },
+   methods: {
+      get_empty_text() {
+         if (!this.loaded) {
+            return "No data available";
+         }
+
+         return "No topics";
       }
    }
 };

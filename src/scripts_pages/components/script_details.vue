@@ -3,24 +3,17 @@
       <v-dialog v-model="visible" max-width="900px">
          <v-card>
             <v-card-title>
-               <div class="title text-xs-center">Details {{type}} script: "{{name}}"</div>
+               <div class="title text-xs-center">{{type2string(type)}} "{{name}}"</div>
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-               <div class="subheading">Active flag:</div>
-               {{active_flag}}
+               <div class="subheading">Status: {{active_flag}}, {{status}}({{status_msg}})</div>
+               <div class="subheading">UUID: {{uuid}}</div>
             </v-card-text>
-            <v-divider></v-divider>
             <v-card-text>
-               <div class="subheading">Status:</div>
-               {{status}}({{status_msg}})
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-text>
-               <div class="subheading">UUID:</div>
-               {{uuid}}
+               <div class="subheading">Object: {{object}}</div>
             </v-card-text>
             <v-card-text>
                <div class="subheading">Logs:</div>
@@ -59,6 +52,7 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import renameScriptModal from "../../components/modals/rename-script-modal.vue";
+import { script_type2string } from "../../utils/index.js";
 
 export default {
   components: {
@@ -104,8 +98,12 @@ export default {
       this.type = item.type;
       this.uuid = item.uuid;
       this.active_flag = item.active_flag;
+      this.object = item.object;
       this.visible = true;
       this.get_logs();
+    },
+    type2string(type) {
+      return script_type2string(type);
     },
     get_logs() {
       Vue.axios
@@ -113,7 +111,7 @@ export default {
           params: {
             action: "get_logs",
             uuid: this.uuid,
-            limit: 10
+            limit: 5
           }
         })
         .then(response => {

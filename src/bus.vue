@@ -29,7 +29,7 @@
          </v-card-title>
          <v-divider></v-divider>
          <bus-tree v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-tree>
-         <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-linear>
+         <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set" :loaded="loaded"></bus-linear>
          <v-divider v-if="bus_type === BUS_TYPE_LINEAR"></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
@@ -79,6 +79,7 @@ export default {
     bus_values: [],
     all_tsdb: { topic: "*", tsdb: false },
     none_tsdb: { topic: "*", tsdb: true },
+    loaded: false
   }),
   computed: {
     bus_type: {
@@ -88,7 +89,7 @@ export default {
       set(value) { 
         this.$store.commit('bus_type', value); 
       },
-    },
+    }
   },
   beforeRouteLeave(to, from, next) {
     this.$timer.stop("table_update");
@@ -175,6 +176,7 @@ export default {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
+          this.loaded = true;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
@@ -185,6 +187,7 @@ export default {
             this.timers.table_update.time = +this.update_interval;
             this.$timer.start("table_update");
           }
+          this.loaded = false;
           this.$refs.snackbar.update("Update table: network error");
         });
     },

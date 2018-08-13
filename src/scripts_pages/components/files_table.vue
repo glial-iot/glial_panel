@@ -5,21 +5,29 @@
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
 
-            <file-create-form @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update()" :type="type"></file-create-form>
+            <create-script-modal @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update()" :type="type"></create-script-modal>
          </v-card-title>
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll">
+         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll" :no-data-text="get_empty_text()">
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
 
                   <td class="text-xs-center">
-                     <icon-normal v-show="props.item.status == 'NORMAL'" :title="props.item.status_msg">fa-check-circle</icon-normal>
-                     <icon-warning v-show="props.item.status == 'WARNING'" :title="props.item.status_msg">fa-exclamation-circle</icon-warning>
-                     <icon-error v-show="props.item.status == 'ERROR'" :title="props.item.status_msg">fa-times-circle</icon-error>
-                     <icon-stopped v-show="props.item.status == 'STOPPED'" :title="props.item.status_msg">fa-dot-circle</icon-stopped>
+                     <div :title="props.item.status_msg">
+                        <icon-normal v-show="props.item.status == 'NORMAL'">fa-check-circle</icon-normal>
+                     </div>
+                     <div :title="props.item.status_msg">
+                        <icon-warning v-show="props.item.status == 'WARNING'">fa-exclamation-circle</icon-warning>
+                     </div>
+                     <div :title="props.item.status_msg">
+                        <icon-error v-show="props.item.status == 'ERROR'">fa-times-circle</icon-error>
+                     </div>
+                     <div :title="props.item.status_msg">
+                        <icon-stopped v-show="props.item.status == 'STOPPED'">fa-dot-circle</icon-stopped>
+                     </div>
                   </td>
 
                   <td class="text-xs-left">
@@ -31,7 +39,7 @@
                   </td>
 
                   <td class="justify-center text-xs-center cell-flex">
-                     <button-info :item="props" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                     <button-info :item="props" title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
@@ -50,7 +58,7 @@
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Delete script" @click="script_delete(props.item)">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Delete script" @click="$refs.remove_modal.show(props.item)">
                         <v-icon color="pink" small>fa-trash-alt</v-icon>
                      </v-btn>
                   </td>
@@ -75,6 +83,7 @@
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <script-details ref="scriptdetails"></script-details>
+      <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
    </div>
 </template>
 
@@ -89,7 +98,7 @@ Vue.use(VueAxios, Axios);
 import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
-import file_create_form from "./file_create_form.vue";
+import createScriptModal from "../../components/modals/create_script_modal.vue";
 import script_details from "./script_details.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
@@ -97,17 +106,19 @@ import iconError from "../../components/icons/icon-status-error.vue";
 import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
 import iconWarning from "../../components/icons/icon-status-warning.vue";
+import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
 
 export default {
   components: {
-    "file-create-form": file_create_form,
+    createScriptModal,
     "script-details": script_details,
     snackbar,
     buttonInfo,
     iconError,
     iconNormal,
     iconStopped,
-    iconWarning
+    iconWarning,
+    confirmRemoveScriptModal
   },
   data: () => ({
     headers: [
@@ -159,7 +170,8 @@ export default {
         width: "6%"
       }
     ],
-    files_table: []
+    files_table: [],
+    loaded: false
   }),
   props: ["type"],
 
@@ -185,23 +197,6 @@ export default {
         path: "/editor",
         query: { uuid: table_item.uuid }
       });
-    },
-    script_delete(table_item) {
-      Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "delete",
-            uuid: table_item.uuid
-          }
-        })
-        .then(response => {
-          this.table_update();
-          this.$refs.snackbar.update("");
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Delete script error");
-        });
     },
     script_restart(table_item) {
       Vue.axios
@@ -254,6 +249,7 @@ export default {
         .then(response => {
           console.log(response.data);
           Vue.set(this, "files_table", response.data);
+          this.loaded = true;
           this.$refs.snackbar.update("");
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
@@ -264,7 +260,15 @@ export default {
           this.$refs.snackbar.update("Get script list error");
           this.$timer.stop("table_update");
           this.$timer.start("table_update");
+          this.loaded = false;
         });
+    },
+    get_empty_text() {
+      if (!this.loaded) {
+        return "No data available";
+      }
+
+      return "No scripts";
     }
   }
 };
