@@ -50,7 +50,6 @@
 import Vue from 'Vue'
 import LiquorTree from 'liquor-tree'
 import moment from 'moment'
-import merge from '../../../utils/deepmerge'
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
@@ -99,6 +98,28 @@ export default {
       }
    },
    methods: {
+      merge(target, source) {
+         for (let key of Object.keys(source)) {
+            let sourceElem
+
+            if (this.isArray(source) && target[key] && target[key].hasOwnProperty('text') ) {
+               sourceElem = source.find(item => item.text === target[key].text)
+            } else {
+               sourceElem = source[key]
+            }
+
+            if (sourceElem instanceof Object && key in target) {
+               if (key === 'state') {
+                  Object.assign(sourceElem, this.merge(target[key], sourceElem))
+               } else {
+                  this.merge(target[key], sourceElem)
+               }
+            }
+         }
+
+         Object.assign(target || {}, source)
+         return target
+      },
       isObjectEmpty(obj) {
          return Object.keys(obj).length === 0
       },
@@ -156,6 +177,7 @@ export default {
             obj.data = {
                'type': this.isArray(prop) ? 'array' : this.isPlainObject(prop) ? 'object' : 'unknown'
             }
+            obj.state = {}
          } else {
             obj.data = {
                'objectKey': prop || `${prop}`,
