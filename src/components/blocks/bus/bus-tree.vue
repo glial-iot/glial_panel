@@ -88,7 +88,7 @@ export default {
          const oldTreeLength = this.countElements(this.parser(oldValue))
          const newTreeLength = this.countElements(this.parser(value))
 
-         if (newTreeLength > oldTreeLength) {
+         if (oldTreeLength > newTreeLength) {
             mergedTree = newTree
          } else {
             if (oldTree && newTree) {
