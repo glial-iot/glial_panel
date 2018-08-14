@@ -41,6 +41,8 @@ Vue.use(VueLocalStorage)
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
+import {BUS_TYPE_TREE} from './utils/constants'
+
 const router = new VueRouter({
    routes: [{
       path: '/bus',
@@ -80,6 +82,7 @@ const store = new Vuex.Store({
       server_history: Vue.localStorage.get("server_history") ? JSON.parse(Vue.localStorage.get("server_history")) : [],
       logs_visible: Vue.localStorage.get("logs_visible") !== null ? Vue.localStorage.get("logs_visible") === 'true' : true,
       editor_log_size: parseInt(Vue.localStorage.get("editor_log_size", 6)),
+      bus_type: Vue.localStorage.get("bus_type", BUS_TYPE_TREE),
       endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
@@ -123,6 +126,10 @@ const store = new Vuex.Store({
       editor_log_size(state, size) {
          state.editor_log_size = size
          Vue.localStorage.set("editor_log_size", size);
+      },
+      bus_type(state, type) {
+         state.bus_type = type
+         Vue.localStorage.set("bus_type", type);
       }
    },
    getters: {
