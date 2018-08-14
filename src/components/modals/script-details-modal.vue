@@ -6,6 +6,7 @@
                <div class="title text-xs-center">{{type2string(type)}} "{{name}}"</div>
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
+               <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object)">Change Object</v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -18,7 +19,6 @@
             <v-card-text>
                <div class="subheading">Logs:</div>
                <v-data-table :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
-
                   <template slot="items" slot-scope="props">
                      <tr>
                         <td class="text-xs-center">
@@ -36,12 +36,12 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-
                <v-btn color="primary" flat @click.stop="hide()">Close</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
-      <rename-script-modal ref="rename_script" :hideDetails="hide"></rename-script-modal>
+      <rename-script-modal ref="rename_script" :hideDetails="hide" :updateName="update_name"></rename-script-modal>
+      <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
    </div>
 </template>
 
@@ -51,12 +51,15 @@ import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
-import renameScriptModal from "../../components/modals/rename-script-modal.vue";
+import renameScriptModal from "./rename-script-modal.vue";
+import changeObjectModal from "./change-object-modal.vue";
+
 import { script_type2string } from "../../utils/index.js";
 
 export default {
   components: {
-    renameScriptModal
+    renameScriptModal,
+    changeObjectModal
   },
   data: () => ({
     visible: false,
@@ -66,6 +69,7 @@ export default {
     type: "",
     uuid: "",
     active_flag: "",
+    object: "",
     logs: [],
     headers: [
       {
@@ -124,6 +128,12 @@ export default {
     },
     hide() {
       this.visible = false;
+    },
+    update_name(value) {
+      this.name = value;
+    },
+    update_object(value) {
+      this.object = value;
     }
   }
 };
