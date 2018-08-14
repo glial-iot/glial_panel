@@ -80,16 +80,22 @@ export default {
       }
    },
    watch: {
-      json: function() {
+      json: function(value, oldValue) {
          const oldTree = this.$refs.tree.toJSON()
          const newTree = this.parser(this.json)
          const tree = this.$refs.tree.tree
          let mergedTree
+         const oldTreeLength = this.countElements(this.parser(oldValue))
+         const newTreeLength = this.countElements(this.parser(value))
 
-         if (oldTree && newTree) {
-            mergedTree = this.merge(oldTree, newTree)
-         } else {
+         if (newTreeLength > oldTreeLength) {
             mergedTree = newTree
+         } else {
+            if (oldTree && newTree) {
+               mergedTree = this.merge(oldTree, newTree)
+            } else {
+               mergedTree = newTree
+            }
          }
 
          this.treeData = mergedTree
@@ -119,6 +125,22 @@ export default {
 
          Object.assign(target || {}, source)
          return target
+      },
+      countElements(obj) {
+         let count = []
+
+         function getCount(data, level) {
+            level = level || 0;
+            count[level] = count[level] || 0;
+            for (var k in data) {
+               data.hasOwnProperty(k) && count[level]++;
+               typeof data[k] === 'object' && getCount(data[k], level + 1);
+            }
+         }
+
+         getCount(obj)
+
+         return count.reduce((a, b) => a + b, 0)
       },
       isObjectEmpty(obj) {
          return Object.keys(obj).length === 0
