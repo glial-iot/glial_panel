@@ -82,7 +82,7 @@
 
       </v-card>
       <snackbar ref="snackbar"></snackbar>
-      <script-details ref="scriptdetails"></script-details>
+      <script-details-modal ref="scriptdetails"></script-details-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
    </div>
 </template>
@@ -99,7 +99,7 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
 import createScriptModal from "../../components/modals/create_script_modal.vue";
-import script_details from "./script_details.vue";
+import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
 import iconError from "../../components/icons/icon-status-error.vue";
@@ -111,7 +111,7 @@ import confirmRemoveScriptModal from "../../components/modals/confirm-remove-scr
 export default {
   components: {
     createScriptModal,
-    "script-details": script_details,
+    scriptDetailsModal,
     snackbar,
     buttonInfo,
     iconError,
