@@ -14,16 +14,30 @@
       <div class="json-viewer">
          <tree ref="tree" :data="treeData" :options="treeOptions">
             <div slot-scope="{ node }" class="viewer-item" :class="[node.data.type]">
-               <div v-if="node.hasChildren()" class="viewer-item__key">
-                  {{ node.text }}
-                  <span v-if="node.collapsed()">
-                     <template v-if="node.data.type == 'array'">
-                        [ {{ node.children.length }} ]
-                     </template>
-                     <template v-else>
-                        { {{ node.children.length }} }
-                     </template>
-                  </span>
+               <div v-if="checkChildren(node)" class="viewer-item__key">
+                  <div>
+                     {{ node.text }}
+                     <span v-if="node.collapsed()">
+                        <template v-if="node.data.type == 'array'">
+                           [ {{ node.children.length }} ]
+                        </template>
+                        <template v-else>
+                           { {{ node.children.length }} }
+                        </template>
+                     </span>
+                  </div>
+                  <template v-if="node.data.objectKey">
+                     <div class="viewer-item__key__info">
+                        <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
+                        <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                        <div class="viewer-item__key__actions">
+                           <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
+                           <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
+                           <button-download v-show="node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download>
+                           <button-download-disabled v-show="!node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download-disabled>
+                        </div>
+                     </div>
+                  </template>
                </div>
                <div v-else class="viewer-item__prop">
                   <div class="viewer-item__key">{{ node.text }}</div>
@@ -56,6 +70,8 @@ import buttonTrash from "../../buttons/button-trash.vue";
 import buttonDownload from "../../buttons/button-download.vue";
 import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
+
+const DATA_KEY = '__data__'
 
 export default {
    components: {
@@ -197,14 +213,18 @@ export default {
          if (this.isIterable(prop)) {
             obj.children = this.map(prop, this.transformObject)
             obj.data = {
-               'type': this.isArray(prop) ? 'array' : this.isPlainObject(prop) ? 'object' : 'unknown'
+               'type': this.isArray(prop) ? 'array' : this.isPlainObject(prop) ? 'object' : 'unknown',
+               'objectKey': prop[DATA_KEY]
             }
             obj.state = {}
          } else {
             obj.data = {
-               'objectKey': prop || `${prop}`,
+               'objectKey': prop[DATA_KEY],
                'type': this.getType(prop),
                'data': prop
+            }
+            if (obj.text === DATA_KEY) {
+               obj.state = {visible: false}
             }
          }
 
@@ -239,7 +259,15 @@ export default {
          return this.map(obj, this.transformObject)
       },
       format_time(value) {
+         console.log('val', value)
          return moment.unix(value).format('YYYY-MM-DD, HH:mm:ss')
+      },
+      checkChildren(node) {
+         if (node.children.length === 1 && node.children[0].text === DATA_KEY) {
+            return false
+         }
+
+         return node.hasChildren()
       }
    }
 };
@@ -266,7 +294,8 @@ export default {
 }
 
 .viewer-item,
-.viewer-item__prop {
+.viewer-item__prop,
+.viewer-item__key {
    width: 100%;
 }
 
@@ -274,7 +303,8 @@ export default {
    display: none;
 }
 
-.viewer-item__prop {
+.viewer-item__prop,
+.viewer-item__key {
    display: flex;
    align-items: center;
    justify-content: space-between;
