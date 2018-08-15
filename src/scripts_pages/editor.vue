@@ -58,7 +58,7 @@
                         <div class="ellipsis">{{ props.item.level }}</div>
                      </td>
                      <td class="text-xs-center">
-                        <div class="ellipsis" :title="props.item.date_abs">{{props.item.date_rel }}</div>
+                        <div class="ellipsis" :title="props.item.date_abs">{{$options.filters.toRelativeTime(props.item.time)}}</div>
                      </td>
                      <td class="text-xs-left">
                         <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
