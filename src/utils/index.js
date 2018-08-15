@@ -25,3 +25,18 @@ export function script_type2string(type) {
       return "Shedule-event script";
    }
 }
+
+export function object_label(type) {
+   switch (type) {
+      case "WEB_EVENT":
+         return "Endpoint"
+      case "BUS_EVENT":
+         return "Topic"
+      case "TIMER_EVENT":
+         return "Period(s)"
+      case "SHEDULE_EVENT":
+         return "Shedule"
+      default:
+         return false
+   }
+}
