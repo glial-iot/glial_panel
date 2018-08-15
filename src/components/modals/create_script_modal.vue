@@ -36,7 +36,7 @@
 import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
-import {object_label} from "../../utils/index.js"
+import { object_label } from "../../utils/index.js";
 import snackbar from "../snackbar.vue";
 Vue.use(VueAxios, Axios);
 
@@ -58,30 +58,32 @@ export default {
       this.dialog_visible = false;
     },
     create_file() {
-      let params = {}
+      let params = {};
 
       if (this.type !== "DRIVER" && this.object === "") {
-        this.$refs.snackbar.update(`Field "${this.get_object_label(this.type)}" is required`);
-        return
+        this.$refs.snackbar.update(
+          `Field "${this.get_object_label(this.type)}" is required`
+        );
+        return;
       }
 
       if (this.type === "DRIVER") {
         params = {
           action: "create",
           name: this.name,
-          type: this.type,
-        }
+          type: this.type
+        };
       } else {
         params = {
           action: "create",
           name: this.name,
           type: this.type,
           object: this.object
-        }
+        };
       }
 
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {params})
+        .get(this.$store.getters.server_url + "/scripts", { params })
         .then(response => {
           this.$emit("data_updated", this.item);
           this.dialog_visible = false;
@@ -93,7 +95,7 @@ export default {
         });
     },
     get_object_label(type) {
-      return object_label(type)
+      return object_label(type);
     }
   }
 };
