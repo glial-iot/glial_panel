@@ -40,7 +40,7 @@
                      <div class="ellipsis" :title="props.item.uuid_source">{{ props.item.source }}</div>
                   </td>
                   <td class="text-xs-center">
-                     <div class="ellipsis" :title="time_format_rel ? props.item.date_abs : props.item.date_rel">{{ time_format_rel ? props.item.date_rel : props.item.date_abs }}</div>
+                     <div class="ellipsis" :title="time_format_rel ? props.item.date_abs : $options.filters.toRelativeTime(props.item.time)">{{ time_format_rel ? $options.filters.toRelativeTime(props.item.time) : props.item.date_abs }}</div>
                   </td>
                   <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
@@ -170,6 +170,7 @@ export default {
         })
         .then(response => {
           this.table_values = response.data;
+          console.log(response.data);
           this.timers.table_update.time = this.update_time;
           this.loaded = true;
           this.$timer.stop("table_update");
