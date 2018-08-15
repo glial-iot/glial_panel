@@ -15,6 +15,9 @@
             </v-card-text>
             <v-card-text v-if="get_object_label(type)">
                <v-text-field :label="get_object_label(type)" v-model="object"></v-text-field>
+               <span>Endpoint:
+                  <a :href="$store.getters.server_url+'/we/'+object">{{$store.getters.server_url}}/we/{{object || "..."}}</a>
+               </span>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
