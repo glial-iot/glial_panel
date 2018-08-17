@@ -7,16 +7,18 @@
       <v-dialog v-model="dialog_visible" max-width="500px">
          <v-card>
             <v-card-title>
-               <div class="title text-xs-center">Create new script</div>
+               <div class="title text-xs-center">Create new {{type2string(type).toLowerCase()}}</div>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
                <v-text-field autofocus label="Name" v-model="name"></v-text-field>
             </v-card-text>
-            <v-card-text v-if="get_object_label(type)">
+            <v-card-text v-if="type != 'DRIVER'">
                <v-text-field :label="get_object_label(type)" v-model="object"></v-text-field>
-               <span>Endpoint:
-                  <a :href="$store.getters.server_url+'/we/'+object">{{$store.getters.server_url}}/we/{{object || "..."}}</a>
+            </v-card-text>
+            <v-card-text v-if="type === 'WEB_EVENT'">
+               <span>Full script URL:
+                  <a :href="$store.getters.server_url+'/we/'+object">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
                </span>
             </v-card-text>
             <v-divider></v-divider>
@@ -39,6 +41,8 @@ import VueAxios from "vue-axios";
 import { object_label } from "../../utils/index.js";
 import snackbar from "../snackbar.vue";
 Vue.use(VueAxios, Axios);
+
+import { script_type2string } from "../../utils/index.js";
 
 export default {
   components: {
@@ -93,6 +97,9 @@ export default {
           console.log(error);
           this.$emit("create_error");
         });
+    },
+    type2string(type) {
+      return script_type2string(type);
     },
     get_object_label(type) {
       return object_label(type);
