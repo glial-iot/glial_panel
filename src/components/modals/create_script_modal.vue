@@ -23,7 +23,7 @@
             <v-card-actions>
                <v-btn color="error" flat @click.stop="close">Close</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="primary" right flat @click="create_file()">
+               <v-btn color="green darken-1" right flat @click="create_file()">
                   <v-icon left small>fa-file</v-icon> Create </v-btn>
             </v-card-actions>
          </v-card>
