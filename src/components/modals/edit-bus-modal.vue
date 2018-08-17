@@ -74,9 +74,9 @@ export default {
   data: () => ({
     visible: false,
     item: {},
-    type: '',
-    tags: '',
-    value: '',
+    type: "",
+    tags: "",
+    value: "",
     edit_type: false,
     edit_tags: false,
     edit_value: false
@@ -84,46 +84,46 @@ export default {
   methods: {
     show(item) {
       this.visible = true;
-      this.item = item
+      this.item = item;
     },
     hide() {
       this.visible = false;
-      this.item = {}
+      this.item = {};
     },
     edit(field) {
       switch (field) {
         case "type":
-          this.type = this.item.type
-          this.edit_type = true
-          break
+          this.type = this.item.type;
+          this.edit_type = true;
+          break;
         case "tags":
-          this.tags = this.item.tags
-          this.edit_tags = true
-          break
+          this.tags = this.item.tags;
+          this.edit_tags = true;
+          break;
         case "value":
-          this.value = this.item.value
-          this.edit_value = true
-          break
+          this.value = this.item.value;
+          this.edit_value = true;
+          break;
       }
     },
     cancel_edit(field) {
       switch (field) {
         case "type":
-          this.type = ""
-          this.edit_type = false
-          break
+          this.type = "";
+          this.edit_type = false;
+          break;
         case "tags":
-          this.tags = ""
-          this.edit_tags = false
-          break
+          this.tags = "";
+          this.edit_tags = false;
+          break;
         case "value":
-          this.value = ""
-          this.edit_value = false
-          break
+          this.value = "";
+          this.edit_value = false;
+          break;
       }
     },
     save(field) {
-      let params = {}
+      let params = {};
 
       switch (field) {
         case "type":
@@ -131,21 +131,21 @@ export default {
             action: "update_type",
             type: this.type,
             topic: this.item.topic
-          }
-          break
+          };
+          break;
         case "tags":
           params = {
             action: "update_tags",
             tags: this.tags,
             topic: this.item.topic
-          }
-          break
+          };
+          break;
         case "value":
           params = {
             action: "update_value",
             value: this.value,
             topic: this.item.topic
-          }
+          };
       }
 
       Vue.axios
@@ -159,22 +159,21 @@ export default {
 
             switch (field) {
               case "type":
-                this.item.type = this.type
-                this.edit_type = false
+                this.item.type = this.type;
+                this.edit_type = false;
               case "tags":
-                this.item.tags = this.tags
-                this.edit_tags = false
-                break
+                this.item.tags = this.tags;
+                this.edit_tags = false;
+                break;
               case "value":
-                this.item.value = this.value
-                this.edit_value = false
+                this.item.value = this.value;
+                this.edit_value = false;
             }
           } else if (response.data.result == false) {
             this.$refs.snackbar.update(response.data.error_msg);
           } else {
             this.$refs.snackbar.update("Unknown response");
           }
-          
         })
         .catch(error => {
           console.log(error);
@@ -183,10 +182,10 @@ export default {
     },
     get_text(text) {
       if (text) {
-        return text
+        return text;
       }
-      
-      return '(Empty)'
+
+      return "(Empty)";
     }
   }
 };

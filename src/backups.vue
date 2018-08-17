@@ -133,10 +133,10 @@ export default {
     },
     get_empty_text() {
       if (!this.loaded) {
-        return 'No data available'
+        return "No data available";
       }
 
-      return 'No backups'
+      return "No backups";
     }
   }
 };
