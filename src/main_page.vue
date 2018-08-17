@@ -17,7 +17,7 @@
                Glue: {{backend_version}}
             </div>
             <div class="version-row">
-               GApp: {{frontend_version}}
+               Panel: {{frontend_version}}
             </div>
             <div class="version-row">
                2018 © Nokia IoT Laboratory
@@ -122,7 +122,7 @@ export default {
   data: () => ({
     menuitems: menu,
     frontend_version: VERSION,
-    backend_version: ''
+    backend_version: ""
   }),
   computed: mapState({
     server_scheme: state => state.server_scheme,
@@ -146,13 +146,13 @@ export default {
         })
         .then(response => {
           if (response.data && response.data.version) {
-            this.backend_version = response.data.version
+            this.backend_version = response.data.version;
           } else {
-            throw new Error('Cant find version')
+            throw new Error("Cant find version");
           }
         })
         .catch(error => {
-          console.log('error while getting backend version', error);
+          console.log("error while getting backend version", error);
         });
     }
   }
@@ -222,13 +222,13 @@ table.v-table thead tr {
 }
 
 .version-block {
-   display: flex;
-   flex-direction: column;
-   padding: 8px;
-   font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  font-size: 10px;
 }
 
 .version-row {
-   white-space: nowrap;
+  white-space: nowrap;
 }
 </style>
