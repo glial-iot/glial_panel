@@ -154,7 +154,7 @@ export default {
         })
         .then(response => {
           console.log(response.data);
-          if (response.data.result) {
+          if (response.data.result == true) {
             this.$refs.snackbar.update("Topic update success", "success", 5000);
 
             switch (field) {
@@ -169,7 +169,7 @@ export default {
                 this.item.value = this.value
                 this.edit_value = false
             }
-          } else if (response.data.error) {
+          } else if (response.data.result == false) {
             this.$refs.snackbar.update(response.data.error_msg);
           } else {
             this.$refs.snackbar.update("Unknown response");

@@ -98,7 +98,7 @@ export default {
           }
         })
         .then(response => {
-          if (response.data.error == false)
+          if (response.data.result == true)
             this.$refs.snackbar_msg.update("Backup restored", "success", 2000);
           else
             this.$refs.snackbar_error.update(
