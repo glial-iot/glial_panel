@@ -14,31 +14,30 @@ export default {
   methods: {
     get_class: function() {
       if (this.item && this.item.index === 0) {
-        return "btn-icon-info v-btn--icon--info v-btn v-btn--icon fix-first";
+        return "btn-icon v-btn v-btn--icon fix-first";
       }
 
-      return "btn-icon-info v-btn--icon--info v-btn v-btn--icon";
+      return "btn-icon v-btn v-btn--icon";
     }
   }
 };
 </script>
 
-<style>
-.v-btn--icon--info {
-  width: 18px;
-  height: 18px;
-  margin: 0;
+<style scoped>
+.v-btn--icon {
+  width: 24px;
+  height: 24px;
 }
 
-.btn-icon-info:before {
+.btn-icon:before {
   height: 24px !important;
   width: 24px !important;
-  left: -3px !important;
-  top: -4px !important;
+  left: 0px !important;
+  top: 0px !important;
   border-radius: 0;
 }
 
-.btn-icon-info.fix-first:before {
+.btn-icon.fix-first:before {
   height: 25px !important;
 }
 </style>

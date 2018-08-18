@@ -31,7 +31,7 @@
                         <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
                         <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
                         <div class="viewer-item__key__actions">
-                           <button-info class="mr-2" @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
+                           <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                            <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
                            <button-download v-show="node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download>
                            <button-download-disabled v-show="!node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download-disabled>
@@ -45,7 +45,7 @@
                      <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
                      <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
                      <div class="viewer-item__key__actions">
-                        <button-info class="mr-6" @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
+                        <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
                         <button-download v-show="node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download>
                         <button-download-disabled v-show="!node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download-disabled>
