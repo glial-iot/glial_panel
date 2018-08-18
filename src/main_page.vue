@@ -87,12 +87,6 @@ let menu = [
     color: "blue"
   },
   {
-    path: "/manage",
-    name: "Manage",
-    icon: "fa-sliders-h",
-    color: "brown"
-  },
-  {
     path: "/scripts/drivers",
     name: "Drivers",
     icon: "fa-screwdriver",
@@ -109,13 +103,19 @@ let menu = [
     name: "Web scripts",
     icon: "fa-link",
     color: "green darken-2"
-  } /* ,
+  } /*
   {
     path: "/scripts/timerevent",
     name: "Timer scripts",
     icon: "fa-clock",
     color: "green darken-2"
-  } */
+  } */,
+  {
+    path: "/manage",
+    name: "Manage",
+    icon: "fa-sliders-h",
+    color: "brown"
+  }
 ];
 
 export default {
