@@ -106,6 +106,7 @@ export default {
     },
     bus_type() {
       this.bus_values = []
+      this.table_update()
     }
   },
   timers: {
