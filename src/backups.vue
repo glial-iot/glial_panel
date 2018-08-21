@@ -2,7 +2,7 @@
    <div>
       <v-card class="elevation-3">
 
-         <v-data-table :headers="headers" :items="table_values" must-sort class="no-scroll" :no-data-text="get_empty_text()">
+         <v-data-table v-if="loaded" :headers="headers" :items="table_values" must-sort class="no-scroll" no-data-text="No backups">
 
             <template slot="items" slot-scope="props">
                <td class="text-xs-left">
@@ -130,13 +130,6 @@ export default {
           this.table_values = [];
           this.loaded = false;
         });
-    },
-    get_empty_text() {
-      if (!this.loaded) {
-        return "No data available";
-      }
-
-      return "No backups";
     }
   }
 };

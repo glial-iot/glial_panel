@@ -10,7 +10,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="files_table" hide-actions class="no-scroll" :no-data-text="get_empty_text()">
+         <v-data-table v-if="loaded" :headers="headers" :items="files_table" hide-actions class="no-scroll" no-data-text="No scripts">
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
@@ -262,13 +262,6 @@ export default {
           this.$timer.start("table_update");
           this.loaded = false;
         });
-    },
-    get_empty_text() {
-      if (!this.loaded) {
-        return "No data available";
-      }
-
-      return "No scripts";
     }
   }
 };
