@@ -286,6 +286,8 @@ export default {
 
 .tree-anchor {
    line-height: 18px;
+   padding: 0 6px;
+   min-height: 25px;
 }
 
 .tree-arrow {
@@ -297,6 +299,7 @@ export default {
 .viewer-item__prop,
 .viewer-item__key {
    width: 100%;
+   line-height: 25px;
 }
 
 .tree-arrow:not(.has-child) {
@@ -338,7 +341,7 @@ export default {
    display: flex;
    align-items: center;
    justify-content: space-between;
-   padding: 0 14px;
+   padding: 2px 25px 2px 24px;
 }
 
 .json-viewer-header-cell {
