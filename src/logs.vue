@@ -21,7 +21,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table :headers="headers" :items="table_values" :search="search" :custom-filter="customFilter" hide-actions must-sort class="no-scroll" no-data-text="No log entries">
+         <v-data-table v-if="loaded" :headers="headers" :items="table_values" :search="search" :custom-filter="customFilter" hide-actions must-sort class="no-scroll" no-data-text="No log entries">
 
             <template slot="headers" slot-scope="props">
                <tr>
@@ -210,13 +210,6 @@ export default {
         return items;
       }
       return items.filter(item => item.level === search);
-    },
-    get_empty_text() {
-      if (!this.loaded) {
-        return 'No data available'
-      }
-
-      return 'No log entries'
     }
   }
 };
