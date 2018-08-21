@@ -33,7 +33,7 @@
 
 
 <script>
-import Vue from 'Vue'
+import Vue from "Vue";
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
@@ -42,64 +42,58 @@ import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
 
 export default {
-   components: {
-      editBusModal,
-      buttonTrash,
-      buttonDownload,
-      buttonDownloadDisabled,
-      buttonInfo
-   },
-   props: [
-      "items",
-      "topicDelete",
-      "tsdbSet",
-      "loaded"
-   ],
-   data() {
-      return {
-         headers: [
-            {
-               text: "Topic",
-               value: "topic",
-               align: "left"
-            },
-            {
-               text: "Value",
-               value: "value",
-               sortable: false,
-               align: "right",
-               width: "15%"
-            },
-            {
-               text: "Type",
-               value: "type",
-               sortable: false,
-               align: "left",
-               width: "10%"
-            },
-            {
-               text: "Tags",
-               value: "value",
-               sortable: false,
-               align: "center",
-               width: "10%"
-            },
-            {
-               text: "Update time",
-               value: "text_time",
-               align: "center",
-               width: "28%"
-            },
-            {
-               text: "Actions",
-               sortable: false,
-               width: "100px"
-            }
-         ]
-      }
-   }
+  components: {
+    editBusModal,
+    buttonTrash,
+    buttonDownload,
+    buttonDownloadDisabled,
+    buttonInfo
+  },
+  props: ["items", "topicDelete", "tsdbSet", "loaded"],
+  data() {
+    return {
+      headers: [
+        {
+          text: "Topic",
+          value: "topic",
+          align: "left"
+        },
+        {
+          text: "Value",
+          value: "value",
+          sortable: false,
+          align: "right",
+          width: "15%"
+        },
+        {
+          text: "Type",
+          value: "type",
+          sortable: false,
+          align: "left",
+          width: "10%"
+        },
+        {
+          text: "Tags",
+          value: "value",
+          sortable: false,
+          align: "center",
+          width: "10%"
+        },
+        {
+          text: "Update time",
+          value: "text_time",
+          align: "center",
+          width: "28%"
+        },
+        {
+          text: "Actions",
+          sortable: false,
+          width: "100px"
+        }
+      ]
+    };
+  }
 };
-
 </script>
 
 <style>
