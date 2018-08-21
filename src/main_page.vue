@@ -27,12 +27,11 @@
 
       <v-toolbar color="primary" dark app fixed clipped-left height=48>
          <v-layout row wrap>
-            <v-flex>
+            <v-flex class="header-left">
                <v-menu>
                   <v-toolbar-title slot="activator">
-                     <div>
-                        <img class="mr-3 mt-2" src="./assets/logo_nokia.svg" height="25px" alt="Nokia Logo"> IMPACT GLUE
-                     </div>
+                     <img class="mr-3 logo" src="./assets/logo_nokia.svg" height="25px" alt="Nokia Logo">
+                     <p>IMPACT GLUE</p>
                   </v-toolbar-title>
                </v-menu>
             </v-flex>
@@ -40,7 +39,7 @@
 
             <v-flex xs2 class="flex-end">
                <v-menu offset-y>
-                  <v-btn slot="activator" color="primary" depressed dark>
+                  <v-btn slot="activator" color="primary" depressed dark class="select-server">
                      {{ `${server_scheme}://${server_address}:${server_port}` }}
                   </v-btn>
                   <v-list>
@@ -230,5 +229,24 @@ table.v-table thead tr {
 
 .version-row {
   white-space: nowrap;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.v-toolbar__title {
+  display: flex;
+  align-items: center;
+}
+
+.v-toolbar__title p {
+  margin: 0;
+  margin-bottom: 2px;
+}
+
+.select-server {
+  
 }
 </style>
