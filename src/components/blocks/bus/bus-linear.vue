@@ -33,7 +33,7 @@
 
 
 <script>
-import Vue from "Vue";
+import Vue from "vue";
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";

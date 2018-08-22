@@ -61,7 +61,7 @@
 
 
 <script>
-import Vue from "Vue";
+import Vue from "vue";
 import LiquorTree from "liquor-tree";
 import moment from "moment";
 
