@@ -16,7 +16,7 @@
                   <div class="ellipsis" :title="props.item.tags">{{ props.item.tags }}</div>
                </td>
                <td class="text-xs-left">
-                  <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
+                  <div class="ellipsis" :title="get_time(props.item.time)">{{ get_time(props.item.time) }}</div>
                </td>
                <td class="justify-center text-xs-center cell-flex">
                   <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
@@ -41,6 +41,8 @@ import buttonDownload from "../../buttons/button-download.vue";
 import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
 
+Vue.use(require("vue-moment"));
+
 export default {
   components: {
     editBusModal,
@@ -50,6 +52,18 @@ export default {
     buttonInfo
   },
   props: ["items", "topicDelete", "tsdbSet", "loaded"],
+  methods: {
+    get_time(time) {
+      let time_abs = this.$moment.unix(time).format("Do MMMM, HH:mm:ss");
+      let time_diff = time - Date.now() / 1000;
+      let time_rel = this.$options.filters.toRelativeTime(time);
+      if (time_diff < 2) {
+        return time_abs.toString() + " (" + time_rel.toString() + ")";
+      } else {
+        return time_abs.toString();
+      }
+    }
+  },
   data() {
     return {
       headers: [

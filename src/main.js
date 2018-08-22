@@ -41,7 +41,9 @@ Vue.use(VueLocalStorage)
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
-import {BUS_TYPE_TREE} from './utils/constants'
+Vue.use(require("vue-moment"));
+
+import { BUS_TYPE_TREE } from './utils/constants'
 
 const router = new VueRouter({
    routes: [{
@@ -164,40 +166,40 @@ const store = new Vuex.Store({
    }
 })
 
-Vue.filter("toRelativeTime", function(time){
-        let difference, weeks, days, hours, minutes, seconds, weeksTxt, daysTxt, hoursTxt, minutesTxt, secondsTxt;
+Vue.filter("toRelativeTime", function (time) {
+   let difference, weeks, days, hours, minutes, seconds, weeksTxt, daysTxt, hoursTxt, minutesTxt, secondsTxt;
 
-        difference = Date.now()/1000 - time;
-        weeks = Math.floor(difference/604800);
-        difference = difference % 604800;
-        days = Math.floor(difference / 86400);
-        difference = difference % 86400;
-        hours = Math.floor(difference / 3600);
-        difference = difference % 3600;
-        minutes = Math.floor(difference / 60);
-        seconds = Math.floor(difference % 60);
+   difference = Date.now() / 1000 - time;
+   weeks = Math.floor(difference / 604800);
+   difference = difference % 604800;
+   days = Math.floor(difference / 86400);
+   difference = difference % 86400;
+   hours = Math.floor(difference / 3600);
+   difference = difference % 3600;
+   minutes = Math.floor(difference / 60);
+   seconds = Math.floor(difference % 60);
 
-        if (weeks === 1) {weeksTxt = 'week'} else {weeksTxt = 'weeks'}
-        if (days === 1) {daysTxt = 'day'} else {daysTxt = 'days'}
-        if (hours === 1) {hoursTxt = 'hour'} else {hoursTxt = 'hours'}
-        if (minutes === 1) {minutesTxt = 'minute'} else {minutesTxt = 'minutes'}
-        if (seconds === 1) {secondsTxt = 'second'} else {secondsTxt = 'seconds'}
+   if (weeks === 1) { weeksTxt = 'week' } else { weeksTxt = 'weeks' }
+   if (days === 1) { daysTxt = 'day' } else { daysTxt = 'days' }
+   if (hours === 1) { hoursTxt = 'hour' } else { hoursTxt = 'hours' }
+   if (minutes === 1) { minutesTxt = 'minute' } else { minutesTxt = 'minutes' }
+   if (seconds === 1) { secondsTxt = 'second' } else { secondsTxt = 'seconds' }
 
-        if (difference >= 604800) {
-            return weeks+' '+weeksTxt+' ago';
-        }
-        else if (difference >= 86400) {
-            return days+' '+daysTxt+', '+hours+' '+hoursTxt+' ago';
-        }
-        else if (difference >= 3600) {
-            return hours+' '+hoursTxt+', '+minutes+' '+minutesTxt+' ago';
-        }
-        else if (difference >= 60) {
-            return minutes+' '+minutesTxt+' ago';
-        }
-        else {
-            return seconds+' '+secondsTxt+' ago';
-        }
+   if (difference >= 604800) {
+      return weeks + ' ' + weeksTxt + ' ago';
+   }
+   else if (difference >= 86400) {
+      return days + ' ' + daysTxt + ', ' + hours + ' ' + hoursTxt + ' ago';
+   }
+   else if (difference >= 3600) {
+      return hours + ' ' + hoursTxt + ', ' + minutes + ' ' + minutesTxt + ' ago';
+   }
+   else if (difference >= 60) {
+      return minutes + ' ' + minutesTxt + ' ago';
+   }
+   else {
+      return seconds + ' ' + secondsTxt + ' ago';
+   }
 })
 
 var vm = new Vue({

@@ -116,6 +116,16 @@ export default {
     }
   },
   methods: {
+    get_time(time) {
+      let time_abs = this.$moment.unix(time).format("Do MMMM, HH:mm:ss");
+      let time_diff = time - Date.now() / 1000;
+      let time_rel = this.$options.filters.toRelativeTime(time);
+      if (time_diff < 2) {
+        return time_abs.toString() + " (" + time_rel.toString() + ")";
+      } else {
+        return time_abs.toString();
+      }
+    },
     merge(target, source) {
       for (let key of Object.keys(source)) {
         let sourceElem;
