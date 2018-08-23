@@ -35,7 +35,19 @@
                   </td>
 
                   <td class="text-xs-left">
-                     {{ props.item.object }}
+                     <div v-if="type === 'WEB_EVENT'">
+                        <span>
+                           <a :href="$store.getters.server_url+'/we/'+props.item.object" target="_blank" style="text-decoration: none">
+                              <span class="grey--text">/we/</span>
+                              <span class="black--text">{{props.item.object}}</span>
+                           </a>
+                        </span>
+                     </div>
+                     <div v-if="type !== 'WEB_EVENT'">
+                        {{ props.item.object }}
+
+                     </div>
+
                   </td>
 
                   <td class="justify-center text-xs-center cell-flex">
