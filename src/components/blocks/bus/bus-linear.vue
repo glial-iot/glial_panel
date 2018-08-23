@@ -16,7 +16,7 @@
                   <div class="ellipsis" :title="props.item.tags">{{ props.item.tags }}</div>
                </td>
                <td class="text-xs-left">
-                  <div class="ellipsis" :title="props.item.text_time">{{ props.item.text_time }}</div>
+                  <div class="ellipsis" :title="get_time(props.item.time)">{{ get_time(props.item.time) }}</div>
                </td>
                <td class="justify-center text-xs-center cell-flex">
                   <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
@@ -38,7 +38,7 @@
 
 
 <script>
-import Vue from 'Vue'
+import Vue from "vue";
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
@@ -46,65 +46,73 @@ import buttonDownload from "../../buttons/button-download.vue";
 import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
 
-export default {
-   components: {
-      editBusModal,
-      buttonTrash,
-      buttonDownload,
-      buttonDownloadDisabled,
-      buttonInfo
-   },
-   props: [
-      "items",
-      "topicDelete",
-      "tsdbSet",
-      "loaded"
-   ],
-   data() {
-      return {
-         headers: [
-            {
-               text: "Topic",
-               value: "topic",
-               align: "left"
-            },
-            {
-               text: "Value",
-               value: "value",
-               sortable: false,
-               align: "right",
-               width: "15%"
-            },
-            {
-               text: "Type",
-               value: "type",
-               sortable: false,
-               align: "left",
-               width: "10%"
-            },
-            {
-               text: "Tags",
-               value: "value",
-               sortable: false,
-               align: "center",
-               width: "10%"
-            },
-            {
-               text: "Update time",
-               value: "text_time",
-               align: "center",
-               width: "28%"
-            },
-            {
-               text: "Actions",
-               sortable: false,
-               width: "100px"
-            }
-         ]
-      }
-   }
-};
+Vue.use(require("vue-moment"));
 
+export default {
+  components: {
+    editBusModal,
+    buttonTrash,
+    buttonDownload,
+    buttonDownloadDisabled,
+    buttonInfo
+  },
+  props: ["items", "topicDelete", "tsdbSet", "loaded"],
+  methods: {
+    get_time(time) {
+      let time_abs = this.$moment.unix(time).format("Do MMMM, HH:mm:ss");
+      let time_diff = time - Date.now() / 1000;
+      let time_rel = this.$options.filters.toRelativeTime(time);
+      if (time_diff < 2) {
+        return time_abs.toString() + " (" + time_rel.toString() + ")";
+      } else {
+        return time_abs.toString();
+      }
+    }
+  },
+  data() {
+    return {
+      headers: [
+        {
+          text: "Topic",
+          value: "topic",
+          align: "left"
+        },
+        {
+          text: "Value",
+          value: "value",
+          sortable: false,
+          align: "right",
+          width: "15%"
+        },
+        {
+          text: "Type",
+          value: "type",
+          sortable: false,
+          align: "left",
+          width: "10%"
+        },
+        {
+          text: "Tags",
+          value: "value",
+          sortable: false,
+          align: "center",
+          width: "10%"
+        },
+        {
+          text: "Update time",
+          value: "text_time",
+          align: "center",
+          width: "28%"
+        },
+        {
+          text: "Actions",
+          sortable: false,
+          width: "100px"
+        }
+      ]
+    };
+  }
+};
 </script>
 
 <style>

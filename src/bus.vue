@@ -77,12 +77,12 @@ export default {
   }),
   computed: {
     bus_type: {
-      get() { 
-        return this.$store.state.bus_type; 
+      get() {
+        return this.$store.state.bus_type;
       },
-      set(value) { 
-        this.$store.commit('bus_type', value); 
-      },
+      set(value) {
+        this.$store.commit("bus_type", value);
+      }
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -99,8 +99,8 @@ export default {
       }
     },
     bus_type() {
-      this.bus_values = []
-      this.table_update()
+      this.bus_values = [];
+      this.table_update();
     }
   },
   timers: {
@@ -149,19 +149,19 @@ export default {
         });
     },
     table_update() {
-      let action = "get_bus"
+      let action = "get_bus";
 
       if (this.bus_type === BUS_TYPE_TREE) {
-        action = "get_bus_serialized_v2"
+        action = "get_bus_serialized_v2";
       }
 
       Vue.axios
         .get(this.$store.getters.server_url + "/system_bus", {
-          params: {action}
+          params: { action }
         })
         .then(response => {
           if (this.bus_type === BUS_TYPE_TREE) {
-            this.bus_values = response.data.bus
+            this.bus_values = response.data.bus;
           } else {
             this.bus_values = this.set_update_attr(response.data);
           }
@@ -198,7 +198,7 @@ export default {
         }
       }
       return values;
-    },
+    }
   }
 };
 </script>
