@@ -27,14 +27,8 @@
                </v-btn>
             </div>
          </v-card-title>
-         <v-divider></v-divider>
          <bus-tree v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-tree>
          <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set" :loaded="loaded"></bus-linear>
-         <v-divider v-if="bus_type === BUS_TYPE_LINEAR"></v-divider>
-         <v-card-title class="py-0 px-0 small_title">
-            <v-spacer></v-spacer>
-            <span v-if="bus_type === BUS_TYPE_LINEAR" class="body-2 mx-4 grey--text"> Bus records: {{bus_values.length}} </span>
-         </v-card-title>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <edit-bus-modal ref="edit_bus"></edit-bus-modal>

@@ -6,6 +6,8 @@
          </div>
          <div class="viewer-item__key__info">
             <div class="viewer-item__key__value json-viewer-header-cell">Value</div>
+            <div class="viewer-item__key__type json-viewer-header-cell">Type</div>
+            <div class="viewer-item__key__tags json-viewer-header-cell">Tags</div>
             <div class="viewer-item__key__update json-viewer-header-cell">Update time</div>
             <div class="viewer-item__key__actions json-viewer-header-cell">Actions</div>
          </div>
@@ -29,7 +31,9 @@
                   <template v-if="node.data.objectKey">
                      <div class="viewer-item__key__info">
                         <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
-                        <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                        <div class="viewer-item__key__type">{{ node.data.objectKey.type }}</div>
+                        <div class="viewer-item__key__tags">{{ node.data.objectKey.tags }}</div>
+                        <div class="viewer-item__key__update">{{ get_time(node.data.objectKey.update_time) }}</div>
                         <div class="viewer-item__key__actions">
                            <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                            <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
@@ -43,7 +47,9 @@
                   <div class="viewer-item__key">{{ node.text }}</div>
                   <div class="viewer-item__key__info">
                      <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
-                     <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                     <div class="viewer-item__key__type">{{ node.data.objectKey.type }}</div>
+                     <div class="viewer-item__key__tags">{{ node.data.objectKey.tags }}</div>
+                     <div class="viewer-item__key__update">{{ get_time(node.data.objectKey.update_time) }}</div>
                      <div class="viewer-item__key__actions">
                         <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
@@ -55,6 +61,10 @@
             </div>
          </tree>
       </div>
+      <v-card-title class="py-0 px-0 small_title">
+         <v-spacer></v-spacer>
+         <span class="body-2 mx-4 grey--text"> Bus records: {{dataElements}} </span>
+      </v-card-title>
       <edit-bus-modal ref="edit_bus"></edit-bus-modal>
    </div>
 </template>
@@ -88,7 +98,8 @@ export default {
       treeData: this.parser(this.json),
       treeOptions: {
         paddingLeft: 10
-      }
+      },
+      dataElements: 0
     };
   },
   watch: {
@@ -97,8 +108,8 @@ export default {
       const newTree = this.parser(this.json);
       const tree = this.$refs.tree.tree;
       let mergedTree;
-      const oldTreeLength = this.countElements(this.parser(oldValue));
-      const newTreeLength = this.countElements(this.parser(value));
+      const oldTreeLength = this.countTotalElements(this.parser(oldValue));
+      const newTreeLength = this.countTotalElements(this.parser(value));
 
       if (oldTreeLength > newTreeLength) {
         mergedTree = newTree;
@@ -110,6 +121,7 @@ export default {
         }
       }
 
+      this.dataElements = this.countDataElements(this.json);
       this.treeData = mergedTree;
       this.$set(this.$refs.tree, "model", mergedTree);
       tree.setModel(mergedTree);
@@ -152,7 +164,7 @@ export default {
       Object.assign(target || {}, source);
       return target;
     },
-    countElements(obj) {
+    countTotalElements(obj) {
       let count = [];
 
       function getCount(data, level) {
@@ -167,6 +179,25 @@ export default {
       getCount(obj);
 
       return count.reduce((a, b) => a + b, 0);
+    },
+    countDataElements(obj) {
+      let count = []
+
+      function getCount(data, level) {
+        level = level || 0;
+        count[level] = count[level] || 0;
+        for (var k in data) {
+            if (k === DATA_KEY && data.hasOwnProperty(k)) {
+              count[level]++;
+            }
+            
+            typeof data[k] === 'object' && getCount(data[k], level + 1);
+        }
+      }
+
+      getCount(obj)
+
+      return count.reduce((a, b) => a + b, 0)
     },
     isObjectEmpty(obj) {
       return Object.keys(obj).length === 0;
@@ -286,10 +317,6 @@ export default {
 
       return this.map(obj, this.transformObject);
     },
-    format_time(value) {
-      console.log("val", value);
-      return moment.unix(value).format("YYYY-MM-DD, HH:mm:ss");
-    },
     checkChildren(node) {
       if (node.children.length === 1 && node.children[0].text === DATA_KEY) {
         return false;
@@ -351,12 +378,23 @@ export default {
 
 .viewer-item__key__value {
   width: 150px;
+  text-align: right;
+}
+
+.viewer-item__key__type {
+  width: 150px;
   text-align: left;
+  padding-left: 4px;
+}
+
+.viewer-item__key__tags {
+  width: 150px;
+  text-align: center;
 }
 
 .viewer-item__key__update {
-  width: 150px;
-  text-align: left;
+  width: 240px;
+  text-align: center;
 }
 
 .viewer-item__key__actions {
@@ -368,7 +406,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2px 25px 2px 24px;
+  padding: 2px 10px 2px 24px;
 }
 
 .json-viewer-header-cell {
@@ -380,5 +418,9 @@ export default {
 
 .tree-root {
   padding: 0 !important;
+}
+
+.viewer-item__key__type.json-viewer-header-cell {
+  padding-left: 4px;
 }
 </style>
