@@ -33,7 +33,7 @@
                         <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
                         <div class="viewer-item__key__type">{{ node.data.objectKey.type }}</div>
                         <div class="viewer-item__key__tags">{{ node.data.objectKey.tags }}</div>
-                        <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                        <div class="viewer-item__key__update">{{ get_time(node.data.objectKey.update_time) }}</div>
                         <div class="viewer-item__key__actions">
                            <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                            <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
@@ -49,7 +49,7 @@
                      <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
                      <div class="viewer-item__key__type">{{ node.data.objectKey.type }}</div>
                      <div class="viewer-item__key__tags">{{ node.data.objectKey.tags }}</div>
-                     <div class="viewer-item__key__update">{{ format_time(node.data.objectKey.update_time) }}</div>
+                     <div class="viewer-item__key__update">{{ get_time(node.data.objectKey.update_time) }}</div>
                      <div class="viewer-item__key__actions">
                         <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
@@ -187,7 +187,7 @@ export default {
         level = level || 0;
         count[level] = count[level] || 0;
         for (var k in data) {
-            if (k === '__data__' && data.hasOwnProperty(k)) {
+            if (k === DATA_KEY && data.hasOwnProperty(k)) {
               count[level]++;
             }
             
@@ -317,10 +317,6 @@ export default {
 
       return this.map(obj, this.transformObject);
     },
-    format_time(value) {
-      console.log("val", value);
-      return moment.unix(value).format("YYYY-MM-DD, HH:mm:ss");
-    },
     checkChildren(node) {
       if (node.children.length === 1 && node.children[0].text === DATA_KEY) {
         return false;
@@ -397,7 +393,7 @@ export default {
 }
 
 .viewer-item__key__update {
-  width: 150px;
+  width: 240px;
   text-align: center;
 }
 
