@@ -14,7 +14,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn color="primary" @click.native="delete_logs()">
+            <v-btn color="error" flat @click.native="delete_logs()">
                <v-icon left small>fa-trash-alt</v-icon>Delete logs
             </v-btn>
          </v-card-title>
