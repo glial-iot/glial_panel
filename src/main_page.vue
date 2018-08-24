@@ -40,7 +40,13 @@
             <v-flex xs2 class="flex-end">
                <v-menu offset-y>
                   <v-btn slot="activator" color="primary" depressed dark class="select-server">
-                     {{ `${server_scheme}://${server_address}:${server_port}` }}
+                     <p>{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
+                     <div class="icon-wrapper" v-show="server_online">
+                        <v-icon title="Server online" color="green" small>fa-link</v-icon>
+                     </div>
+                     <div class="icon-wrapper" v-show="!server_online">
+                        <v-icon title="Server offline" color="red" small>fa-link</v-icon>
+                     </div>
                   </v-btn>
                   <v-list>
                      <v-list-tile v-for="(server, index) in server_history" :key="index" @click="change_server(server)">
@@ -48,6 +54,7 @@
                      </v-list-tile>
                   </v-list>
                </v-menu>
+               
             </v-flex>
          </v-layout>
       </v-toolbar>
@@ -69,6 +76,9 @@ import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
+
+import VueTimers from "vue-timers";
+Vue.use(VueTimers);
 
 import { mapState } from "vuex";
 
@@ -121,7 +131,8 @@ export default {
   data: () => ({
     menuitems: menu,
     frontend_version: VERSION,
-    backend_version: ""
+    backend_version: "",
+    server_online: false
   }),
   computed: mapState({
     server_scheme: state => state.server_scheme,
@@ -129,8 +140,13 @@ export default {
     server_port: state => state.server_port,
     server_history: state => state.server_history
   }),
-  mounted: function() {
-    this.get_backend_version();
+  timers: {
+    get_backend_version: {
+      autostart: true,
+      time: 1000,
+      immediate: true,
+      repeat: true
+    }
   },
   methods: {
     change_server(server) {
@@ -146,12 +162,15 @@ export default {
         .then(response => {
           if (response.data && response.data.version) {
             this.backend_version = response.data.version;
+            this.server_online = true;
           } else {
             throw new Error("Cant find version");
+            this.server_online = false;
           }
         })
         .catch(error => {
           console.log("error while getting backend version", error);
+          this.server_online = false;
         });
     }
   }
@@ -246,7 +265,18 @@ table.v-table thead tr {
   margin-bottom: 2px;
 }
 
+.select-server p {
+  margin: 0;
+  margin-right: 8px;
+  line-height: 14px;
+}
+
 .select-server {
-  
+  display: flex;
+  align-items: center;
+}
+
+.icon-wrapper {
+  display: flex;
 }
 </style>
