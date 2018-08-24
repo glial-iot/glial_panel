@@ -3,14 +3,17 @@
 
       <v-navigation-drawer fixed app clipped disable-resize-watcher permanent touchless width=150>
          <v-list dense>
-            <v-list-tile v-for="item in menuitems" :to="{path: item.path}" :key="item.path">
-               <v-list-tile-action>
-                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
-               </v-list-tile-action>
-               <v-list-tile-content>
-                  <v-list-tile-title>{{item.name}}</v-list-tile-title>
-               </v-list-tile-content>
-            </v-list-tile>
+            <template v-for="item in menuitems">
+               <v-list-tile :to="{path: item.path}" :key="item.path">
+                  <v-list-tile-action>
+                     <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                     <v-list-tile-title>{{item.name}}</v-list-tile-title>
+                  </v-list-tile-content>
+               </v-list-tile>
+               <v-divider v-if="item.divider" :key="`${item.path}-divider`"></v-divider>
+            </template>
          </v-list>
          <div class="version-block">
             <div class="version-row">
@@ -83,7 +86,8 @@ let menu = [
     path: "/logs",
     name: "Logs",
     icon: "fa-stream",
-    color: "blue"
+    color: "blue",
+    divider: true
   },
   {
     path: "/scripts/drivers",
@@ -101,7 +105,8 @@ let menu = [
     path: "/scripts/webevent",
     name: "Web scripts",
     icon: "fa-link",
-    color: "green darken-2"
+    color: "green darken-2",
+    divider: true
   } /*
   {
     path: "/scripts/timerevent",
