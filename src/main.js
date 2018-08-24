@@ -236,7 +236,7 @@ Vue.filter("object_label", function(type) {
       case "WEB_EVENT":
          return "Endpoint"
       case "BUS_EVENT":
-         return "Topic"
+         return "Mask"
       case "TIMER_EVENT":
          return "Period(s)"
       case "SHEDULE_EVENT":
