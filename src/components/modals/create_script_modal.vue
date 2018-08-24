@@ -18,7 +18,7 @@
             </v-card-text>
             <v-card-text v-if="type === 'WEB_EVENT'">
                <span>Full script URL:
-                  <a :href="$store.getters.server_url+'/we/'+object">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
+                  <a :href="$store.getters.server_url+'/we/'+object" target="_blank">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
                </span>
             </v-card-text>
             <v-divider></v-divider>

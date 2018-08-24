@@ -17,6 +17,8 @@
                <br>
                <b>print()</b>: alias for log_user()
                <br>
+               <br>All logging functions take a string or a table (in this case it will be turned into text using the inspect library)
+               <br>
                <br>
                <h2>Scripts:</h2>
                <b>_script_name</b>: variable with the name of the current script
@@ -24,8 +26,8 @@
                <b>_script_uuid</b>: variable with uuid of the current script
                <br>
                <b>store</b>: A table unique for each script, for storing temporary data (for example, when you restart scripts). You can use it simply as a variable:
-               <br> store.value = 5
-               <br> print(store.value)
+               <br>>>store.value = 5
+               <br>>>print(store.value)
                <br><br>
                <h2>Work with bus:</h2>
                <b>update_value(topic, value)</b>: Updates the topic "topic" with a value from the variable "value"
