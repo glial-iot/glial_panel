@@ -94,7 +94,7 @@ export default {
           console.log(error);
           this.$emit("create_error");
         });
-    },
+    }
   }
 };
 </script>

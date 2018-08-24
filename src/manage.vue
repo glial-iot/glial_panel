@@ -85,7 +85,7 @@ Vue.use(VueAxios, Axios);
 import snackbar from "./components/snackbar.vue";
 import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
-import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue"
+import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue";
 import backups from "./backups.vue";
 import exportBlock from "./components/blocks/manage/export.vue";
 
@@ -156,7 +156,7 @@ export default {
           this.$refs.snackbar.update("Delete topic: network error");
         });
     }
-  },
+  }
 };
 </script>
 

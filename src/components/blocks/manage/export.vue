@@ -48,12 +48,12 @@ export default {
   watch: {
     influx_export: function(value, oldValue) {
       if (oldValue !== undefined) {
-        this.set_export(EXPORT_TYPE_INFLUX, value)
+        this.set_export(EXPORT_TYPE_INFLUX, value);
       }
     },
     impact_export: function(value, oldValue) {
       if (oldValue !== undefined) {
-        this.set_export(EXPORT_TYPE_IMPACT, value)
+        this.set_export(EXPORT_TYPE_IMPACT, value);
       }
     }
   },
@@ -66,11 +66,11 @@ export default {
         .then(response => {
           switch (type) {
             case EXPORT_TYPE_IMPACT:
-              this.impact_export = response.data.value
-              break
+              this.impact_export = response.data.value;
+              break;
             case EXPORT_TYPE_INFLUX:
-              this.influx_export = response.data.value
-              break
+              this.influx_export = response.data.value;
+              break;
           }
         })
         .catch(error => {

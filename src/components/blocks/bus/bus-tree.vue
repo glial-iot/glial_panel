@@ -190,7 +190,7 @@ export default {
             if (k === DATA_KEY && data.hasOwnProperty(k)) {
               count[level]++;
             }
-            
+
             typeof data[k] === 'object' && getCount(data[k], level + 1);
         }
       }

@@ -213,7 +213,7 @@ Vue.filter("nl2br", function (str, is_xhtml) {
    return (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");
 })
 
-Vue.filter("type2string", function(type) {
+Vue.filter("type2string", function (type) {
    if (type === "WEB_EVENT") {
       return "Web-event script";
    }
@@ -231,7 +231,7 @@ Vue.filter("type2string", function(type) {
    }
 })
 
-Vue.filter("object_label", function(type) {
+Vue.filter("object_label", function (type) {
    switch (type) {
       case "WEB_EVENT":
          return "Endpoint"
