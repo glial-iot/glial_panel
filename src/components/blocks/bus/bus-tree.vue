@@ -30,10 +30,10 @@
                   </div>
                   <template v-if="node.data.objectKey">
                      <div class="viewer-item__key__info">
-                        <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
-                        <div class="viewer-item__key__type">{{ node.data.objectKey.type }}</div>
-                        <div class="viewer-item__key__tags">{{ node.data.objectKey.tags }}</div>
-                        <div class="viewer-item__key__update">{{ get_time(node.data.objectKey.update_time) }}</div>
+                        <div class="viewer-item__key__value" :title="node.data.objectKey.value">{{ node.data.objectKey.value }}</div>
+                        <div class="viewer-item__key__type" :title="node.data.objectKey.type">{{ node.data.objectKey.type }}</div>
+                        <div class="viewer-item__key__tags" :title="node.data.objectKey.tags">{{ node.data.objectKey.tags }}</div>
+                        <div class="viewer-item__key__update" :title="get_time(node.data.objectKey.update_time)">{{ get_time(node.data.objectKey.update_time) }}</div>
                         <div class="viewer-item__key__actions">
                            <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                            <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
@@ -46,10 +46,10 @@
                <div v-else class="viewer-item__prop">
                   <div class="viewer-item__key">{{ node.text }}</div>
                   <div class="viewer-item__key__info">
-                     <div class="viewer-item__key__value">{{ node.data.objectKey.value }}</div>
-                     <div class="viewer-item__key__type">{{ node.data.objectKey.type }}</div>
-                     <div class="viewer-item__key__tags">{{ node.data.objectKey.tags }}</div>
-                     <div class="viewer-item__key__update">{{ get_time(node.data.objectKey.update_time) }}</div>
+                     <div class="viewer-item__key__value" :title="node.data.objectKey.value">{{ node.data.objectKey.value }}</div>
+                     <div class="viewer-item__key__type" :title="node.data.objectKey.type">{{ node.data.objectKey.type }}</div>
+                     <div class="viewer-item__key__tags" :title="node.data.objectKey.tags">{{ node.data.objectKey.tags }}</div>
+                     <div class="viewer-item__key__update" :title="get_time(node.data.objectKey.update_time)">{{ get_time(node.data.objectKey.update_time) }}</div>
                      <div class="viewer-item__key__actions">
                         <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
@@ -379,22 +379,30 @@ export default {
 .viewer-item__key__value {
   width: 150px;
   text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .viewer-item__key__type {
   width: 150px;
   text-align: left;
   padding-left: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .viewer-item__key__tags {
   width: 150px;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .viewer-item__key__update {
   width: 240px;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .viewer-item__key__actions {
