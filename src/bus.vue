@@ -12,6 +12,14 @@
                </v-btn-toggle>
             </div>
             <v-spacer></v-spacer>
+            <div class="pr-2" v-if="bus_type === BUS_TYPE_TREE">
+               <v-btn class="tree-button" @click="$refs.bus_tree.$refs.tree.tree.expandAll()">
+                  <v-icon small>fa-plus</v-icon>
+               </v-btn>
+               <v-btn class="tree-button" @click="$refs.bus_tree.$refs.tree.tree.collapseAll()">
+                  <v-icon small>fa-minus</v-icon>
+               </v-btn>
+            </div>
             <div class="pr-2">
                <v-btn-toggle v-model="bus_type">
                   <v-btn flat :value="BUS_TYPE_TREE">Tree View</v-btn>
@@ -27,7 +35,7 @@
                </v-btn>
             </div>
          </v-card-title>
-         <bus-tree v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-tree>
+         <bus-tree ref="bus_tree" v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-tree>
          <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set" :loaded="loaded"></bus-linear>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
@@ -202,3 +210,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .tree-button {
+    min-width: auto;
+  }
+
+  .tree-button + .tree-button {
+    margin-left: 0px;
+  }
+</style>
