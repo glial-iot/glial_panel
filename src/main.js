@@ -160,8 +160,10 @@ const store = new Vuex.Store({
          commit("editor_log_size", size)
       },
       decrease_editor_log_size: ({ commit, state }) => {
-         const size = state.editor_log_size - 1
-         commit("editor_log_size", size)
+         if (state.editor_log_size > 3) {
+            const size = state.editor_log_size - 1
+            commit("editor_log_size", size)
+         }
       }
    }
 })
