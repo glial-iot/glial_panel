@@ -42,10 +42,10 @@
                   <v-btn slot="activator" color="primary" depressed dark class="select-server">
                      <p>{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
                      <div class="icon-wrapper" v-show="server_online">
-                        <v-icon  color="green" small>fa-link</v-icon>
+                        <v-icon title="Server online" color="green" small>fa-link</v-icon>
                      </div>
                      <div class="icon-wrapper" v-show="!server_online">
-                        <v-icon  color="red" small>fa-link</v-icon>
+                        <v-icon title="Server offline" color="red" small>fa-link</v-icon>
                      </div>
                   </v-btn>
                   <v-list>
