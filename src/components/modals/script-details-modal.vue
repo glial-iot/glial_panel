@@ -3,10 +3,10 @@
       <v-dialog v-model="visible" max-width="900px">
          <v-card>
             <v-card-title>
-               <div class="title text-xs-center">{{type2string(type)}} "{{name}}"</div>
+               <div class="title text-xs-center">{{$options.filters.type2string(type)}} "{{name}}"</div>
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
-               <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object)">Change Object</v-btn>
+               <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object, type)">Change Object</v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -14,7 +14,7 @@
                <div class="subheading">UUID: {{uuid}}</div>
             </v-card-text>
             <v-card-text>
-               <div class="subheading">Object: {{object}}</div>
+               <div class="subheading">{{$options.filters.object_label(type)}}: {{object}}</div>
             </v-card-text>
             <v-card-text>
                <div class="subheading">Logs:</div>
@@ -53,8 +53,6 @@ Vue.use(VueAxios, Axios);
 
 import renameScriptModal from "./rename-script-modal.vue";
 import changeObjectModal from "./change-object-modal.vue";
-
-import { script_type2string } from "../../utils/index.js";
 
 export default {
   components: {
@@ -105,9 +103,6 @@ export default {
       this.object = item.object;
       this.visible = true;
       this.get_logs();
-    },
-    type2string(type) {
-      return script_type2string(type);
     },
     get_logs() {
       Vue.axios

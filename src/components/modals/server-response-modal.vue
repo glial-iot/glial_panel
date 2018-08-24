@@ -3,7 +3,7 @@
       <v-card>
          <v-card-title class="headline">Server Response</v-card-title>
          <v-card-text>
-            <span v-html="format_text(message)"></span>
+            <span v-html="$options.filters.nl2br(message)"></span>
          </v-card-text>
          <v-card-actions>
             <v-spacer></v-spacer>
@@ -15,8 +15,6 @@
 
 
 <script>
-import { nl2br } from "../../utils/index.js";
-
 export default {
   data: () => ({
     visible: false,
@@ -29,9 +27,6 @@ export default {
     },
     hide() {
       this.visible = false;
-    },
-    format_text(text) {
-      return nl2br(text);
     }
   }
 };
