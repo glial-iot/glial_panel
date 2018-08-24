@@ -18,7 +18,7 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Trace:</div>
-               <span v-html="format_text(trace)"></span>
+               <span v-html="$options.filters.nl2br(trace)"></span>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -31,7 +31,6 @@
 
 <script>
 import Vue from "vue";
-import { nl2br } from "../utils/index.js";
 
 export default {
   data: () => ({
@@ -52,9 +51,6 @@ export default {
       this.source = item.source;
       this.level = item.level;
       this.visible = true;
-    },
-    format_text(text) {
-      return nl2br(text);
     }
   }
 };

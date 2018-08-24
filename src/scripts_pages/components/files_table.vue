@@ -133,7 +133,27 @@ export default {
     confirmRemoveScriptModal
   },
   data: () => ({
-    headers: [
+    headers: [],
+    files_table: [],
+    loaded: false
+  }),
+  props: ["type"],
+
+  timers: {
+    table_update: {
+      autostart: true,
+      time: 1000
+    }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.$timer.stop("table_update");
+    next();
+  },
+
+  mounted: function() {
+    this.table_update();
+    this.headers = [
       {
         text: "Status",
         align: "center",
@@ -146,7 +166,7 @@ export default {
         align: "left"
       },
       {
-        text: "Object",
+        text: this.$options.filters.object_label(this.type),
         value: "object",
         align: "left"
       },
@@ -181,26 +201,7 @@ export default {
         align: "center",
         width: "6%"
       }
-    ],
-    files_table: [],
-    loaded: false
-  }),
-  props: ["type"],
-
-  timers: {
-    table_update: {
-      autostart: true,
-      time: 1000
-    }
-  },
-
-  beforeRouteLeave(to, from, next) {
-    this.$timer.stop("table_update");
-    next();
-  },
-
-  mounted: function() {
-    this.table_update();
+    ];
   },
 
   methods: {

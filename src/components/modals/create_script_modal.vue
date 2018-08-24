@@ -7,14 +7,14 @@
       <v-dialog v-model="dialog_visible" max-width="500px">
          <v-card>
             <v-card-title>
-               <div class="title text-xs-center">Create new {{type2string(type).toLowerCase()}}</div>
+               <div class="title text-xs-center">Create new {{$options.filters.type2string(type).toLowerCase()}}</div>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
                <v-text-field autofocus label="Name" v-model="name"></v-text-field>
             </v-card-text>
             <v-card-text v-if="type != 'DRIVER'">
-               <v-text-field :label="get_object_label(type)" v-model="object"></v-text-field>
+               <v-text-field :label="$options.filters.object_label(type)" v-model="object"></v-text-field>
             </v-card-text>
             <v-card-text v-if="type === 'WEB_EVENT'">
                <span>Full script URL:
@@ -38,11 +38,8 @@
 import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
-import { object_label } from "../../utils/index.js";
 import snackbar from "../snackbar.vue";
 Vue.use(VueAxios, Axios);
-
-import { script_type2string } from "../../utils/index.js";
 
 export default {
   components: {
@@ -66,7 +63,7 @@ export default {
 
       if (this.type !== "DRIVER" && this.object === "") {
         this.$refs.snackbar.update(
-          `Field "${this.get_object_label(this.type)}" is required`
+          `Field "${this.$options.filters.object_label(this.type)}" is required`
         );
         return;
       }
@@ -98,12 +95,6 @@ export default {
           this.$emit("create_error");
         });
     },
-    type2string(type) {
-      return script_type2string(type);
-    },
-    get_object_label(type) {
-      return object_label(type);
-    }
   }
 };
 </script>

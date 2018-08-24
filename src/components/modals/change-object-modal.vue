@@ -2,9 +2,9 @@
    <div>
       <v-dialog :value="visible" persistent max-width="290">
          <v-card>
-            <v-card-title class="headline">Change script object</v-card-title>
+            <v-card-title class="headline">Change script {{$options.filters.object_label(type).toLowerCase()}}</v-card-title>
             <v-card-text>
-               <v-text-field v-model="object" label="Change object" required></v-text-field>
+               <v-text-field v-model="object" :label="`Change ${$options.filters.object_label(type).toLowerCase()}`" required></v-text-field>
             </v-card-text>
             <v-card-actions>
                <v-btn color="error" flat @click="hide()">Cancel</v-btn>
@@ -29,12 +29,14 @@ export default {
   data: () => ({
     object: "",
     uuid: "",
+    type: "",
     visible: false
   }),
   methods: {
-    show(uuid, object) {
+    show(uuid, object, type) {
       this.uuid = uuid;
       this.object = object;
+      this.type = type;
       this.visible = true;
     },
     hide() {

@@ -9,9 +9,9 @@
             </div>
 
             <v-spacer></v-spacer>
-            <span class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{type2string(type)}} "{{name}}" </span>
+            <span class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "{{name}}" </span>
             <v-spacer></v-spacer>
-            <span class=".display-1 pointer" title="Click to edit object"  @click="$refs.change_object.show(uuid, object)"> Object "{{object}}" </span>
+            <span class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`"  @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "{{object}}" </span>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
@@ -89,7 +89,6 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 import { mapState } from "vuex";
 
-import { script_type2string } from "../utils/index.js";
 import snackbar from "../components/snackbar.vue";
 import editorHelpModal from "../components/modals/editor-help-modal.vue";
 import renameScriptModal from "../components/modals/rename-script-modal.vue";
@@ -193,9 +192,6 @@ export default {
       return Math.ceil(
         this.pagination.totalItems / this.pagination.rowsPerPage
       );
-    },
-    type2string(type) {
-      return script_type2string(type);
     },
     toggle_logs_visible: function() {
       this.$store.commit("logs_visible", !this.logs_visible);
