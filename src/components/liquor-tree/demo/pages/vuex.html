@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Vuex Intergation</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+    <style>
+      .node-info {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Vuex Intergation.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+              <button @click="syncData">Sync Data</button>
+              <br />It will update the <b>complexity</b> property randomly.
+          </div>
+          <div class="example-tree">
+            <tree
+              :options="options"
+              ref="tree"
+            >
+              <div slot-scope="{ node }" class="node-info">
+                <span class="node-name">{{ node.text }}</span>
+                <span class="node-complexity">{{ node.data.complexity }}</span>
+              </div>
+            </tree>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">
+              Using Vuex Modules.
+              <button @click="syncData1">Sync Data</button>
+              <br />It will update the <b>complexity</b> property randomly.
+          </div>
+          <div class="example-tree">
+            <tree
+              :options="options1"
+              ref="tree"
+            >
+              <div slot-scope="{ node }" class="node-info">
+                <span class="node-name">{{ node.text }}</span>
+                <span class="node-complexity">{{ node.data.complexity }}</span>
+              </div>
+            </tree>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const random = (max, min) => {
+        return Math.floor(Math.random() * ( max - min + 1 ) + min)
+      }
+
+      let mutations = {
+        initTree(state, treeData) {
+          state.tree.push(...treeData)
+        },
+
+        updateTree(state, newData) {
+          state.tree = newData
+        },
+        tt(state, aaa) {
+          state.bb = aaa;
+        }
+      }
+
+      let actions = {
+        initTree(store) {
+          return fetch('/assets/data/filtering-custom.json')
+            .then(r => r.json())
+            .then(data => store.commit('initTree', data))
+        }
+      }
+
+
+
+      const Store = new Vuex.Store(
+        Object.assign({
+            state: {
+              tree: []
+            }
+          }, {
+            actions
+          }, {
+            mutations
+          })
+      )
+
+      const StoreWithModules = new Vuex.Store({
+        modules: {
+          treeModule: Object.assign({
+            state: {
+              tree: []
+            }
+          }, {
+            actions
+          }, {
+            mutations
+          }, {
+            getters: {
+              tree(state) {
+                return state.tree
+              }
+            }
+          })
+        }
+      })
+
+      new Vue({
+        el: '#app',
+        store: Store,
+        data: () => ({
+          options: {
+            store: {
+              store: Store,
+              key: 'tree',
+              mutations: ['initTree', 'updateTree']
+            },
+            checkbox: true
+          },
+          options1: {
+            store: {
+              store: StoreWithModules,
+              getter: 'tree',
+              mutations: ['initTree', 'updateTree']
+            }
+          }
+        }),
+
+        mounted () {
+          this.$store.dispatch('initTree')
+
+          StoreWithModules.dispatch('initTree')
+        },
+
+        methods: {
+          randomComplexity(tree) {
+            tree = tree.map(function updater(t) {
+              t.data.complexity = random(-50, 50)
+              t.children = !t.children ? [] : t.children.map(c => {
+                c.data.complexity = random(-50, 50)
+                return c
+              })
+
+              return t
+            })
+
+            tree.push({ text: 'Extra text ' + Math.random(), data: { complexity: 0 } })
+
+            return tree
+          },
+
+          syncData () {
+            let { tree } = this.$store.state
+            this.$store.commit('updateTree', this.randomComplexity(tree))
+          },
+
+          syncData1 () {
+            let tree = StoreWithModules.getters.tree
+            StoreWithModules.commit('updateTree', this.randomComplexity(tree))
+          }
+        }
+      })
+    </script>
+
+  </body>
+</html>

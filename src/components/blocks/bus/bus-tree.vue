@@ -72,7 +72,7 @@
 
 <script>
 import Vue from "vue";
-import LiquorTree from "liquor-tree";
+import LiquorTree from '../../liquor-tree/src/main';
 import moment from "moment";
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
