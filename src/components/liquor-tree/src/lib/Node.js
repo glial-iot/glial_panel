@@ -2,6 +2,7 @@ import { recurseDown } from '@/utils/recurse'
 import find from '@/utils/find'
 import uuidV4 from '@/utils/uuidV4'
 import Selection from '@/lib/Selection'
+import {TREE_DATA_KEY} from '../../../../utils/constants'
 
 export default class Node {
   constructor (tree, item) {
@@ -541,6 +542,10 @@ export default class Node {
   }
 
   hasChildren () {
+    if (this.children.length === 1 && this.children[0].text === TREE_DATA_KEY) {
+      return false;
+    }
+
     return this.showChildren && this.isBatch || this.children.length > 0
   }
 

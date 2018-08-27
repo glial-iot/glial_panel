@@ -81,7 +81,7 @@ import buttonDownload from "../../buttons/button-download.vue";
 import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
 
-const DATA_KEY = "__data__";
+import {TREE_DATA_KEY} from "../../../utils/constants.js"
 
 export default {
   components: {
@@ -97,7 +97,8 @@ export default {
     return {
       treeData: this.parser(this.json),
       treeOptions: {
-        paddingLeft: 10
+        paddingLeft: 10,
+        multiple: false
       },
       dataElements: 0
     };
@@ -187,7 +188,7 @@ export default {
         level = level || 0;
         count[level] = count[level] || 0;
         for (var k in data) {
-            if (k === DATA_KEY && data.hasOwnProperty(k)) {
+            if (k === TREE_DATA_KEY && data.hasOwnProperty(k)) {
               count[level]++;
             }
 
@@ -273,16 +274,16 @@ export default {
           type: this.isArray(prop)
             ? "array"
             : this.isPlainObject(prop) ? "object" : "unknown",
-          objectKey: prop[DATA_KEY]
+          objectKey: prop[TREE_DATA_KEY]
         };
         obj.state = {};
       } else {
         obj.data = {
-          objectKey: prop[DATA_KEY],
+          objectKey: prop[TREE_DATA_KEY],
           type: this.getType(prop),
           data: prop
         };
-        if (obj.text === DATA_KEY) {
+        if (obj.text === TREE_DATA_KEY) {
           obj.state = { visible: false };
         }
       }
@@ -318,7 +319,7 @@ export default {
       return this.map(obj, this.transformObject);
     },
     checkChildren(node) {
-      if (node.children.length === 1 && node.children[0].text === DATA_KEY) {
+      if (node.children.length === 1 && node.children[0].text === TREE_DATA_KEY) {
         return false;
       }
 
