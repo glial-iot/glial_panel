@@ -334,19 +334,19 @@ export default {
 }
 
 .tree-content {
-  padding: 0 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0 4px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
 .tree-anchor {
-  line-height: 18px;
-  padding: 0 6px;
-  min-height: 25px;
+  line-height: 18px !important;
+  padding: 0 6px !important;
+  min-height: 25px !important;
 }
 
 .tree-arrow {
-  height: 16px;
-  width: 16px;
+  height: 16px !important;
+  width: 16px !important;
 }
 
 .viewer-item,
@@ -357,7 +357,7 @@ export default {
 }
 
 .tree-arrow:not(.has-child) {
-  display: none;
+  display: none !important;
 }
 
 .viewer-item__prop,
