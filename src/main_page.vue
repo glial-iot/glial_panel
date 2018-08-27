@@ -284,4 +284,8 @@ table.v-table thead tr {
 .icon-wrapper {
   display: flex;
 }
+
+.v-card__text {
+  word-wrap: break-word
+}
 </style>
