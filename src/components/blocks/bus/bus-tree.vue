@@ -334,7 +334,8 @@ export default {
 }
 
 .tree-content {
-  padding: 0 4px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
