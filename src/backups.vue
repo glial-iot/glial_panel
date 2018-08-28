@@ -83,9 +83,14 @@ export default {
     table_values: [],
     loaded: false
   }),
-
-  mounted: function() {
-    this.table_update();
+  
+  timers: {
+    table_update: {
+      autostart: true,
+      time: 1000,
+      repeat: true,
+      immediate: true
+    }
   },
 
   methods: {
