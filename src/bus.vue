@@ -99,7 +99,7 @@ export default {
   },
   watch: {
     update_interval() {
-        let interval = parseInt(this.update_interval);
+      let interval = parseInt(this.update_interval);
       if (interval > 0) {
         this.$timer.stop("table_update");
         this.timers.table_update.time = interval;
