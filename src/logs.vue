@@ -128,6 +128,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
+      repeat:true,
       time: 1000
     }
   },
@@ -171,16 +172,10 @@ export default {
         .then(response => {
           this.table_values = response.data;
           console.log(response.data);
-          this.timers.table_update.time = this.update_time;
           this.loaded = true;
-          this.$timer.stop("table_update");
-          this.$timer.start("table_update");
           this.$refs.snackbar_error.update("");
         })
         .catch(error => {
-          this.timers.table_update.time = this.update_time;
-          this.$timer.stop("table_update");
-          this.$timer.start("table_update");
           this.table_values = [];
           this.loaded = false;
           console.log(error);
