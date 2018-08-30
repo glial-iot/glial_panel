@@ -43,8 +43,13 @@
                            </a>
                         </span>
                      </div>
-                     <div v-if="type !== 'WEB_EVENT'">
+                     <div v-if="type !== 'WEB_EVENT' && type !== 'TIMER_EVENT'">
                         {{ props.item.object }}
+
+                     </div>
+
+                     <div v-if="type == 'TIMER_EVENT'">
+                        {{ props.item.object }} seconds
 
                      </div>
 
