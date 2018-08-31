@@ -147,6 +147,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
+      repeat:true,
       time: 1000
     }
   },
@@ -269,15 +270,11 @@ export default {
           Vue.set(this, "files_table", response.data);
           this.loaded = true;
           this.$refs.snackbar.update("");
-          this.$timer.stop("table_update");
-          this.$timer.start("table_update");
         })
         .catch(error => {
           console.log(error);
           this.files_table = [];
           this.$refs.snackbar.update("Get script list error");
-          this.$timer.stop("table_update");
-          this.$timer.start("table_update");
           this.loaded = false;
         });
     }

@@ -3,7 +3,7 @@
       <v-card class="elevation-3">
          <v-card-title class="py-1 px-1">
             <div class="pl-2">
-               <v-btn-toggle v-model="update_interval">
+               <v-btn-toggle mandatory v-model="update_interval">
                   <v-btn flat value="500">0.5s</v-btn>
                   <v-btn flat value="1000">1s</v-btn>
                   <v-btn flat value="2000">2s</v-btn>
@@ -21,7 +21,7 @@
                </v-btn>
             </div>
             <div class="pr-2">
-               <v-btn-toggle v-model="bus_type">
+               <v-btn-toggle mandatory v-model="bus_type">
                   <v-btn flat :value="BUS_TYPE_TREE">Tree View</v-btn>
                   <v-btn flat :value="BUS_TYPE_LINEAR">Linear View</v-btn>
                </v-btn-toggle>
@@ -99,11 +99,14 @@ export default {
   },
   watch: {
     update_interval() {
-      this.$timer.stop("table_update");
-
-      if (+this.update_interval > 0) {
-        this.timers.table_update.time = +this.update_interval;
-        this.table_update();
+      let interval = parseInt(this.update_interval);
+      if (interval > 0) {
+        this.$timer.stop("table_update");
+        this.timers.table_update.time = interval;
+        this.$timer.start("table_update");
+      }
+      else {
+          this.$timer.stop("table_update");
       }
     },
     bus_type() {
@@ -114,8 +117,12 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      time: 0
+      repeat:true,
+      time: 2000
     }
+  },
+  mounted: function() {
+        this.table_update();
   },
   methods: {
     tsdb_set(item) {
@@ -174,22 +181,12 @@ export default {
             this.bus_values = this.set_update_attr(response.data);
           }
           //console.log(this.bus_values);
-          this.$timer.stop("table_update");
-          if (+this.update_interval > 0) {
-            this.timers.table_update.time = +this.update_interval;
-            this.$timer.start("table_update");
-          }
           this.loaded = true;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
-          this.$timer.stop("table_update");
           this.bus_values = [];
-          if (+this.update_interval > 0) {
-            this.timers.table_update.time = +this.update_interval;
-            this.$timer.start("table_update");
-          }
           this.loaded = false;
           this.$refs.snackbar.update("Update table: network error");
         });
