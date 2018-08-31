@@ -3,7 +3,7 @@
       <v-card class="elevation-3">
          <v-card-title class="py-1 px-1">
             <div class="pl-2">
-               <v-btn-toggle v-model="update_interval">
+               <v-btn-toggle mandatory v-model="update_interval">
                   <v-btn flat value="500">0.5s</v-btn>
                   <v-btn flat value="1000">1s</v-btn>
                   <v-btn flat value="2000">2s</v-btn>
@@ -21,7 +21,7 @@
                </v-btn>
             </div>
             <div class="pr-2">
-               <v-btn-toggle v-model="bus_type">
+               <v-btn-toggle mandatory v-model="bus_type">
                   <v-btn flat :value="BUS_TYPE_TREE">Tree View</v-btn>
                   <v-btn flat :value="BUS_TYPE_LINEAR">Linear View</v-btn>
                </v-btn-toggle>

@@ -4,7 +4,7 @@
          <v-card-title class="py-1 px-1">
 
             <div class="pl-2">
-               <v-btn-toggle v-model="search">
+               <v-btn-toggle mandatory v-model="search">
                   <v-btn flat value="INFO">INFO</v-btn>
                   <v-btn flat value="WARNING">WARNING</v-btn>
                   <v-btn flat value="ERROR">ERROR</v-btn>
