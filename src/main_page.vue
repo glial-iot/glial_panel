@@ -115,15 +115,15 @@ let menu = [
     path: "/scripts/webevent",
     name: "Web scripts",
     icon: "fa-link",
-    color: "green darken-2",
-    divider: true
-  } /*
+    color: "green darken-2"
+  },
   {
     path: "/scripts/timerevent",
     name: "Timer scripts",
     icon: "fa-clock",
-    color: "green darken-2"
-  } */,
+    color: "green darken-2",
+    divider: true
+  },
   {
     path: "/manage",
     name: "Manage",
