@@ -43,7 +43,7 @@
             <v-flex xs2 class="flex-end">
                <v-menu offset-y>
                   <v-btn slot="activator" color="primary" depressed dark class="select-server">
-                     <p>{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
+                     <p class="server-address">{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
                      <div class="icon-wrapper" v-show="server_online">
                         <v-icon title="Server online" color="green" small>fa-link</v-icon>
                      </div>
@@ -224,6 +224,10 @@ table.v-table thead tr {
   left: -4px !important;
   top: -4px !important;
   border-radius: 0;
+}
+
+.v-btn .server-address {
+   text-transform:none;
 }
 
 .v-navigation-drawer {
