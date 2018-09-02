@@ -102,7 +102,7 @@ let menu = [
   {
     path: "/scripts/drivers",
     name: "Drivers",
-    icon: "fa-screwdriver",
+    icon: "fa-sign-in-alt",
     color: "green darken-2"
   },
   {
