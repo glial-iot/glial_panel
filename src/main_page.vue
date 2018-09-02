@@ -294,4 +294,9 @@ table.v-table thead tr {
 .v-card__text {
   word-wrap: break-word;
 }
+
+.v-list__tile--active {
+  background-color: #e6f0ff !important;
+  color: #e6f0ff !important;
+}
 </style>

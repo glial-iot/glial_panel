@@ -22,7 +22,8 @@ Vue.use(Vuetify, {
       error: "#B71C1C",
       warning: "#FBC02D",
       info: "#2196f3",
-      success: "#4caf50"
+      success: "#4caf50",
+      lightblue: "#E6F0FF"
    }
 })
 
