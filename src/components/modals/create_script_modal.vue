@@ -21,6 +21,11 @@
                   <a :href="$store.getters.server_url+'/we/'+object" target="_blank">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
                </span>
             </v-card-text>
+            <v-card-text v-if="type === 'SHEDULE_EVENT'">
+               <span>Shedule:</span><br>
+               <span>Seconds: 0-59<br> Minutes: 0-59<br> Hours: 0-24<br> Days of month: 0-30<br> Month: JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC or 1-12 <br> Day of week: MON,TUE,WED,THU,FRI,SAT,SUN or 0-6<br>
+               </span>
+            </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
                <v-btn color="error" flat @click.stop="close">Close</v-btn>

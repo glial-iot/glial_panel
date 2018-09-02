@@ -9,6 +9,7 @@ import editor from './scripts_pages/editor.vue'
 import drivers from './scripts_pages/drivers.vue'
 import event_scripts from './scripts_pages/event_scripts.vue'
 import timer_scripts from './scripts_pages/timer_scripts.vue'
+import shedule_scripts from './scripts_pages/shedule_scripts.vue'
 import web_scripts from './scripts_pages/web_scripts.vue'
 
 import Vuetify from 'vuetify'
@@ -64,6 +65,9 @@ const router = new VueRouter({
    }, {
       path: '/scripts/timerevent',
       component: timer_scripts
+   }, {
+      path: '/scripts/sheduleevent',
+      component: shedule_scripts
    }, {
       path: '/manage',
       component: manage,
