@@ -102,7 +102,7 @@ let menu = [
   {
     path: "/scripts/drivers",
     name: "Drivers",
-    icon: "fa-screwdriver",
+    icon: "fa-sign-in-alt",
     color: "green darken-2"
   },
   {
@@ -121,6 +121,12 @@ let menu = [
     path: "/scripts/timerevent",
     name: "Timer scripts",
     icon: "fa-clock",
+    color: "green darken-2"
+  },
+  {
+    path: "/scripts/sheduleevent",
+    name: "Shedule scripts",
+    icon: "fa-calendar-alt",
     color: "green darken-2",
     divider: true
   },
@@ -283,13 +289,22 @@ table.v-table thead tr {
 .select-server {
   display: flex;
   align-items: center;
+  text-transform: lowercase;
 }
 
 .icon-wrapper {
   display: flex;
 }
 
-.v-card__text {
-  word-wrap: break-word
+.v-card__text,
+.v-card__title,
+.v-card__title .title {
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.v-list__tile--active {
+  background-color: #e6f0ff !important;
+  color: #e6f0ff !important;
 }
 </style>

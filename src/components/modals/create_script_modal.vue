@@ -1,7 +1,7 @@
 <template>
    <div>
       <v-btn right color="secondary" class="my-2" @click="dialog_visible = true">
-         <v-icon left small>fa-file</v-icon> Create
+         <v-icon left small>fa-file</v-icon> Create {{$options.filters.type2string(type)}}
       </v-btn>
 
       <v-dialog v-model="dialog_visible" max-width="500px">
@@ -19,6 +19,11 @@
             <v-card-text v-if="type === 'WEB_EVENT'">
                <span>Full script URL:
                   <a :href="$store.getters.server_url+'/we/'+object" target="_blank">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
+               </span>
+            </v-card-text>
+            <v-card-text v-if="type === 'SHEDULE_EVENT'">
+               <span>Shedule:</span><br>
+               <span>Seconds: 0-59<br> Minutes: 0-59<br> Hours: 0-24<br> Days of month: 0-30<br> Month: JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC or 1-12 <br> Day of week: MON,TUE,WED,THU,FRI,SAT,SUN or 0-6<br>
                </span>
             </v-card-text>
             <v-divider></v-divider>

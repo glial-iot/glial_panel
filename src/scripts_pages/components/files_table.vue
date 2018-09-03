@@ -30,7 +30,7 @@
                      </div>
                   </td>
 
-                  <td class="text-xs-left">
+                  <td class="text-xs-left ellipsis" :title="props.item.name">
                      {{ props.item.name }}
                   </td>
 
@@ -57,6 +57,10 @@
 
                   <td class="justify-center text-xs-center cell-flex">
                      <button-info :item="props" title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                  </td>
+
+                  <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center cell-flex">
+                     <button-rocket :item="props" title="Run script once" @click.native="run_script(props.item)"></button-rocket>
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
@@ -119,6 +123,7 @@ import createScriptModal from "../../components/modals/create_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import buttonRocket from "../../components/buttons/button-rocket.vue";
 import iconError from "../../components/icons/icon-status-error.vue";
 import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
@@ -131,6 +136,7 @@ export default {
     scriptDetailsModal,
     snackbar,
     buttonInfo,
+    buttonRocket,
     iconError,
     iconNormal,
     iconStopped,
@@ -147,7 +153,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      repeat:true,
+      repeat: true,
       time: 1000
     }
   },
@@ -184,6 +190,12 @@ export default {
         width: "6%"
       },
       {
+        text: "Run",
+        sortable: false,
+        align: "center",
+        width: "6%"
+      },
+      {
         text: "Active",
         sortable: false,
         align: "center",
@@ -208,6 +220,10 @@ export default {
         width: "6%"
       }
     ];
+
+    if (this.type !== "BUS_EVENT") {
+      this.headers = this.headers.filter(item => item.text !== "Run");
+    }
   },
 
   methods: {
@@ -276,6 +292,27 @@ export default {
           this.files_table = [];
           this.$refs.snackbar.update("Get script list error");
           this.loaded = false;
+        });
+    },
+
+    run_script(table_item) {
+      Vue.axios
+        .get(this.$store.getters.server_url + "/busevents", {
+          params: {
+            action: "run_once",
+            uuid: table_item.uuid
+          }
+        })
+        .then(response => {
+          if (response.data.error_msg) {
+            throw new Error(response.data.error_msg);
+          }
+
+          this.$refs.snackbar.update("");
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Run script error");
         });
     }
   }

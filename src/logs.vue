@@ -5,10 +5,11 @@
 
             <div class="pl-2">
                <v-btn-toggle mandatory v-model="search">
+                  <v-btn flat value="ALL">ALL</v-btn>
                   <v-btn flat value="INFO">INFO</v-btn>
                   <v-btn flat value="WARNING">WARNING</v-btn>
                   <v-btn flat value="ERROR">ERROR</v-btn>
-                  <v-btn flat value="">ALL</v-btn>
+                  <v-btn flat value="!USER" style="text-decoration: overline">USER</v-btn>
                </v-btn-toggle>
             </div>
 
@@ -83,7 +84,7 @@ export default {
     buttonInfo
   },
   data: () => ({
-    search: "",
+    search: "!USER",
     time_format_rel: true,
     headers: [
       {
@@ -128,7 +129,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      repeat:true,
+      repeat: true,
       time: 1000
     }
   },
@@ -171,7 +172,6 @@ export default {
         })
         .then(response => {
           this.table_values = response.data;
-          console.log(response.data);
           this.loaded = true;
           this.$refs.snackbar_error.update("");
         })
@@ -201,8 +201,11 @@ export default {
       }
     },
     customFilter(items, search, filter) {
-      if (search.length === 0) {
+      if (search === "ALL") {
         return items;
+      }
+      if (search === "!USER") {
+        return items.filter(item => item.level !== "USER");
       }
       return items.filter(item => item.level === search);
     }
