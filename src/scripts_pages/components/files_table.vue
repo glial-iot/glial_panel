@@ -190,7 +190,7 @@ export default {
         width: "6%"
       },
       {
-        text: "Run",
+        text: "Run once",
         sortable: false,
         align: "center",
         width: "6%"
@@ -222,7 +222,7 @@ export default {
     ];
 
     if (this.type !== "BUS_EVENT") {
-      this.headers = this.headers.filter(item => item.text !== "Run");
+      this.headers = this.headers.filter(item => item.text !== "Run once");
     }
   },
 
