@@ -291,8 +291,11 @@ table.v-table thead tr {
   display: flex;
 }
 
-.v-card__text {
+.v-card__text,
+.v-card__title,
+.v-card__title .title {
   word-wrap: break-word;
+  max-width: 100%;
 }
 
 .v-list__tile--active {

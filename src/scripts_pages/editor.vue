@@ -9,9 +9,9 @@
             </div>
 
             <v-spacer></v-spacer>
-            <span class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "{{name}}" </span>
+            <div class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "<span class="ellipsis">{{name}}</span>" </div>
             <v-spacer></v-spacer>
-            <span class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`" @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "{{object}}" </span>
+            <div class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`" @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "<span class="ellipsis">{{object}}</span>" </div>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
@@ -476,5 +476,11 @@ table.v-table tbody th {
 
 .pointer {
   cursor: pointer;
+  display: flex;
+}
+
+.ellipsis {
+  display: block;
+  max-width: 16ch;
 }
 </style>
