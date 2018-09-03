@@ -10,10 +10,10 @@
                <div class="title text-xs-center">Create new {{$options.filters.type2string(type).toLowerCase()}}</div>
             </v-card-title>
             <v-divider></v-divider>
-            <v-card-text>
+            <v-card-text class="py-0">
                <v-text-field autofocus label="Name" v-model="name"></v-text-field>
             </v-card-text>
-            <v-card-text v-if="type != 'DRIVER'">
+            <v-card-text v-if="type != 'DRIVER'" class="py-0">
                <v-text-field :label="$options.filters.object_label(type)" v-model="object"></v-text-field>
             </v-card-text>
             <v-card-text v-if="type === 'WEB_EVENT'">
@@ -21,17 +21,17 @@
                   <a :href="$store.getters.server_url+'/we/'+object" target="_blank">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
                </span>
             </v-card-text>
-            <v-card-text v-if="type === 'SHEDULE_EVENT'">
-               <code class="cron-code">
+            <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
+               <code class="cron-code font-weight-thin">
    * * * * * * *
-   | | | | | | |
-   | | | | | | +-- Year
-   | | | | | +---- Day of the Week (SUN-SAT or 0-6 or "*")
-   | | | | +------ Month of the Year (JAN-DEC or 1-12 or "*")
-   | | | +-------- Day of the Month (0-30 or "*")
-   | | +---------- Hour (0-24 or "*")
-   | +------------ Minute (0-59 or "*")
-   +-------------- Second (0-59)
+   │ │ │ │ │ │ │
+   │ │ │ │ │ │ └── Year
+   │ │ │ │ │ └──── Day of the Week (SUN-SAT or 0-6 or "*")
+   │ │ │ │ └────── Month of the Year (JAN-DEC or 1-12 or "*")
+   │ │ │ └──────── Day of the Month (0-30 or "*")
+   │ │ └────────── Hour (0-24 or "*")
+   │ └──────────── Minute (0-59 or "*")
+   └────────────── Second (0-59)
                </code><br>
                <span>Shedule in a unix-like <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron format</a> with seconds.<br>You can also use @monthly, @weekly, @daily, @hourly.</span>
             </v-card-text>
@@ -52,6 +52,7 @@
   background: none;
   color: inherit;
   box-shadow: none;
+  line-height: 120%;
 }
 </style>
 <script>
