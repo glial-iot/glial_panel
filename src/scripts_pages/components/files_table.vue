@@ -153,7 +153,7 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      repeat:true,
+      repeat: true,
       time: 1000
     }
   },
@@ -222,7 +222,7 @@ export default {
     ];
 
     if (this.type !== "BUS_EVENT") {
-      this.headers = this.headers.filter(item => item.text !== 'Run')
+      this.headers = this.headers.filter(item => item.text !== "Run");
     }
   },
 
@@ -294,7 +294,7 @@ export default {
           this.loaded = false;
         });
     },
-    
+
     run_script(table_item) {
       Vue.axios
         .get(this.$store.getters.server_url + "/busevents", {
@@ -305,7 +305,7 @@ export default {
         })
         .then(response => {
           if (response.data.error_msg) {
-            throw new Error(response.data.error_msg)
+            throw new Error(response.data.error_msg);
           }
 
           this.$refs.snackbar.update("");
