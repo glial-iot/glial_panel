@@ -76,6 +76,7 @@ export default {
   methods: {
     close() {
       this.name = "";
+      this.object = "";
       this.dialog_visible = false;
     },
     create_file() {
