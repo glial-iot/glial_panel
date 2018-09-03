@@ -22,8 +22,19 @@
                </span>
             </v-card-text>
             <v-card-text v-if="type === 'SHEDULE_EVENT'">
-               <span>Shedule:</span><br>
-               <span>Seconds: 0-59<br> Minutes: 0-59<br> Hours: 0-24<br> Days of month: 0-30<br> Month: JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC or 1-12 <br> Day of week: MON,TUE,WED,THU,FRI,SAT,SUN or 0-6<br>
+               <span>Shedule in a <a href="http://www.nncron.ru/help/EN/working/cron-format.htm" target="_blank">cron format</a>.</span><br>
+               <code class="cron-code">
+                  * * * * * * *
+                  | | | | | | |
+                  | | | | | | +-- Year
+                  | | | | | +---- Day of the Week
+                  | | | | +------ Month of the Year
+                  | | | +-------- Day of the Month
+                  | | +---------- Hour
+                  | +------------ Minute
+                  +-------------- Second
+               </code><br>
+               <span>Second: 0-59<br> Minute: 0-59<br> Hour: 0-24<br> Day of month: 0-30<br> Month: JAN-DEC or 1-12 <br> Day of week: SUN-SAT or 0-6<br>
                </span>
             </v-card-text>
             <v-divider></v-divider>
@@ -38,7 +49,13 @@
       <snackbar ref="snackbar"></snackbar>
    </div>
 </template>
-
+<style>
+   .cron-code {
+      background: none;
+      color: inherit;
+      box-shadow: none;
+   }
+</style>
 <script>
 import Vue from "vue";
 import Axios from "axios";
