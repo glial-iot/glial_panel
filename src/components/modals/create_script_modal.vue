@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
    <div>
       <v-btn right color="secondary" class="my-2" @click="dialog_visible = true">
          <v-icon left small>fa-file</v-icon> Create {{$options.filters.type2string(type)}}
@@ -22,20 +22,18 @@
                </span>
             </v-card-text>
             <v-card-text v-if="type === 'SHEDULE_EVENT'">
-               <span>Shedule in a <a href="http://www.nncron.ru/help/EN/working/cron-format.htm" target="_blank">cron format</a>.</span><br>
                <code class="cron-code">
-                  * * * * * * *
-                  | | | | | | |
-                  | | | | | | +-- Year
-                  | | | | | +---- Day of the Week
-                  | | | | +------ Month of the Year
-                  | | | +-------- Day of the Month
-                  | | +---------- Hour
-                  | +------------ Minute
-                  +-------------- Second
+   * * * * * * *
+   | | | | | | |
+   | | | | | | +-- Year
+   | | | | | +---- Day of the Week (SUN-SAT or 0-6 or "*")
+   | | | | +------ Month of the Year (JAN-DEC or 1-12 or "*")
+   | | | +-------- Day of the Month (0-30 or "*")
+   | | +---------- Hour (0-24 or "*")
+   | +------------ Minute (0-59 or "*")
+   +-------------- Second (0-59)
                </code><br>
-               <span>Second: 0-59<br> Minute: 0-59<br> Hour: 0-24<br> Day of month: 0-30<br> Month: JAN-DEC or 1-12 <br> Day of week: SUN-SAT or 0-6<br>
-               </span>
+               <span>Shedule in a <a href="http://www.nncron.ru/help/EN/working/cron-format.htm" target="_blank">cron format</a>.</span><br>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -50,11 +48,11 @@
    </div>
 </template>
 <style>
-   .cron-code {
-      background: none;
-      color: inherit;
-      box-shadow: none;
-   }
+.cron-code {
+  background: none;
+  color: inherit;
+  box-shadow: none;
+}
 </style>
 <script>
 import Vue from "vue";
