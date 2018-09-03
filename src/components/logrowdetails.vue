@@ -8,7 +8,7 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Date and time:</div>
-               {{date}}
+               {{date}}, {{$options.filters.toRelativeTime(timestamp)}}
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
@@ -47,7 +47,8 @@ export default {
       this.trace = item.trace;
       this.entry = item.entry;
       this.key = item.key;
-      this.date = item.date_abs + ", " + item.date_rel;
+      this.timestamp = item.time;
+      this.date = item.date_abs;
       this.source = item.source;
       this.level = item.level;
       this.visible = true;
