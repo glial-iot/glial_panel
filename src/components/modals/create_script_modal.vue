@@ -33,7 +33,7 @@
    | +------------ Minute (0-59 or "*")
    +-------------- Second (0-59)
                </code><br>
-               <span>Shedule in a <a href="http://www.nncron.ru/help/EN/working/cron-format.htm" target="_blank">cron format</a>.</span><br>
+               <span>Shedule in a unix-like <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron format</a> with seconds.<br>You can also use @monthly, @weekly, @daily, @hourly.</span>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
