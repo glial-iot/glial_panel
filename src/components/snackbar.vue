@@ -1,6 +1,6 @@
 <template>
    <v-snackbar :timeout="timeout" :top="true" v-model="visible" :color='color'>
-      {{text}}
+      <p class="text">{{text}}</p>
       <v-btn flat @click.native="visible = false">Close</v-btn>
    </v-snackbar>
 </template>
@@ -27,6 +27,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.text {
+  margin: 0;
+  max-width: calc(100% - 70px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
 

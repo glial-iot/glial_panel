@@ -30,7 +30,7 @@
                      </div>
                   </td>
 
-                  <td class="text-xs-left">
+                  <td class="text-xs-left ellipsis" :title="props.item.name">
                      {{ props.item.name }}
                   </td>
 
