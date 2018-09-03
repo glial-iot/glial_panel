@@ -285,6 +285,7 @@ table.v-table thead tr {
 .select-server {
   display: flex;
   align-items: center;
+  text-transform: lowercase;
 }
 
 .icon-wrapper {
