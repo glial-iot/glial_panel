@@ -297,7 +297,7 @@ export default {
     
     run_script(table_item) {
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
+        .get(this.$store.getters.server_url + "/busevents", {
           params: {
             action: "run_once",
             uuid: table_item.uuid
