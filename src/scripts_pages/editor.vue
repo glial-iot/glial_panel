@@ -9,9 +9,11 @@
             </div>
 
             <v-spacer></v-spacer>
-            <div class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "<span class="ellipsis">{{name}}</span>" </div>
+            <div class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "
+               <span class="ellipsis">{{name}}</span>" </div>
             <v-spacer></v-spacer>
-            <div class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`" @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "<span class="ellipsis">{{object}}</span>" </div>
+            <div class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`" @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "
+               <span class="ellipsis">{{object}}</span>" </div>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
@@ -54,6 +56,9 @@
             <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll" :pagination.sync="pagination">
                <template slot="items" slot-scope="props">
                   <tr>
+                     <td class="justify-center text-xs-center cell-flex">
+                        <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                     </td>
                      <td class="text-xs-center">
                         <div class="ellipsis">{{ props.item.level }}</div>
                      </td>
@@ -63,6 +68,7 @@
                      <td class="text-xs-left">
                         <div class="ellipsis mw-100" :title="props.item.entry">{{ props.item.entry }}</div>
                      </td>
+
                   </tr>
                </template>
             </v-data-table>
@@ -76,6 +82,8 @@
       <editor-help-modal ref="help"></editor-help-modal>
       <rename-script-modal ref="rename" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
+      <logrowdetails ref="logrowdetails"></logrowdetails>
+
    </div>
 </template>
 
@@ -93,6 +101,8 @@ import snackbar from "../components/snackbar.vue";
 import editorHelpModal from "../components/modals/editor-help-modal.vue";
 import renameScriptModal from "../components/modals/rename-script-modal.vue";
 import changeObjectModal from "../components/modals/change-object-modal.vue";
+import logrowdetails from "../components/logrowdetails.vue";
+import buttonInfo from "../components/buttons/button-info.vue";
 import editor from "../brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
@@ -111,6 +121,12 @@ export default {
     type: "",
     logs: [],
     headers: [
+      {
+        text: "Info",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
       {
         text: "Level",
         value: "level",
@@ -139,7 +155,9 @@ export default {
     snackbar,
     editorHelpModal,
     renameScriptModal,
-    changeObjectModal
+    changeObjectModal,
+    buttonInfo,
+    logrowdetails
   },
   timers: {
     get_logs: {
@@ -484,6 +502,6 @@ table.v-table tbody th {
 }
 
 .mw-100 {
-   max-width:100%;
+  max-width: 100%;
 }
 </style>
