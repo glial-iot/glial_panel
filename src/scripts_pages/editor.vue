@@ -61,7 +61,7 @@
                         <div class="ellipsis" :title="props.item.date_abs">{{$options.filters.toRelativeTime(props.item.time)}}</div>
                      </td>
                      <td class="text-xs-left">
-                        <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
+                        <div class="ellipsis mw-100" :title="props.item.entry">{{ props.item.entry }}</div>
                      </td>
                   </tr>
                </template>
@@ -482,5 +482,9 @@ table.v-table tbody th {
 .ellipsis {
   display: block;
   max-width: 16ch;
+}
+
+.mw-100 {
+   max-width:100%;
 }
 </style>
