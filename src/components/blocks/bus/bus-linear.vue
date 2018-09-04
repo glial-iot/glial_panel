@@ -128,8 +128,14 @@ export default {
   display: flex;
 }
 
-.bus-table table.v-table tbody td:not(:first-child),
-.bus-table table.v-table thead th:not(:first-child) {
-  padding: 0 4px;
+table.v-table tbody td:first-child,
+table.v-table tbody td:not(:first-child),
+table.v-table tbody th:first-child,
+table.v-table tbody th:not(:first-child),
+table.v-table thead td:first-child,
+table.v-table thead td:not(:first-child),
+table.v-table thead th:first-child,
+table.v-table thead th:not(:first-child) {
+  padding: 0 10px;
 }
 </style>
