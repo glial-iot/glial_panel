@@ -13,7 +13,7 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Log entry:</div>
-               {{entry}}
+               <span v-html="$options.filters.nl2br(entry)"></span>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
