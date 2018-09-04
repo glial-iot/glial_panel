@@ -59,10 +59,10 @@
                      <td class="justify-center text-xs-center cell-flex">
                         <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
                      </td>
-                     <td class="text-xs-center">
+                     <td class="text-xs-left">
                         <div class="ellipsis">{{ props.item.level }}</div>
                      </td>
-                     <td class="text-xs-center">
+                     <td class="text-xs-left">
                         <div class="ellipsis" :title="props.item.date_abs">{{$options.filters.toRelativeTime(props.item.time)}}</div>
                      </td>
                      <td class="text-xs-left">
@@ -125,21 +125,21 @@ export default {
         text: "Info",
         align: "center",
         sortable: false,
-        width: "5%"
+        width: "3%"
       },
       {
         text: "Level",
         value: "level",
-        align: "center",
+        align: "left",
         sortable: false,
-        width: "10%"
+        width: "8%"
       },
       {
         text: "Date",
         value: "date",
-        align: "center",
+        align: "left",
         sortable: false,
-        width: "15%"
+        width: "10%"
       },
       {
         text: "Entry",
@@ -438,6 +438,17 @@ export default {
   color: #000;
   background-color: #fff !important;
   border-color: initial !important;
+}
+
+table.v-table tbody td:first-child,
+table.v-table tbody td:not(:first-child),
+table.v-table tbody th:first-child,
+table.v-table tbody th:not(:first-child),
+table.v-table thead td:first-child,
+table.v-table thead td:not(:first-child),
+table.v-table thead th:first-child,
+table.v-table thead th:not(:first-child) {
+  padding: 0 0px;
 }
 </style>
 
