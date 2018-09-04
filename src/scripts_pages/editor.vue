@@ -132,7 +132,7 @@ export default {
         value: "level",
         align: "left",
         sortable: false,
-        width: "8%"
+        width: "6%"
       },
       {
         text: "Date",
