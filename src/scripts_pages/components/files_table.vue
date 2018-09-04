@@ -170,7 +170,7 @@ export default {
         text: "Status",
         align: "center",
         sortable: false,
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Name",
@@ -184,45 +184,44 @@ export default {
       },
       {
         text: "Info",
-        value: "info",
         align: "center",
         sortable: false,
-        width: "6%"
+        width: "5%"
       },
       {
-        text: "Run once",
+        text: "Run",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Active",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Edit",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Delete",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Restart",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       }
     ];
 
     if (this.type !== "BUS_EVENT") {
-      this.headers = this.headers.filter(item => item.text !== "Run once");
+      this.headers = this.headers.filter(item => item.text !== "Run");
     }
   },
 
