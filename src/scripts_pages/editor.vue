@@ -338,6 +338,7 @@ export default {
                 console.log(response);
                 this.active_flag = flag;
                 this.$refs.snackbar.update("Script is "+flag, "success", 1500);
+                this.restart_script();
             })
             .catch(error => {
                 console.log(error);
