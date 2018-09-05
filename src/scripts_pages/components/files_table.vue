@@ -1,4 +1,4 @@
-<template>
+<template lang="html">
    <div>
       <v-card class="elevation-3">
 
@@ -38,8 +38,7 @@
                      <div v-if="type === 'WEB_EVENT'">
                         <span>
                            <a :href="$store.getters.server_url+'/we/'+props.item.object" target="_blank" style="text-decoration: none">
-                              <span class="grey--text">/we/</span>
-                              <span class="black--text">{{props.item.object}}</span>
+                              <span class="grey--text">/we/</span><span class="black--text">{{props.item.object}}</span>
                            </a>
                         </span>
                      </div>
