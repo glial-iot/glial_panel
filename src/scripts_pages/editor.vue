@@ -180,6 +180,13 @@ export default {
   mounted: function() {
     window.addEventListener("resize", this.force_update);
     this.pagination.rowsPerPage = this.editor_log_size;
+    let self = this;
+    document.addEventListener("keydown", function(e) {
+          if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+              e.preventDefault();
+              self.save_file();
+          }
+      }, false);
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
