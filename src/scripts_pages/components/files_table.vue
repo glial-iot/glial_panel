@@ -273,13 +273,20 @@ export default {
     },
 
     table_update() {
+      console.log(
+        this.$store.getters.server_url,
+        this.$store.state.endpoints[this.type]
+      );
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "get_list",
-            type: this.type
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "get_list"
+            }
           }
-        })
+        )
         .then(response => {
           console.log(response.data);
           Vue.set(this, "files_table", response.data);
