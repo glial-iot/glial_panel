@@ -170,7 +170,7 @@ export default {
         text: "Status",
         align: "center",
         sortable: false,
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Name",
@@ -184,45 +184,44 @@ export default {
       },
       {
         text: "Info",
-        value: "info",
         align: "center",
         sortable: false,
-        width: "6%"
+        width: "5%"
       },
       {
-        text: "Run once",
+        text: "Run",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Activate",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Edit",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Delete",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       },
       {
         text: "Restart",
         sortable: false,
         align: "center",
-        width: "6%"
+        width: "5%"
       }
     ];
 
     if (this.type !== "BUS_EVENT") {
-      this.headers = this.headers.filter(item => item.text !== "Run once");
+      this.headers = this.headers.filter(item => item.text !== "Run");
     }
   },
 
@@ -322,6 +321,17 @@ export default {
 <style>
 .no-scroll table {
   table-layout: fixed;
+}
+
+table.v-table tbody td:first-child,
+table.v-table tbody td:not(:first-child),
+table.v-table tbody th:first-child,
+table.v-table tbody th:not(:first-child),
+table.v-table thead td:first-child,
+table.v-table thead td:not(:first-child),
+table.v-table thead th:first-child,
+table.v-table thead th:not(:first-child) {
+  padding: 0 0px;
 }
 </style>
 

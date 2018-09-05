@@ -5,11 +5,12 @@
 
             <div class="pl-2">
                <v-btn-toggle mandatory v-model="search">
-                  <v-btn flat value="ALL">ALL</v-btn>
-                  <v-btn flat value="INFO">INFO</v-btn>
-                  <v-btn flat value="WARNING">WARNING</v-btn>
-                  <v-btn flat value="ERROR">ERROR</v-btn>
-                  <v-btn flat value="!USER" style="text-decoration: overline">USER</v-btn>
+                  <v-btn flat value="ALL" title="All logs">ALL</v-btn>
+                  <v-btn flat value="INFO" title="Only logs with 'info' level">INFO</v-btn>
+                  <v-btn flat value="WARNING" title="Only logs with 'warning' level">WARNING</v-btn>
+                  <v-btn flat value="ERROR" title="Only logs with 'error' level">ERROR</v-btn>
+                  <v-btn flat value="USER" title="Only logs with 'user' level">USER</v-btn>
+                  <v-btn flat value="!USER" style="text-decoration: overline" title="All logs, except entries with the level 'user'">USER</v-btn>
                </v-btn-toggle>
             </div>
 

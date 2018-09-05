@@ -13,16 +13,17 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Log entry:</div>
-               {{entry}}
+               <span v-html="$options.filters.nl2br(entry)"></span>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-text>
+            <v-card-text v-if="visible_trace">
                <div class="subheading">Trace:</div>
                <span v-html="$options.filters.nl2br(trace)"></span>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
                <v-btn color="primary" flat @click.stop="visible=false">Close</v-btn>
+               <v-btn color="primary" flat @click.stop="visible_trace=true">Show trace</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
@@ -35,6 +36,7 @@ import Vue from "vue";
 export default {
   data: () => ({
     visible: false,
+    visible_trace: false,
     entry: "",
     trace: "",
     key: "",
@@ -52,6 +54,7 @@ export default {
       this.source = item.source;
       this.level = item.level;
       this.visible = true;
+      this.visible_trace = false;
     }
   }
 };

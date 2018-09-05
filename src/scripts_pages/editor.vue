@@ -9,9 +9,11 @@
             </div>
 
             <v-spacer></v-spacer>
-            <div class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "<span class="ellipsis">{{name}}</span>" </div>
+            <div class=".display-1 pointer" title="Click to edit name" @click="$refs.rename.show(uuid, type, name)"> {{$options.filters.type2string(type)}} "
+               <span class="ellipsis">{{name}}</span>" </div>
             <v-spacer></v-spacer>
-            <div class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`" @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "<span class="ellipsis">{{object}}</span>" </div>
+            <div v-if="type != 'DRIVER'" class=".display-1 pointer" :title="`Click to edit ${$options.filters.object_label(type).toLowerCase()}`" @click="$refs.change_object.show(uuid, object, type)"> {{$options.filters.object_label(type)}} "
+               <span class="ellipsis">{{object}}</span>" </div>
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
@@ -59,15 +61,19 @@
             <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll" :pagination.sync="pagination">
                <template slot="items" slot-scope="props">
                   <tr>
-                     <td class="text-xs-center">
+                     <td class="justify-center text-xs-center cell-flex">
+                        <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                     </td>
+                     <td class="text-xs-left">
                         <div class="ellipsis">{{ props.item.level }}</div>
                      </td>
-                     <td class="text-xs-center">
+                     <td class="text-xs-left">
                         <div class="ellipsis" :title="props.item.date_abs">{{$options.filters.toRelativeTime(props.item.time)}}</div>
                      </td>
                      <td class="text-xs-left">
                         <div class="ellipsis mw-100" :title="props.item.entry">{{ props.item.entry }}</div>
                      </td>
+
                   </tr>
                </template>
             </v-data-table>
@@ -81,6 +87,8 @@
       <editor-help-modal ref="help"></editor-help-modal>
       <rename-script-modal ref="rename" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
+      <logrowdetails ref="logrowdetails"></logrowdetails>
+
    </div>
 </template>
 
@@ -98,6 +106,8 @@ import snackbar from "../components/snackbar.vue";
 import editorHelpModal from "../components/modals/editor-help-modal.vue";
 import renameScriptModal from "../components/modals/rename-script-modal.vue";
 import changeObjectModal from "../components/modals/change-object-modal.vue";
+import logrowdetails from "../components/logrowdetails.vue";
+import buttonInfo from "../components/buttons/button-info.vue";
 import editor from "../brace/index.js";
 import "brace/mode/lua";
 import "brace/mode/html";
@@ -118,18 +128,24 @@ export default {
     logs: [],
     headers: [
       {
-        text: "Level",
-        value: "level",
+        text: "Info",
         align: "center",
         sortable: false,
-        width: "10%"
+        width: "3%"
+      },
+      {
+        text: "Level",
+        value: "level",
+        align: "left",
+        sortable: false,
+        width: "6%"
       },
       {
         text: "Date",
         value: "date",
-        align: "center",
+        align: "left",
         sortable: false,
-        width: "15%"
+        width: "10%"
       },
       {
         text: "Entry",
@@ -145,7 +161,9 @@ export default {
     snackbar,
     editorHelpModal,
     renameScriptModal,
-    changeObjectModal
+    changeObjectModal,
+    buttonInfo,
+    logrowdetails
   },
   timers: {
     get_logs: {
@@ -330,7 +348,6 @@ export default {
         })
         .then(response => {
           this.logs = response.data;
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
@@ -448,6 +465,17 @@ export default {
   background-color: #fff !important;
   border-color: initial !important;
 }
+
+table.v-table tbody td:first-child,
+table.v-table tbody td:not(:first-child),
+table.v-table tbody th:first-child,
+table.v-table tbody th:not(:first-child),
+table.v-table thead td:first-child,
+table.v-table thead td:not(:first-child),
+table.v-table thead th:first-child,
+table.v-table thead th:not(:first-child) {
+  padding: 0 0px;
+}
 </style>
 
 <style scoped>
@@ -511,6 +539,6 @@ table.v-table tbody th {
 }
 
 .mw-100 {
-   max-width:100%;
+  max-width: 100%;
 }
 </style>
