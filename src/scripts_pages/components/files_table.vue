@@ -64,10 +64,10 @@
                   </td>
 
                   <td class="justify-center text-xs-center px-0 button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'ACTIVE'" title="Active" @click="script_active_change(props.item, 'NON_ACTIVE')">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Activate" @click="script_active_change(props.item, 'ACTIVE')">
                         <v-icon color="green" small>fa-play-circle</v-icon>
                      </v-btn>
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Non-active" @click="script_active_change(props.item, 'ACTIVE')">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'ACTIVE'" title="Deactivate" @click="script_active_change(props.item, 'NON_ACTIVE')">
                         <v-icon color="red" small>fa-stop-circle</v-icon>
                      </v-btn>
                   </td>
@@ -195,7 +195,7 @@ export default {
         width: "5%"
       },
       {
-        text: "Active",
+        text: "Activate",
         sortable: false,
         align: "center",
         width: "5%"

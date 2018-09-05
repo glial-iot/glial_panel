@@ -17,7 +17,12 @@
             <v-spacer></v-spacer>
 
             <div class="text-xs-left buttons">
-
+               <v-btn :small="true" v-show="active_flag == 'NON_ACTIVE'" title="Active" @click="script_active_change('ACTIVE')">
+                  <v-icon color="green" left small>fa-play-circle</v-icon> Activate
+               </v-btn>
+               <v-btn :small="true" v-show="active_flag == 'ACTIVE'" title="Non-active" @click="script_active_change('NON_ACTIVE')">
+                  <v-icon color="red" left small>fa-stop-circle</v-icon> Deactivate
+               </v-btn>
                <v-btn :small="true" @click.native="save_file" title="Save script">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
@@ -119,6 +124,7 @@ export default {
     name: "",
     object: "",
     type: "",
+    active_flag:"",
     logs: [],
     headers: [
       {
@@ -174,6 +180,13 @@ export default {
   mounted: function() {
     window.addEventListener("resize", this.force_update);
     this.pagination.rowsPerPage = this.editor_log_size;
+    let self = this;
+    document.addEventListener("keydown", function(e) {
+          if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+              e.preventDefault();
+              self.save_file();
+          }
+      }, false);
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
@@ -253,6 +266,7 @@ export default {
           }
         })
         .then(response => {
+          this.active_flag = response.data.active_flag;
           this.content = response.data.body;
           this.prev_content = response.data.body;
           this.name = response.data.name;
@@ -310,6 +324,26 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Reload script error");
         });
+    },
+    script_active_change(flag) {
+        Vue.axios
+            .get(this.$store.getters.server_url + "/scripts", {
+                params: {
+                    action: "update",
+                    uuid: this.uuid,
+                    active_flag: flag
+                }
+            })
+            .then(response => {
+                console.log(response);
+                this.active_flag = flag;
+                this.$refs.snackbar.update("Script is "+flag, "success", 1500);
+                this.restart_script();
+            })
+            .catch(error => {
+                console.log(error);
+                this.$refs.snackbar.update("Active change error");
+            });
     },
     get_logs: function() {
       Vue.axios
