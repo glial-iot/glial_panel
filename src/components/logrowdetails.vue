@@ -40,6 +40,7 @@ export default {
     entry: "",
     trace: "",
     key: "",
+    timestamp: "",
     date: "",
     level: "",
     source: ""
