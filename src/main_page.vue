@@ -112,12 +112,6 @@ let menu = [
     color: "green darken-2"
   },
   {
-    path: "/scripts/webevent",
-    name: "Web scripts",
-    icon: "fa-link",
-    color: "green darken-2"
-  },
-  {
     path: "/scripts/timerevent",
     name: "Timer scripts",
     icon: "fa-clock",
@@ -127,6 +121,12 @@ let menu = [
     path: "/scripts/sheduleevent",
     name: "Shedule scripts",
     icon: "fa-calendar-alt",
+    color: "green darken-2"
+  },
+  {
+    path: "/scripts/webevent",
+    name: "Web scripts",
+    icon: "fa-link",
     color: "green darken-2",
     divider: true
   },
