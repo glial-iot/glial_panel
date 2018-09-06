@@ -199,9 +199,14 @@ export default {
     window.removeEventListener("resize", this.force_update);
   },
   beforeRouteEnter(to, from, next) {
-    if (Object.keys(to.query).length !== 0 && to.query.uuid !== undefined) {
+    if (
+      Object.keys(to.query).length !== 0 &&
+      to.query.uuid !== undefined &&
+      to.query.type !== undefined
+    ) {
       next(vm => {
         vm.uuid = to.query.uuid;
+        vm.type = to.query.type;
       });
     }
     next();
@@ -266,12 +271,16 @@ export default {
     },
     load_script: function() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "get",
-            uuid: this.uuid
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "get",
+              uuid: this.uuid
+            }
           }
-        })
+        )
         .then(response => {
           this.active_flag = response.data.active_flag;
           this.content = response.data.body;

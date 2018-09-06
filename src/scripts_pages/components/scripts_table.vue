@@ -228,7 +228,7 @@ export default {
     script_edit(table_item) {
       this.$router.push({
         path: "/editor",
-        query: { uuid: table_item.uuid }
+        query: { uuid: table_item.uuid, type: table_item.type }
       });
     },
     script_restart(table_item) {
@@ -287,7 +287,6 @@ export default {
           }
         )
         .then(response => {
-          console.log(response.data);
           Vue.set(this, "scripts_table", response.data);
           this.loaded = true;
           this.$refs.snackbar.update("");

@@ -39,12 +39,16 @@ export default {
     },
     script_delete() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "delete",
-            uuid: this.item.uuid
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.item.type],
+          {
+            params: {
+              action: "delete",
+              uuid: this.item.uuid
+            }
           }
-        })
+        )
         .then(response => {
           this.$refs.snackbar.update(
             `Script "${this.item.name}" successfuly removed`,
