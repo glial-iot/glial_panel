@@ -93,20 +93,22 @@ export default {
       if (this.type === "DRIVER") {
         params = {
           action: "create",
-          name: this.name,
-          type: this.type
+          name: this.name
         };
       } else {
         params = {
           action: "create",
           name: this.name,
-          type: this.type,
           object: this.object
         };
       }
 
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", { params })
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          { params }
+        )
         .then(response => {
           this.$emit("data_updated", this.item);
           this.dialog_visible = false;
