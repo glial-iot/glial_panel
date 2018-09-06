@@ -23,7 +23,7 @@
                <v-btn :small="true" v-show="active_flag == 'ACTIVE'" title="Non-active" @click="script_active_change('NON_ACTIVE')">
                   <v-icon color="red" left small>fa-stop-circle</v-icon> Deactivate
                </v-btn>
-               <v-btn :small="true" @click.native="save_file" title="Save script">
+               <v-btn :small="true" @click.native="save_script" title="Save script">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
                <v-btn :small="true" @click.native="save_and_restart" title="Save script and restart">
@@ -124,7 +124,7 @@ export default {
     name: "",
     object: "",
     type: "",
-    active_flag:"",
+    active_flag: "",
     logs: [],
     headers: [
       {
@@ -181,12 +181,19 @@ export default {
     window.addEventListener("resize", this.force_update);
     this.pagination.rowsPerPage = this.editor_log_size;
     let self = this;
-    document.addEventListener("keydown", function(e) {
-          if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-              e.preventDefault();
-              self.save_file();
-          }
-      }, false);
+    document.addEventListener(
+      "keydown",
+      function(e) {
+        if (
+          e.keyCode === 83 &&
+          (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+        ) {
+          e.preventDefault();
+          self.save_script();
+        }
+      },
+      false
+    );
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
@@ -235,7 +242,7 @@ export default {
         this.prev_content = content;
       }
     },
-    save_file: function(event) {
+    save_script: function(event) {
       let data = new Blob([this.prev_content], {
         type: "text/plain"
       });
@@ -248,16 +255,16 @@ export default {
             reader.result
           )
           .then(response => {
-            this.$refs.snackbar.update("File saved", "success", 3000);
+            this.$refs.snackbar.update("Script saved", "success", 3000);
             this.saved = true;
           })
           .catch(error => {
-            this.$refs.snackbar.update("File not saved");
+            this.$refs.snackbar.update("Script not saved");
             console.log(error);
           });
       };
     },
-    load_file: function() {
+    load_script: function() {
       Vue.axios
         .get(this.$store.getters.server_url + "/scripts", {
           params: {
@@ -277,7 +284,7 @@ export default {
         })
         .catch(error => {
           this.content = "";
-          this.$refs.snackbar.update("Load file: network error");
+          this.$refs.snackbar.update("Load script: network error");
         });
     },
     save_and_restart: function() {
@@ -293,12 +300,12 @@ export default {
             reader.result
           )
           .then(response => {
-            this.$refs.snackbar.update("File saved", "success", 3000);
+            this.$refs.snackbar.update("Script saved", "success", 3000);
             this.saved = true;
             this.restart_script();
           })
           .catch(error => {
-            this.$refs.snackbar.update("File not saved");
+            this.$refs.snackbar.update("Script not saved");
             console.log(error);
           });
       };
@@ -326,24 +333,24 @@ export default {
         });
     },
     script_active_change(flag) {
-        Vue.axios
-            .get(this.$store.getters.server_url + "/scripts", {
-                params: {
-                    action: "update",
-                    uuid: this.uuid,
-                    active_flag: flag
-                }
-            })
-            .then(response => {
-                console.log(response);
-                this.active_flag = flag;
-                this.$refs.snackbar.update("Script is "+flag, "success", 1500);
-                this.restart_script();
-            })
-            .catch(error => {
-                console.log(error);
-                this.$refs.snackbar.update("Active change error");
-            });
+      Vue.axios
+        .get(this.$store.getters.server_url + "/scripts", {
+          params: {
+            action: "update",
+            uuid: this.uuid,
+            active_flag: flag
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.active_flag = flag;
+          this.$refs.snackbar.update("Script is " + flag, "success", 1500);
+          this.restart_script();
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Active change error");
+        });
     },
     get_logs: function() {
       Vue.axios
@@ -401,7 +408,7 @@ export default {
   watch: {
     uuid: function(uuid) {
       this.uuid = uuid;
-      this.load_file();
+      this.load_script();
 
       if (this.logs_visible) {
         this.$timer.start("get_logs");

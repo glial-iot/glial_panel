@@ -39,7 +39,7 @@
             <v-card-actions>
                <v-btn color="error" flat @click.stop="close">Close</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="green darken-1" right flat @click="create_file()">
+               <v-btn color="green darken-1" right flat @click="create_script()">
                   <v-icon left small>fa-file</v-icon> Create </v-btn>
             </v-card-actions>
          </v-card>
@@ -80,7 +80,7 @@ export default {
       this.object = "";
       this.dialog_visible = false;
     },
-    create_file() {
+    create_script() {
       let params = {};
 
       if (this.type !== "DRIVER" && this.object === "") {

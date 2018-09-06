@@ -1,14 +1,14 @@
 <template>
    <div>
-      <files-table :type="type"></files-table>
+      <scripts-table :type="type"></scripts-table>
    </div>
 </template>
 
 
 <script>
 import Vue from "vue";
-import files_table from "./components/files_table.vue";
-Vue.component("files-table", files_table);
+import scripts_table from "./components/scripts_table.vue";
+Vue.component("scripts-table", scripts_table);
 
 export default {
   data: () => ({

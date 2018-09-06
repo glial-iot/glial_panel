@@ -5,12 +5,12 @@
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
 
-            <create-script-modal @create_error="$refs.snackbar.update('Create file: error')" @data_updated="table_update()" :type="type"></create-script-modal>
+            <create-script-modal @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
          </v-card-title>
 
          <v-divider></v-divider>
 
-         <v-data-table v-if="loaded" :headers="headers" :items="files_table" hide-actions class="no-scroll" no-data-text="No scripts">
+         <v-data-table v-if="loaded" :headers="headers" :items="scripts_table" hide-actions class="no-scroll" no-data-text="No scripts">
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
@@ -72,7 +72,7 @@
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Edit script" @click="file_edit(props.item)">
+                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Edit script" @click="script_edit(props.item)">
                         <v-icon color="green" small>fa-pencil-alt</v-icon>
                      </v-btn>
                   </td>
@@ -97,7 +97,7 @@
 
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
-            <span class="body-2 mx-4 grey--text"> Scripts: {{files_table.length}} </span>
+            <span class="body-2 mx-4 grey--text"> Scripts: {{scripts_table.length}} </span>
          </v-card-title>
 
       </v-card>
@@ -144,7 +144,7 @@ export default {
   },
   data: () => ({
     headers: [],
-    files_table: [],
+    scripts_table: [],
     loaded: false
   }),
   props: ["type"],
@@ -225,7 +225,7 @@ export default {
   },
 
   methods: {
-    file_edit(table_item) {
+    script_edit(table_item) {
       this.$router.push({
         path: "/editor",
         query: { uuid: table_item.uuid }
@@ -288,13 +288,13 @@ export default {
         )
         .then(response => {
           console.log(response.data);
-          Vue.set(this, "files_table", response.data);
+          Vue.set(this, "scripts_table", response.data);
           this.loaded = true;
           this.$refs.snackbar.update("");
         })
         .catch(error => {
           console.log(error);
-          this.files_table = [];
+          this.scripts_table = [];
           this.$refs.snackbar.update("Get script list error");
           this.loaded = false;
         });
