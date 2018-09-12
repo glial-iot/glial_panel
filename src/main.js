@@ -14,6 +14,8 @@ import web_scripts from './scripts_pages/web_scripts.vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
 Vue.use(Vuetify, {
    theme: {
       primary: "#124191",
@@ -35,8 +37,6 @@ import solid from '@fortawesome/fontawesome-free-solid'
 import faDatabase from '@fortawesome/fontawesome-free-solid/faDatabase'
 fontawesome.library.add(solid.faDatabase)
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
-
 import VueLocalStorage from 'vue-localstorage';
 Vue.use(VueLocalStorage)
 
@@ -46,6 +46,9 @@ Vue.use(Vuex)
 Vue.use(require("vue-moment"));
 
 import { BUS_TYPE_TREE } from './utils/constants'
+
+//Custom css. Last css import to override other styles. Don't add css imports below this one.
+import './assets/css/global.css'
 
 const router = new VueRouter({
    routes: [{
