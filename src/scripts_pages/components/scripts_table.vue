@@ -10,7 +10,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table v-if="loaded" :headers="headers" :items="scripts_table" hide-actions class="no-scroll" no-data-text="No scripts">
+         <v-data-table class="no-scroll" v-if="loaded" :headers="headers" :items="scripts_table" hide-actions no-data-text="No scripts">
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
@@ -54,39 +54,28 @@
 
                   </td>
 
-                  <td class="justify-center text-xs-center cell-flex">
-                     <button-info :item="props" title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-info title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
 
-                  <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center cell-flex">
-                     <button-rocket :item="props" title="Run script once" @click.native="run_script(props.item)"></button-rocket>
-                  </td>
-
-                  <td class="justify-center text-xs-center px-0 button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'NON_ACTIVE'" title="Activate" @click="script_active_change(props.item, 'ACTIVE')">
-                        <v-icon color="green" small>fa-play-circle</v-icon>
-                     </v-btn>
-                     <v-btn icon class="ml-0 mr-0 btn-icon" v-show="props.item.active_flag == 'ACTIVE'" title="Deactivate" @click="script_active_change(props.item, 'NON_ACTIVE')">
-                        <v-icon color="red" small>fa-stop-circle</v-icon>
-                     </v-btn>
+                  <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center button-sm">
+                     <button-rocket title="Run script once" @click.native="run_script(props.item)"></button-rocket>
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Edit script" @click="script_edit(props.item)">
-                        <v-icon color="green" small>fa-pencil-alt</v-icon>
-                     </v-btn>
+                     <button-activate :flag="props.item.active_flag" @click.native="script_active_change(props.item, props.item.active_flag)"></button-activate>
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Delete script" @click="$refs.remove_modal.show(props.item)">
-                        <v-icon color="pink" small>fa-trash-alt</v-icon>
-                     </v-btn>
+                     <button-edit title="Edit script" @click.native="script_edit(props.item)"></button-edit>
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
-                     <v-btn icon class="ml-0 mr-0 btn-icon" title="Restart" @click="script_restart(props.item)">
-                        <v-icon color="pink" small>fa-sync</v-icon>
-                     </v-btn>
+                     <button-trash title="Delete script" @click.native="$refs.remove_modal.show(props.item)"></button-trash>
+                  </td>
+
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-sync title="Restart" @click.native="script_restart(props.item)"></button-sync>
                   </td>
                </tr>
             </template>
@@ -122,7 +111,11 @@ import createScriptModal from "../../components/modals/create_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import buttonEdit from "../../components/buttons/button-edit.vue";
+import buttonActivate from "../../components/buttons/button-activate.vue";
 import buttonRocket from "../../components/buttons/button-rocket.vue";
+import buttonTrash from "../../components/buttons/button-trash.vue";
+import buttonSync from "../../components/buttons/button-sync.vue";
 import iconError from "../../components/icons/icon-status-error.vue";
 import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
@@ -136,6 +129,10 @@ export default {
     snackbar,
     buttonInfo,
     buttonRocket,
+    buttonActivate,
+    buttonEdit,
+    buttonTrash,
+    buttonSync,
     iconError,
     iconNormal,
     iconStopped,
@@ -169,7 +166,7 @@ export default {
         text: "Status",
         align: "center",
         sortable: false,
-        width: "5%"
+        width: "7%"
       },
       {
         text: "Name",
@@ -251,13 +248,15 @@ export default {
           this.$refs.snackbar.update("Reload script error");
         });
     },
-    script_active_change(table_item, flag) {
+    script_active_change(table_item, current_flag) {
+        let to_set_flag = '';
+        current_flag === "ACTIVE" ? to_set_flag = "NON_ACTIVE" : to_set_flag = "ACTIVE";
       Vue.axios
         .get(this.$store.getters.server_url + "/scripts", {
           params: {
             action: "update",
             uuid: table_item.uuid,
-            active_flag: flag
+            active_flag: to_set_flag
           }
         })
         .then(response => {
@@ -322,29 +321,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.no-scroll table {
-  table-layout: fixed;
-}
-
-table.v-table tbody td:first-child,
-table.v-table tbody td:not(:first-child),
-table.v-table tbody th:first-child,
-table.v-table tbody th:not(:first-child),
-table.v-table thead td:first-child,
-table.v-table thead td:not(:first-child),
-table.v-table thead th:first-child,
-table.v-table thead th:not(:first-child) {
-  padding: 0 0px;
-}
-</style>
-
-
-<style scoped>
-.btn-icon {
-  height: 18px;
-  width: 18px;
-  position: relative;
-}
-</style>

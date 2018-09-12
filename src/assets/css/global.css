@@ -1,0 +1,203 @@
+.small_title {
+    height: 30px;
+}
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+.v-navigation-drawer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.v-navigation-drawer .v-list__tile {
+    padding: 0 12px;
+}
+.v-navigation-drawer .v-list__tile__action {
+    min-width: 36px;
+}
+.container {
+    padding: 12px;
+}
+.version-block {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    font-size: 10px;
+}
+.version-row {
+    white-space: nowrap;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+}
+.v-toolbar__title {
+    display: flex;
+    align-items: center;
+}
+.v-toolbar__title p {
+    margin: 0;
+    margin-bottom: 2px;
+}
+.select-server p {
+    margin: 0;
+    margin-right: 8px;
+    line-height: 14px;
+}
+.select-server {
+    display: flex;
+    align-items: center;
+    text-transform: lowercase;
+}
+.icon-wrapper {
+    display: flex;
+}
+.v-card__text, .v-card__title, .v-card__title .title {
+    word-wrap: break-word;
+    max-width: 100%;
+}
+.v-list__tile--active {
+    background-color: #e6f0ff !important;
+    color: #e6f0ff !important;
+}
+.row-new {
+    background-color: rgb(155, 204, 255);
+}
+.row-new:hover {
+    background-color: rgb(155, 204, 255);
+}
+.cell-flex {
+    display: flex;
+}
+.no-scroll table {
+    table-layout: fixed;
+}
+table.v-table tbody td, table.v-table tbody th {
+    height: 25px !important;
+}
+table.v-table thead tr {
+    height: 30px;
+}
+.no-scroll table {
+    table-layout: fixed;
+}
+.no-scroll table.v-table td:not(:first-child), .no-scroll table.v-table th:not(:first-child) {
+    padding: 0 4px;
+}
+.no-scroll table.v-table td:first-child, .no-scroll table.v-table th:first-child {
+    padding: 0 24px;
+}
+button.icon-btn, button.icon-btn:before {
+    margin: 0;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 0;
+    font-size: 16px;
+}
+.json-viewer {
+    font-size: 13px;
+}
+.tree-content {
+    padding: 0 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.tree-anchor {
+    line-height: 18px;
+    padding: 0 6px;
+    min-height: 25px;
+}
+.tree-arrow {
+    height: 16px;
+    width: 16px;
+}
+.viewer-item, .viewer-item__prop, .viewer-item__key {
+    width: 100%;
+    line-height: 25px;
+}
+.tree-arrow:not(.has-child) {
+    display: none;
+}
+.viewer-item__prop, .viewer-item__key {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.viewer-item__key__info {
+    display: flex;
+    align-items: center;
+}
+.viewer-item__key__info>* {
+    flex-shrink: 0;
+}
+.viewer-item__key__value {
+    width: 150px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.viewer-item__key__type {
+    width: 150px;
+    text-align: left;
+    padding-left: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.viewer-item__key__tags {
+    width: 150px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.viewer-item__key__update {
+    width: 240px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.viewer-item__key__actions {
+    width: 100px;
+    text-align: center;
+}
+.json-viewer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 10px 2px 24px;
+}
+.json-viewer-header-cell {
+    padding: 4px 0;
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 500;
+    font-size: 12px;
+}
+.tree-root {
+    padding: 0 !important;
+}
+.viewer-item__key__type.json-viewer-header-cell {
+    padding-left: 4px;
+}
+.custom-pagination .v-pagination__navigation {
+    height: 18px;
+    width: 18px;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+.custom-pagination .v-pagination__navigation .v-icon {
+    font-size: 18px;
+}
+.custom-pagination .v-pagination__item {
+    height: 20px;
+    width: 20px;
+    font-size: 12px;
+    margin: 2px;
+}
+.custom-pagination-hide-inactive .v-pagination__item:not(.v-pagination__item--active) {
+    display: none;
+}
+.custom-pagination-hide-inactive .v-pagination__item--active.primary {
+    color: #000;
+    background-color: #fff !important;
+    border-color: initial !important;
+}

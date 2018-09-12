@@ -15,9 +15,7 @@
                   <div class="ellipsis">{{ props.item.size }} kB</div>
                </td>
                <td class="justify-center layout px-0 button-sm">
-                  <v-btn icon class="mx-0 " @click="restore(props.item)">
-                     <v-icon color="pink" small>fa-upload</v-icon>
-                  </v-btn>
+                  <button-restore @click.native="restore(props.item)"></button-restore>
                </td>
             </template>
 
@@ -47,9 +45,14 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import snackbar from "./components/snackbar.vue";
+import buttonRestore from "./components/buttons/button-restore.vue";
 Vue.component("snackbar", snackbar);
 
 export default {
+    components: {
+        buttonRestore,
+
+    },
   data: () => ({
     search: "",
     time_format_rel: true,
@@ -139,21 +142,4 @@ export default {
   }
 };
 </script>
-
-<style>
-table.v-table tbody td:first-child,
-table.v-table tbody td:not(:first-child),
-table.v-table tbody th:first-child,
-table.v-table tbody th:not(:first-child),
-table.v-table thead td:first-child,
-table.v-table thead td:not(:first-child),
-table.v-table thead th:first-child,
-table.v-table thead th:not(:first-child) {
-  padding: 0 10px;
-}
-</style>
-
-
-<style scoped>
-</style>
 

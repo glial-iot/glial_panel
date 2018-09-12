@@ -131,7 +131,7 @@ export default {
         text: "Info",
         align: "center",
         sortable: false,
-        width: "3%"
+        width: "5%"
       },
       {
         text: "Level",
@@ -460,48 +460,6 @@ export default {
 };
 </script>
 
-<style>
-.custom-pagination .v-pagination__navigation {
-  height: 18px;
-  width: 18px;
-  margin-right: 4px;
-  margin-left: 4px;
-}
-
-.custom-pagination .v-pagination__navigation .v-icon {
-  font-size: 18px;
-}
-
-.custom-pagination .v-pagination__item {
-  height: 20px;
-  width: 20px;
-  font-size: 12px;
-  margin: 2px;
-}
-
-.custom-pagination-hide-inactive
-  .v-pagination__item:not(.v-pagination__item--active) {
-  display: none;
-}
-
-.custom-pagination-hide-inactive .v-pagination__item--active.primary {
-  color: #000;
-  background-color: #fff !important;
-  border-color: initial !important;
-}
-
-table.v-table tbody td:first-child,
-table.v-table tbody td:not(:first-child),
-table.v-table tbody th:first-child,
-table.v-table tbody th:not(:first-child),
-table.v-table thead td:first-child,
-table.v-table thead td:not(:first-child),
-table.v-table thead th:first-child,
-table.v-table thead th:not(:first-child) {
-  padding: 0 0px;
-}
-</style>
-
 <style scoped>
 .custom-pagination {
   position: absolute;
@@ -528,6 +486,14 @@ table.v-table tbody td {
 table.v-table tbody td,
 table.v-table tbody th {
   height: 20px !important;
+}
+
+th:first-child, td:first-child {
+   padding: 0;
+}
+
+button.icon-btn, button.icon-btn:before {
+   height:20px;
 }
 
 .pagination-block {
