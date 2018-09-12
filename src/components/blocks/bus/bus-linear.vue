@@ -88,7 +88,7 @@ export default {
           text: "Type",
           value: "type",
           sortable: false,
-          align: "center",
+          align: "left",
           width: "10%"
         },
         {
