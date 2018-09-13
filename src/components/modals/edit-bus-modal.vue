@@ -89,6 +89,12 @@ export default {
     hide() {
       this.visible = false;
       this.item = {};
+      this.type = "";
+      this.tags = "";
+      this.value = "";
+      this.edit_type = false;
+      this.edit_tags = false;
+      this.edit_value = false;
     },
     edit(field) {
       switch (field) {
