@@ -123,6 +123,15 @@ export default {
     },
     hide() {
       this.visible = false;
+      this.visible = false;
+      this.name = "";
+      this.status = "";
+      this.status_msg = "";
+      this.type = "";
+      this.uuid = "";
+      this.active_flag = "";
+      this.object = "";
+      this.logs = [];
     },
     update_name(value) {
       this.name = value;

@@ -41,6 +41,9 @@ export default {
     },
     hide() {
       this.visible = false;
+      this.object = "";
+      this.uuid = "";
+      this.type = "";
     },
     submit() {
       Vue.axios

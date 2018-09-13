@@ -40,6 +40,9 @@ export default {
       this.visible = true;
     },
     hide() {
+      this.name = "";
+      this.uuid = "";
+      this.type = "";
       this.visible = false;
     },
     submit() {

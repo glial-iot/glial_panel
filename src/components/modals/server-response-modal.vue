@@ -27,6 +27,7 @@ export default {
     },
     hide() {
       this.visible = false;
+      this.message = "";
     }
   }
 };
