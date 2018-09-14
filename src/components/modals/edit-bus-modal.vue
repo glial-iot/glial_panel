@@ -190,7 +190,6 @@ export default {
       if (text) {
         return text;
       }
-
       return "(Empty)";
     },
     line_to_json(line) {
