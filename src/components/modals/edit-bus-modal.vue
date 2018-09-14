@@ -142,7 +142,7 @@ export default {
         case "tags":
           params = {
             action: "update_tags",
-            tags: this.tags,
+            tags: this.line_to_json(this.tags),
             topic: this.item.topic
           };
           break;
@@ -192,6 +192,16 @@ export default {
       }
 
       return "(Empty)";
+    },
+    line_to_json(line) {
+      let temp = new Array();
+      temp = line.split(",");
+      temp.forEach(function(item, i, arr) {
+        arr[i] = item.trim();
+      });
+      let json = JSON.stringify(temp);
+      //let uri_json = encodeURI(json);
+      return json;
     }
   }
 };
