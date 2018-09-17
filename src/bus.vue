@@ -104,9 +104,8 @@ export default {
         this.$timer.stop("table_update");
         this.timers.table_update.time = interval;
         this.$timer.start("table_update");
-      }
-      else {
-          this.$timer.stop("table_update");
+      } else {
+        this.$timer.stop("table_update");
       }
     },
     bus_type() {
@@ -117,12 +116,12 @@ export default {
   timers: {
     table_update: {
       autostart: true,
-      repeat:true,
+      repeat: true,
       time: 2000
     }
   },
   mounted: function() {
-        this.table_update();
+    this.table_update();
   },
   methods: {
     tsdb_set(item) {
@@ -180,6 +179,14 @@ export default {
           } else {
             this.bus_values = this.set_update_attr(response.data);
           }
+          this.bus_values.forEach(function(item, i, arr) {
+            let text = "";
+            item.tags.forEach(function(item, i, arr) {
+              if (arr.length == i + 1) text = text + item;
+              else text = item + ", " + text;
+            });
+            item.tags = text;
+          });
           //console.log(this.bus_values);
           this.loaded = true;
           this.$refs.snackbar.update("");
@@ -209,11 +216,11 @@ export default {
 </script>
 
 <style scoped>
-  .tree-button {
-    min-width: auto;
-  }
+.tree-button {
+  min-width: auto;
+}
 
-  .tree-button + .tree-button {
-    margin-left: 0px;
-  }
+.tree-button + .tree-button {
+  margin-left: 0px;
+}
 </style>

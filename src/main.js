@@ -179,7 +179,8 @@ const store = new Vuex.Store({
 Vue.filter("toRelativeTime", function (time) {
    let difference, weeks, days, hours, minutes, seconds, weeksTxt, daysTxt, hoursTxt, minutesTxt, secondsTxt;
 
-   difference = Date.now() / 1000 - time;
+   time = Date.now() / 1000 - time
+   difference = time;
    weeks = Math.floor(difference / 604800);
    difference = difference % 604800;
    days = Math.floor(difference / 86400);
@@ -195,16 +196,16 @@ Vue.filter("toRelativeTime", function (time) {
    if (minutes === 1) { minutesTxt = 'minute' } else { minutesTxt = 'minutes' }
    if (seconds === 1) { secondsTxt = 'second' } else { secondsTxt = 'seconds' }
 
-   if (difference >= 604800) {
+   if (time >= 604800) {
       return weeks + ' ' + weeksTxt + ' ago';
    }
-   else if (difference >= 86400) {
+   else if (time >= 86400) {
       return days + ' ' + daysTxt + ', ' + hours + ' ' + hoursTxt + ' ago';
    }
-   else if (difference >= 3600) {
+   else if (time >= 3600) {
       return hours + ' ' + hoursTxt + ', ' + minutes + ' ' + minutesTxt + ' ago';
    }
-   else if (difference >= 60) {
+   else if (time >= 60) {
       return minutes + ' ' + minutesTxt + ' ago';
    }
    else {
