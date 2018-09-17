@@ -73,7 +73,6 @@
                      <td class="text-xs-left">
                         <div class="ellipsis mw-100" :title="props.item.entry">{{ props.item.entry }}</div>
                      </td>
-
                   </tr>
                </template>
             </v-data-table>
@@ -87,6 +86,7 @@
       <editor-help-modal ref="help"></editor-help-modal>
       <rename-script-modal ref="rename" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
+      <confirm-leave-modal ref="confirm_leave"></confirm-leave-modal>
       <logrowdetails ref="logrowdetails"></logrowdetails>
 
    </div>
@@ -104,6 +104,7 @@ import { mapState } from "vuex";
 
 import snackbar from "../components/snackbar.vue";
 import editorHelpModal from "../components/modals/editor-help-modal.vue";
+import confirmLeaveModal from "../components/modals/confirm-leave.vue";
 import renameScriptModal from "../components/modals/rename-script-modal.vue";
 import changeObjectModal from "../components/modals/change-object-modal.vue";
 import logrowdetails from "../components/logrowdetails.vue";
@@ -162,6 +163,7 @@ export default {
     editorHelpModal,
     renameScriptModal,
     changeObjectModal,
+    confirmLeaveModal,
     buttonInfo,
     logrowdetails
   },
@@ -213,15 +215,20 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (!this.saved) {
-      const result = window.confirm(
-        "Do you really want to leave? You have unsaved changes!"
-      );
-      if (!result) {
-        next(false);
-        return;
-      }
+        this.$refs.confirm_leave.dialog().then((result) => {
+            if (result === 'save') {
+                this.save_script();
+                setTimeout(() => { next();}, 1000);
+            }
+            else if (result === 'discard') {
+                next();
+            }
+            else {next(false)}
+        });
     }
-    next();
+    else{
+        next();
+    }
   },
   methods: {
     pages() {
