@@ -252,13 +252,17 @@ export default {
         let to_set_flag = '';
         current_flag === "ACTIVE" ? to_set_flag = "NON_ACTIVE" : to_set_flag = "ACTIVE";
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "update",
-            uuid: table_item.uuid,
-            active_flag: to_set_flag
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "update",
+              uuid: table_item.uuid,
+              active_flag: to_set_flag
+            }
           }
-        })
+        )
         .then(response => {
           this.table_update();
           this.$refs.snackbar.update("");

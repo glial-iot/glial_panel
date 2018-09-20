@@ -47,13 +47,17 @@ export default {
     },
     submit() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "update",
-            uuid: this.uuid,
-            name: this.name
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "update",
+              uuid: this.uuid,
+              name: this.name
+            }
           }
-        })
+        )
         .then(response => {
           this.hide();
           if (this.hideDetails) {

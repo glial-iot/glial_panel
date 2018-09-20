@@ -263,7 +263,10 @@ export default {
       reader.onload = () => {
         Vue.axios
           .post(
-            this.$store.getters.server_url + "/scripts_body?uuid=" + this.uuid,
+            this.$store.getters.server_url +
+              this.$store.state.endpoints[this.type] +
+              "?action=update_body&uuid=" +
+              this.uuid,
             reader.result
           )
           .then(response => {
@@ -312,7 +315,10 @@ export default {
       reader.onload = () => {
         Vue.axios
           .post(
-            this.$store.getters.server_url + "/scripts_body?uuid=" + this.uuid,
+            this.$store.getters.server_url +
+              this.$store.state.endpoints[this.type] +
+              "?action=update_body&uuid=" +
+              this.uuid,
             reader.result
           )
           .then(response => {
@@ -350,13 +356,17 @@ export default {
     },
     script_active_change(flag) {
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "update",
-            uuid: this.uuid,
-            active_flag: flag
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "update",
+              uuid: this.uuid,
+              active_flag: flag
+            }
           }
-        })
+        )
         .then(response => {
           console.log(response);
           this.active_flag = flag;

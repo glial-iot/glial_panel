@@ -47,13 +47,17 @@ export default {
     },
     submit() {
       Vue.axios
-        .get(this.$store.getters.server_url + "/scripts", {
-          params: {
-            action: "update",
-            uuid: this.uuid,
-            object: this.object
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "update",
+              uuid: this.uuid,
+              object: this.object
+            }
           }
-        })
+        )
         .then(response => {
           if (this.updateObject && response.data.object) {
             this.updateObject(response.data.object);
