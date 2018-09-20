@@ -215,19 +215,20 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (!this.saved) {
-        this.$refs.confirm_leave.dialog().then((result) => {
-            if (result === 'save') {
-                this.save_script();
-                setTimeout(() => { next();}, 1000);
-            }
-            else if (result === 'discard') {
-                next();
-            }
-            else {next(false)}
-        });
-    }
-    else{
-        next();
+      this.$refs.confirm_leave.dialog().then(result => {
+        if (result === "save") {
+          this.save_script();
+          setTimeout(() => {
+            next();
+          }, 1000);
+        } else if (result === "discard") {
+          next();
+        } else {
+          next(false);
+        }
+      });
+    } else {
+      next();
     }
   },
   methods: {
@@ -505,12 +506,14 @@ table.v-table tbody th {
   height: 20px !important;
 }
 
-th:first-child, td:first-child {
-   padding: 0;
+th:first-child,
+td:first-child {
+  padding: 0;
 }
 
-button.icon-btn, button.icon-btn:before {
-   height:20px;
+button.icon-btn,
+button.icon-btn:before {
+  height: 20px;
 }
 
 .pagination-block {

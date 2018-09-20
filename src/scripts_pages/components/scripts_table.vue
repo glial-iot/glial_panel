@@ -249,8 +249,10 @@ export default {
         });
     },
     script_active_change(table_item, current_flag) {
-        let to_set_flag = '';
-        current_flag === "ACTIVE" ? to_set_flag = "NON_ACTIVE" : to_set_flag = "ACTIVE";
+      let to_set_flag = "";
+      current_flag === "ACTIVE"
+        ? (to_set_flag = "NON_ACTIVE")
+        : (to_set_flag = "ACTIVE");
       Vue.axios
         .get(
           this.$store.getters.server_url +
