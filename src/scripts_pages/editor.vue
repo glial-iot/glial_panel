@@ -26,9 +26,6 @@
                <v-btn :small="true" @click.native="save_script" title="Save script">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
-               <v-btn :small="true" @click.native="save_and_restart" title="Save script and restart">
-                  <v-icon left small>fa-sync</v-icon> Save and restart
-               </v-btn>
                <v-btn :small="true" @click.native="toggle_logs_visible" title="Show/hide logs window">
                   <v-icon left small>fa-file-alt</v-icon>{{logs_visible ? "Hide Logs" : "Show Logs"}}
                </v-btn>
@@ -307,54 +304,6 @@ export default {
           this.$refs.snackbar.update("Load script: network error");
         });
     },
-    save_and_restart: function() {
-      let data = new Blob([this.prev_content], {
-        type: "text/plain"
-      });
-      let reader = new FileReader();
-      reader.readAsDataURL(data);
-      reader.onload = () => {
-        Vue.axios
-          .post(
-            this.$store.getters.server_url +
-              this.$store.state.endpoints[this.type] +
-              "?action=update_body&uuid=" +
-              this.uuid,
-            reader.result
-          )
-          .then(response => {
-            this.$refs.snackbar.update("Script saved", "success", 3000);
-            this.saved = true;
-            this.restart_script();
-          })
-          .catch(error => {
-            this.$refs.snackbar.update("Script not saved");
-            console.log(error);
-          });
-      };
-    },
-    restart_script: function() {
-      this.$store.commit("logs_visible", true);
-
-      Vue.axios
-        .get(
-          this.$store.getters.server_url +
-            this.$store.state.endpoints[this.type],
-          {
-            params: {
-              action: "reload",
-              uuid: this.uuid
-            }
-          }
-        )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Reload script error");
-        });
-    },
     script_active_change(flag) {
       Vue.axios
         .get(
@@ -372,7 +321,6 @@ export default {
           console.log(response);
           this.active_flag = flag;
           this.$refs.snackbar.update("Script is " + flag, "success", 1500);
-          this.restart_script();
         })
         .catch(error => {
           console.log(error);

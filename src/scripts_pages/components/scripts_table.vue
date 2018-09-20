@@ -268,7 +268,6 @@ export default {
         .then(response => {
           this.table_update();
           this.$refs.snackbar.update("");
-          this.script_restart(table_item);
         })
         .catch(error => {
           console.log(error);
