@@ -23,17 +23,16 @@
             </v-card-text>
             <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
                <code class="cron-code font-weight-thin">
-   * * * * * * *
-   │ │ │ │ │ │ │
-   │ │ │ │ │ │ └── Year
-   │ │ │ │ │ └──── Day of the Week (SUN-SAT or 0-6 or "*")
-   │ │ │ │ └────── Month of the Year (JAN-DEC or 1-12 or "*")
-   │ │ │ └──────── Day of the Month (0-30 or "*")
-   │ │ └────────── Hour (0-24 or "*")
-   │ └──────────── Minute (0-59 or "*")
-   └────────────── Second (0-59)
+   * * * * * *
+   │ │ │ │ │ │
+   │ │ │ │ │ └── Day of the Week (SUN-SAT or 0-6 or "*")
+   │ │ │ │ └──── Month of the Year (JAN-DEC or 1-12 or "*")
+   │ │ │ └────── Day of the Month (0-30 or "*")
+   │ │ └──────── Hour (0-24 or "*")
+   │ └────────── Minute (0-59 or "*")
+   └──────────── Second (0-59)
                </code><br>
-               <span>Shedule in a unix-like <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron format</a> with seconds.<br>You can also use @monthly, @weekly, @daily, @hourly.</span>
+               <span>Shedule in a unix-like <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron format</a> with seconds.</span>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
