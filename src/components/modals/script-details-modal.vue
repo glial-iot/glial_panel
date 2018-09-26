@@ -7,6 +7,9 @@
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
                <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object, type)">Change Object</v-btn>
+               <v-btn color="primary" flat v-if="type === 'BUS_EVENT'" @click="run_script()">
+                  <v-icon left>fa-rocket</v-icon> Run Once
+               </v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -151,6 +154,25 @@ export default {
 
             });
     },
+      run_script() {
+          Vue.axios
+              .get(this.$store.getters.server_url +
+                  this.$store.state.endpoints[this.type],
+                  {
+                      params: {
+                          action: "run_once",
+                          uuid: this.uuid
+                      }
+                  })
+              .then(response => {
+                  if (response.data.error_msg) {
+                      throw new Error(response.data.error_msg);
+                  }
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+      },
     hide() {
       this.visible = false;
       this.visible = false;
