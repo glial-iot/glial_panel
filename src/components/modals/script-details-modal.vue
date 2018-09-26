@@ -23,7 +23,7 @@
                   <template slot="items" slot-scope="props">
                      <tr>
                         <td class="justify-center text-xs-center cell-flex">
-                           <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                           <button-info :item="props" @click.native="$refs.logdetailsmodal.show(props.item)"></button-info>
                         </td>
                         <td class="text-xs-center">
                            <div class="ellipsis">{{ props.item.level }}</div>
@@ -46,7 +46,7 @@
       </v-dialog>
       <rename-script-modal ref="rename_script" :hideDetails="hide" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
-      <logrowdetails ref="logrowdetails"></logrowdetails>
+      <logdetailsmodal ref="logdetailsmodal"></logdetailsmodal>
    </div>
 </template>
 
@@ -60,14 +60,14 @@ Vue.use(VueAxios, Axios, VueTimers);
 import renameScriptModal from "./rename-script-modal.vue";
 import changeObjectModal from "./change-object-modal.vue";
 import buttonInfo from "../buttons/button-info.vue";
-import logrowdetails from "../logrowdetails.vue";
+import logdetailsmodal from "./show-log-details-modal.vue";
 
 export default {
   components: {
     renameScriptModal,
     changeObjectModal,
     buttonInfo,
-    logrowdetails
+    logdetailsmodal
   },
   data: () => ({
     visible: false,
