@@ -175,7 +175,6 @@ export default {
       },
     hide() {
       this.visible = false;
-      this.visible = false;
       this.name = "";
       this.status = "";
       this.status_msg = "";
@@ -184,6 +183,7 @@ export default {
       this.active_flag = "";
       this.object = "";
       this.logs = [];
+      this.$timer.stop('get_script_data');
     },
     update_name(value) {
       this.name = value;
@@ -191,6 +191,13 @@ export default {
     update_object(value) {
       this.object = value;
     }
-  }
+  },
+    watch: {
+        visible: function (val) {
+            if (val === false) {
+                this.$timer.stop('get_script_data');
+            }
+        }
+    }
 };
 </script>
