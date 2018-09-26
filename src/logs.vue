@@ -48,7 +48,7 @@
                      <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
                   </td>
                   <td class="justify-center text-xs-center cell-flex">
-                     <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                     <button-info :item="props" @click.native="$refs.logdetailsmodal.show(props.item)"></button-info>
                   </td>
                </tr>
             </template>
@@ -61,7 +61,7 @@
       </v-card>
       <snackbar ref="snackbar_error"></snackbar>
       <snackbar ref="snackbar_msg"></snackbar>
-      <logrowdetails ref="logrowdetails"></logrowdetails>
+      <logdetailsmodal ref="logdetailsmodal"></logdetailsmodal>
    </div>
 </template>
 
@@ -75,13 +75,13 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 
 import snackbar from "./components/snackbar.vue";
-import logrowdetails from "./components/logrowdetails.vue";
+import logdetailsmodal from "./components/modals/show-log-details-modal.vue";
 import buttonInfo from "./components/buttons/button-info.vue";
 
 export default {
   components: {
     snackbar,
-    logrowdetails,
+    logdetailsmodal,
     buttonInfo
   },
   data: () => ({

@@ -59,7 +59,7 @@
                <template slot="items" slot-scope="props">
                   <tr>
                      <td class="justify-center text-xs-center cell-flex">
-                        <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                        <button-info :item="props" @click.native="$refs.logdetailsmodal.show(props.item)"></button-info>
                      </td>
                      <td class="text-xs-left">
                         <div class="ellipsis">{{ props.item.level }}</div>
@@ -84,7 +84,7 @@
       <rename-script-modal ref="rename" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
       <confirm-leave-modal ref="confirm_leave"></confirm-leave-modal>
-      <logrowdetails ref="logrowdetails"></logrowdetails>
+      <logdetailsmodal ref="logdetailsmodal"></logdetailsmodal>
 
    </div>
 </template>
@@ -104,7 +104,7 @@ import editorHelpModal from "../components/modals/editor-help-modal.vue";
 import confirmLeaveModal from "../components/modals/confirm-leave.vue";
 import renameScriptModal from "../components/modals/rename-script-modal.vue";
 import changeObjectModal from "../components/modals/change-object-modal.vue";
-import logrowdetails from "../components/logrowdetails.vue";
+import logdetailsmodal from "../components/modals/show-log-details-modal.vue";
 import buttonInfo from "../components/buttons/button-info.vue";
 import editor from "../brace/index.js";
 import "brace/mode/lua";
@@ -162,7 +162,7 @@ export default {
     changeObjectModal,
     confirmLeaveModal,
     buttonInfo,
-    logrowdetails
+    logdetailsmodal
   },
   timers: {
     get_logs: {
