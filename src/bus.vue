@@ -146,15 +146,6 @@ export default {
           } else {
             this.bus_values = this.set_update_attr(response.data);
           }
-          this.bus_values.forEach(function(item, i, arr) {
-            let text = "";
-            item.tags.forEach(function(item, i, arr) {
-              if (arr.length == i + 1) text = text + item;
-              else text = item + ", " + text;
-            });
-            item.tags = text;
-          });
-          //console.log(this.bus_values);
           this.loaded = true;
           this.$refs.snackbar.update("");
         })
