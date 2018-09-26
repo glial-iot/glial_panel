@@ -24,7 +24,7 @@
                   <v-icon color="red" left small>fa-stop-circle</v-icon> Deactivate
                </v-btn>
                <v-btn v-if="type === 'BUS_EVENT'" :small="true" @click.native="run_script" title="Run once">
-                  <v-icon left small>fa-rocket</v-icon> Run once
+                  <v-icon left small>fa-rocket</v-icon> Run
                </v-btn>
                <v-btn :small="true" @click.native="save_script" title="Save script">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save

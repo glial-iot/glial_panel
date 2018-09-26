@@ -7,9 +7,7 @@
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
                <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object, type)">Change Object</v-btn>
-               <v-btn color="primary" flat v-if="type === 'BUS_EVENT'" @click="run_script()">
-                  <v-icon left>fa-rocket</v-icon> Run Once
-               </v-btn>
+               <v-btn color="primary" flat v-if="type === 'BUS_EVENT'" @click="run_script()">Run</v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
