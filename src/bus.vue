@@ -26,17 +26,9 @@
                   <v-btn flat :value="BUS_TYPE_LINEAR">Linear View</v-btn>
                </v-btn-toggle>
             </div>
-            <div>
-               <v-btn value="selected" @click="tsdb_set(all_tsdb)">
-                  <v-icon color="green" left>fa-download</v-icon> All TSDB
-               </v-btn>
-               <v-btn value="selected" @click="tsdb_set(none_tsdb)">
-                  <v-icon color="grey" left>fa-download</v-icon> None TSDB
-               </v-btn>
-            </div>
          </v-card-title>
-         <bus-tree ref="bus_tree" v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set"></bus-tree>
-         <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :tsdbSet="tsdb_set" :loaded="loaded"></bus-linear>
+         <bus-tree ref="bus_tree" v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete"></bus-tree>
+         <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :loaded="loaded"></bus-linear>
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <edit-bus-modal ref="edit_bus"></edit-bus-modal>
@@ -59,8 +51,6 @@ import busTree from "./components/blocks/bus/bus-tree.vue";
 import busLinear from "./components/blocks/bus/bus-linear.vue";
 import editBusModal from "./components/modals/edit-bus-modal.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
-import buttonDownload from "./components/buttons/button-download.vue";
-import buttonDownloadDisabled from "./components/buttons/button-download-disabled.vue";
 import buttonInfo from "./components/buttons/button-info.vue";
 
 export default {
@@ -70,8 +60,6 @@ export default {
     busLinear,
     editBusModal,
     buttonTrash,
-    buttonDownload,
-    buttonDownloadDisabled,
     buttonInfo
   },
   data: () => ({
@@ -79,8 +67,6 @@ export default {
     BUS_TYPE_TREE,
     update_interval: "2000",
     bus_values: [],
-    all_tsdb: { topic: "*", tsdb: false },
-    none_tsdb: { topic: "*", tsdb: true },
     loaded: false
   }),
   computed: {
@@ -124,25 +110,6 @@ export default {
     this.table_update();
   },
   methods: {
-    tsdb_set(item) {
-      console.log(item);
-      Vue.axios
-        .get(this.$store.getters.server_url + "/system_bus", {
-          params: {
-            action: "update_tsdb_attribute",
-            topic: item.topic,
-            value: !item.tsdb
-          }
-        })
-        .then(response => {
-          if (item.topic !== "*") item.tsdb = !item.tsdb;
-          this.$refs.snackbar.update("");
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Set TSDB attribute: network error");
-        });
-    },
     topic_delete(item) {
       Vue.axios
         .get(this.$store.getters.server_url + "/system_bus", {

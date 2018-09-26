@@ -21,8 +21,6 @@
                <td class="justify-center text-xs-center cell-flex">
                   <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
                   <button-trash @click.native="topicDelete(props.item)"></button-trash>
-                  <button-download v-show="props.item.tsdb" @click.native="tsdbSet(props.item)"></button-download>
-                  <button-download-disabled v-show="!props.item.tsdb" @click.native="tsdbSet(props.item)"></button-download-disabled>
                </td>
             </tr>
          </template>
@@ -42,8 +40,6 @@ import Vue from "vue";
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
-import buttonDownload from "../../buttons/button-download.vue";
-import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
 
 Vue.use(require("vue-moment"));
@@ -52,11 +48,9 @@ export default {
   components: {
     editBusModal,
     buttonTrash,
-    buttonDownload,
-    buttonDownloadDisabled,
     buttonInfo
   },
-  props: ["items", "topicDelete", "tsdbSet", "loaded"],
+  props: ["items", "topicDelete", "loaded"],
   methods: {
     get_time(time) {
       let time_unix_now = Date.now() / 1000;

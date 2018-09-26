@@ -36,7 +36,6 @@
             </v-layout>
          </v-form>
       </v-card>
-      <export-block></export-block>
       <v-card class="mt-3">
          <v-card-title>
             <v-icon>fa-cogs</v-icon>
@@ -86,7 +85,6 @@ import serverResponseModal from "./components/modals/server-response-modal.vue";
 import confirmModal from "./components/modals/confirm-modal.vue";
 import resetBusModal from "./components/modals/reset-bus-confirm-modal.vue";
 import backups from "./backups.vue";
-import exportBlock from "./components/blocks/manage/export.vue";
 
 export default {
   components: {
@@ -94,8 +92,7 @@ export default {
     serverResponseModal,
     confirmModal,
     resetBusModal,
-    backups,
-    exportBlock
+    backups
   },
   data() {
     return {

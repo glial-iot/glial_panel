@@ -37,8 +37,7 @@
                         <div class="viewer-item__key__actions">
                            <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                            <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
-                           <button-download v-show="node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download>
-                           <button-download-disabled v-show="!node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download-disabled>
+
                         </div>
                      </div>
                   </template>
@@ -53,8 +52,6 @@
                      <div class="viewer-item__key__actions">
                         <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
-                        <button-download v-show="node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download>
-                        <button-download-disabled v-show="!node.data.objectKey.tsdb" @click.native="tsdbSet(node.data.objectKey)"></button-download-disabled>
                      </div>
                   </div>
                </div>
@@ -77,8 +74,6 @@ import moment from "moment";
 
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
-import buttonDownload from "../../buttons/button-download.vue";
-import buttonDownloadDisabled from "../../buttons/button-download-disabled.vue";
 import buttonInfo from "../../buttons/button-info.vue";
 
 const DATA_KEY = "__data__";
@@ -88,11 +83,9 @@ export default {
     tree: LiquorTree,
     editBusModal,
     buttonTrash,
-    buttonDownload,
-    buttonDownloadDisabled,
     buttonInfo
   },
-  props: ["json", "topicDelete", "tsdbSet"],
+  props: ["json", "topicDelete"],
   data() {
     return {
       treeData: this.parser(this.json),
@@ -181,23 +174,23 @@ export default {
       return count.reduce((a, b) => a + b, 0);
     },
     countDataElements(obj) {
-      let count = []
+      let count = [];
 
       function getCount(data, level) {
         level = level || 0;
         count[level] = count[level] || 0;
         for (var k in data) {
-            if (k === DATA_KEY && data.hasOwnProperty(k)) {
-              count[level]++;
-            }
+          if (k === DATA_KEY && data.hasOwnProperty(k)) {
+            count[level]++;
+          }
 
-            typeof data[k] === 'object' && getCount(data[k], level + 1);
+          typeof data[k] === "object" && getCount(data[k], level + 1);
         }
       }
 
-      getCount(obj)
+      getCount(obj);
 
-      return count.reduce((a, b) => a + b, 0)
+      return count.reduce((a, b) => a + b, 0);
     },
     isObjectEmpty(obj) {
       return Object.keys(obj).length === 0;
