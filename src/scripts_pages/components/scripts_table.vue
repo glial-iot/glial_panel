@@ -276,10 +276,6 @@ export default {
     },
 
     table_update() {
-      console.log(
-        this.$store.getters.server_url,
-        this.$store.state.endpoints[this.type]
-      );
       Vue.axios
         .get(
           this.$store.getters.server_url +

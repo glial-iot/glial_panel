@@ -7,6 +7,9 @@
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
                <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object, type)">Change Object</v-btn>
+               <v-btn color="primary" flat v-if="type === 'BUS_EVENT'" @click="run_script()">
+                  <v-icon left>fa-rocket</v-icon> Run Once
+               </v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -21,6 +24,9 @@
                <v-data-table :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
                   <template slot="items" slot-scope="props">
                      <tr>
+                        <td class="justify-center text-xs-center cell-flex">
+                           <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                        </td>
                         <td class="text-xs-center">
                            <div class="ellipsis">{{ props.item.level }}</div>
                         </td>
@@ -42,6 +48,7 @@
       </v-dialog>
       <rename-script-modal ref="rename_script" :hideDetails="hide" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
+      <logrowdetails ref="logrowdetails"></logrowdetails>
    </div>
 </template>
 
@@ -49,15 +56,20 @@
 import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
-Vue.use(VueAxios, Axios);
+import VueTimers from "vue-timers";
+Vue.use(VueAxios, Axios, VueTimers);
 
 import renameScriptModal from "./rename-script-modal.vue";
 import changeObjectModal from "./change-object-modal.vue";
+import buttonInfo from "../buttons/button-info.vue";
+import logrowdetails from "../logrowdetails.vue";
 
 export default {
   components: {
     renameScriptModal,
-    changeObjectModal
+    changeObjectModal,
+    buttonInfo,
+    logrowdetails
   },
   data: () => ({
     visible: false,
@@ -70,6 +82,13 @@ export default {
     object: "",
     logs: [],
     headers: [
+      {
+        text: "Info",
+        value: "info",
+        align: "center",
+        sortable: false,
+        width: "7%"
+      },
       {
         text: "Level",
         value: "level",
@@ -92,17 +111,20 @@ export default {
       }
     ]
   }),
+  timers: {
+      get_script_data: {
+          autostart: false,
+          repeat: true,
+          time: 1000
+      }
+  },
   methods: {
     show(item) {
-      this.name = item.name;
-      this.status = item.status;
-      this.status_msg = item.status_msg;
       this.type = item.type;
       this.uuid = item.uuid;
-      this.active_flag = item.active_flag;
-      this.object = item.object;
       this.visible = true;
-      this.get_logs();
+      this.get_script_data();
+      this.$timer.start('get_script_data');
     },
     get_logs() {
       Vue.axios
@@ -115,14 +137,58 @@ export default {
         })
         .then(response => {
           this.logs = response.data;
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
         });
     },
+    get_script_data() {
+        Vue.axios
+            .get(
+                this.$store.getters.server_url +
+                this.$store.state.endpoints[this.type],
+                {
+                    params: {
+                        action: "get",
+                        uuid: this.uuid
+                    }
+                }
+            )
+            .then(response => {
+                this.active_flag = response.data.active_flag;
+                this.name = response.data.name;
+                this.object = response.data.object;
+                this.type = response.data.type;
+                this.status = response.data.status;
+                this.status_msg = response.data.status_msg;
+                this.active_flag = response.data.active_flag;
+                this.object = response.data.object;
+                this.get_logs();
+            })
+            .catch(error => {
+
+            });
+    },
+      run_script() {
+          Vue.axios
+              .get(this.$store.getters.server_url +
+                  this.$store.state.endpoints[this.type],
+                  {
+                      params: {
+                          action: "run_once",
+                          uuid: this.uuid
+                      }
+                  })
+              .then(response => {
+                  if (response.data.error_msg) {
+                      throw new Error(response.data.error_msg);
+                  }
+              })
+              .catch(error => {
+                  console.log(error);
+              });
+      },
     hide() {
-      this.visible = false;
       this.visible = false;
       this.name = "";
       this.status = "";
@@ -132,6 +198,7 @@ export default {
       this.active_flag = "";
       this.object = "";
       this.logs = [];
+      this.$timer.stop('get_script_data');
     },
     update_name(value) {
       this.name = value;
@@ -139,6 +206,13 @@ export default {
     update_object(value) {
       this.object = value;
     }
-  }
+  },
+    watch: {
+        visible: function (val) {
+            if (val === false) {
+                this.$timer.stop('get_script_data');
+            }
+        }
+    }
 };
 </script>
