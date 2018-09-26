@@ -23,6 +23,9 @@
                <v-btn :small="true" v-show="active_flag == 'ACTIVE'" title="Non-active" @click="script_active_change('NON_ACTIVE')">
                   <v-icon color="red" left small>fa-stop-circle</v-icon> Deactivate
                </v-btn>
+               <v-btn v-if="type === 'BUS_EVENT'" :small="true" @click.native="run_script" title="Run once">
+                  <v-icon left small>fa-rocket</v-icon> Run once
+               </v-btn>
                <v-btn :small="true" @click.native="save_script" title="Save script">
                   <v-icon left small>fa-cloud-upload-alt</v-icon> Save
                </v-btn>
@@ -342,6 +345,26 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    run_script() {
+          Vue.axios
+              .get(this.$store.getters.server_url + "/busevents", {
+                  params: {
+                      action: "run_once",
+                      uuid: this.uuid
+                  }
+              })
+              .then(response => {
+                  if (response.data.error_msg) {
+                      throw new Error(response.data.error_msg);
+                  }
+
+                  this.$refs.snackbar.update("");
+              })
+              .catch(error => {
+                  console.log(error);
+                  this.$refs.snackbar.update("Run script error");
+              });
     },
     editor_height: function() {
       const header_height = document.querySelector("nav.v-toolbar")
