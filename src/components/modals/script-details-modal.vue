@@ -49,7 +49,8 @@
 import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
-Vue.use(VueAxios, Axios);
+import VueTimers from "vue-timers";
+Vue.use(VueAxios, Axios, VueTimers);
 
 import renameScriptModal from "./rename-script-modal.vue";
 import changeObjectModal from "./change-object-modal.vue";
@@ -92,17 +93,20 @@ export default {
       }
     ]
   }),
+  timers: {
+      get_script_data: {
+          autostart: false,
+          repeat: true,
+          time: 1000
+      }
+  },
   methods: {
     show(item) {
-      this.name = item.name;
-      this.status = item.status;
-      this.status_msg = item.status_msg;
       this.type = item.type;
       this.uuid = item.uuid;
-      this.active_flag = item.active_flag;
-      this.object = item.object;
       this.visible = true;
-      this.get_logs();
+      this.get_script_data();
+      this.$timer.start('get_script_data');
     },
     get_logs() {
       Vue.axios
@@ -115,11 +119,37 @@ export default {
         })
         .then(response => {
           this.logs = response.data;
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    get_script_data() {
+        Vue.axios
+            .get(
+                this.$store.getters.server_url +
+                this.$store.state.endpoints[this.type],
+                {
+                    params: {
+                        action: "get",
+                        uuid: this.uuid
+                    }
+                }
+            )
+            .then(response => {
+                this.active_flag = response.data.active_flag;
+                this.name = response.data.name;
+                this.object = response.data.object;
+                this.type = response.data.type;
+                this.status = response.data.status;
+                this.status_msg = response.data.status_msg;
+                this.active_flag = response.data.active_flag;
+                this.object = response.data.object;
+                this.get_logs();
+            })
+            .catch(error => {
+
+            });
     },
     hide() {
       this.visible = false;
