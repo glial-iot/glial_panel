@@ -22,9 +22,9 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-               <v-btn color="primary" flat @click.stop="visible=false">Close</v-btn>
-               <v-btn color="primary" flat v-if="visible_trace === false" @click.stop="visible_trace=true">Show trace</v-btn>
-               <v-btn color="primary" flat v-if="visible_trace === true" @click.stop="visible_trace=false">Hide trace</v-btn>
+               <v-btn color="primary" flat @click.stop="visible = false">Close</v-btn>
+               <v-btn color="primary" flat v-if="visible_trace === false" @click.stop="visible_trace = true">Show trace</v-btn>
+               <v-btn color="primary" flat v-if="visible_trace === true" @click.stop="visible_trace = false">Hide trace</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
