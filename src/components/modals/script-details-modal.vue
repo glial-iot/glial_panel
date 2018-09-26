@@ -110,11 +110,11 @@ export default {
     ]
   }),
   timers: {
-      get_script_data: {
-          autostart: false,
-          repeat: true,
-          time: 1000
-      }
+    get_script_data: {
+      autostart: false,
+      repeat: true,
+      time: 1000
+    }
   },
   methods: {
     show(item) {
@@ -122,7 +122,7 @@ export default {
       this.uuid = item.uuid;
       this.visible = true;
       this.get_script_data();
-      this.$timer.start('get_script_data');
+      this.$timer.start("get_script_data");
     },
     get_logs() {
       Vue.axios
@@ -141,51 +141,51 @@ export default {
         });
     },
     get_script_data() {
-        Vue.axios
-            .get(
-                this.$store.getters.server_url +
-                this.$store.state.endpoints[this.type],
-                {
-                    params: {
-                        action: "get",
-                        uuid: this.uuid
-                    }
-                }
-            )
-            .then(response => {
-                this.active_flag = response.data.active_flag;
-                this.name = response.data.name;
-                this.object = response.data.object;
-                this.type = response.data.type;
-                this.status = response.data.status;
-                this.status_msg = response.data.status_msg;
-                this.active_flag = response.data.active_flag;
-                this.object = response.data.object;
-                this.get_logs();
-            })
-            .catch(error => {
-
-            });
+      Vue.axios
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "get",
+              uuid: this.uuid
+            }
+          }
+        )
+        .then(response => {
+          this.active_flag = response.data.active_flag;
+          this.name = response.data.name;
+          this.object = response.data.object;
+          this.type = response.data.type;
+          this.status = response.data.status;
+          this.status_msg = response.data.status_msg;
+          this.active_flag = response.data.active_flag;
+          this.object = response.data.object;
+          this.get_logs();
+        })
+        .catch(error => {});
     },
-      run_script() {
-          Vue.axios
-              .get(this.$store.getters.server_url +
-                  this.$store.state.endpoints[this.type],
-                  {
-                      params: {
-                          action: "run_once",
-                          uuid: this.uuid
-                      }
-                  })
-              .then(response => {
-                  if (response.data.error_msg) {
-                      throw new Error(response.data.error_msg);
-                  }
-              })
-              .catch(error => {
-                  console.log(error);
-              });
-      },
+    run_script() {
+      Vue.axios
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "run_once",
+              uuid: this.uuid
+            }
+          }
+        )
+        .then(response => {
+          if (response.data.error_msg) {
+            throw new Error(response.data.error_msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     hide() {
       this.visible = false;
       this.name = "";
@@ -196,7 +196,7 @@ export default {
       this.active_flag = "";
       this.object = "";
       this.logs = [];
-      this.$timer.stop('get_script_data');
+      this.$timer.stop("get_script_data");
     },
     update_name(value) {
       this.name = value;
@@ -205,12 +205,12 @@ export default {
       this.object = value;
     }
   },
-    watch: {
-        visible: function (val) {
-            if (val === false) {
-                this.$timer.stop('get_script_data');
-            }
-        }
+  watch: {
+    visible: function(val) {
+      if (val === false) {
+        this.$timer.stop("get_script_data");
+      }
     }
+  }
 };
 </script>

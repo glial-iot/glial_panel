@@ -347,24 +347,24 @@ export default {
         });
     },
     run_script() {
-          Vue.axios
-              .get(this.$store.getters.server_url + "/busevents", {
-                  params: {
-                      action: "run_once",
-                      uuid: this.uuid
-                  }
-              })
-              .then(response => {
-                  if (response.data.error_msg) {
-                      throw new Error(response.data.error_msg);
-                  }
+      Vue.axios
+        .get(this.$store.getters.server_url + "/busevents", {
+          params: {
+            action: "run_once",
+            uuid: this.uuid
+          }
+        })
+        .then(response => {
+          if (response.data.error_msg) {
+            throw new Error(response.data.error_msg);
+          }
 
-                  this.$refs.snackbar.update("");
-              })
-              .catch(error => {
-                  console.log(error);
-                  this.$refs.snackbar.update("Run script error");
-              });
+          this.$refs.snackbar.update("");
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Run script error");
+        });
     },
     editor_height: function() {
       const header_height = document.querySelector("nav.v-toolbar")
