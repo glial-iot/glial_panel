@@ -24,6 +24,9 @@
                <v-data-table :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
                   <template slot="items" slot-scope="props">
                      <tr>
+                        <td class="justify-center text-xs-center cell-flex">
+                           <button-info :item="props" @click.native="$refs.logrowdetails.show(props.item)"></button-info>
+                        </td>
                         <td class="text-xs-center">
                            <div class="ellipsis">{{ props.item.level }}</div>
                         </td>
@@ -45,6 +48,7 @@
       </v-dialog>
       <rename-script-modal ref="rename_script" :hideDetails="hide" :updateName="update_name"></rename-script-modal>
       <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
+      <logrowdetails ref="logrowdetails"></logrowdetails>
    </div>
 </template>
 
@@ -57,11 +61,15 @@ Vue.use(VueAxios, Axios, VueTimers);
 
 import renameScriptModal from "./rename-script-modal.vue";
 import changeObjectModal from "./change-object-modal.vue";
+import buttonInfo from "../buttons/button-info.vue";
+import logrowdetails from "../logrowdetails.vue";
 
 export default {
   components: {
     renameScriptModal,
-    changeObjectModal
+    changeObjectModal,
+    buttonInfo,
+    logrowdetails
   },
   data: () => ({
     visible: false,
@@ -74,6 +82,13 @@ export default {
     object: "",
     logs: [],
     headers: [
+      {
+        text: "Info",
+        value: "info",
+        align: "center",
+        sortable: false,
+        width: "7%"
+      },
       {
         text: "Level",
         value: "level",
