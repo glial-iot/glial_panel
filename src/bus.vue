@@ -133,7 +133,7 @@ export default {
       let action = "get_bus";
 
       if (this.bus_type === BUS_TYPE_TREE) {
-        action = "get_bus_serialized";
+        action = "get_bus_serialized_v2";
       }
 
       Vue.axios
