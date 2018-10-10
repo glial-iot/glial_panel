@@ -127,7 +127,11 @@ export default {
           console.log(response.data.msg);
           if (action === "update") {
             this.$refs.server_response_modal.show(response.data.msg);
-          } else {
+          }
+          else if (action === "tarantool_stop") {
+              this.$refs.snackbar.update("Glue restarted successfuly", "success", 5000);
+          }
+          else {
             this.$refs.snackbar.update(response.data.msg, "success", 5000);
           }
         })
