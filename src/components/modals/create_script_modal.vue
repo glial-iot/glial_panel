@@ -11,7 +11,7 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text class="py-0">
-               <v-text-field autofocus label="Name" v-model="name"></v-text-field>
+               <v-text-field autofocus v-if="dialog_visible" label="Name" v-model="name"></v-text-field>
             </v-card-text>
             <v-card-text v-if="type != 'DRIVER'" class="py-0">
                <v-text-field :label="$options.filters.object_label(type)" v-model="object"></v-text-field>

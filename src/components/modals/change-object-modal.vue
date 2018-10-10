@@ -4,7 +4,7 @@
          <v-card>
             <v-card-title class="headline">Change script {{$options.filters.object_label(type).toLowerCase()}}</v-card-title>
             <v-card-text>
-               <v-text-field v-model="object" :label="`Change ${$options.filters.object_label(type).toLowerCase()}`" required></v-text-field>
+               <v-text-field autofocus v-if="visible" v-model="object" :label="`Change ${$options.filters.object_label(type).toLowerCase()}`" required></v-text-field>
             </v-card-text>
             <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
                <code class="cron-code font-weight-thin">
