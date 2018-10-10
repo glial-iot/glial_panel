@@ -6,7 +6,7 @@
             <v-card-text>
                <v-text-field autofocus v-if="visible" v-model="object" :label="`Change ${$options.filters.object_label(type).toLowerCase()}`" required></v-text-field>
             </v-card-text>
-            <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
+            <v-card-text v-if="type === 'SCHEDULE_EVENT'" class="pt-0">
                <code class="cron-code font-weight-thin">
    * * * * * *
    │ │ │ │ │ └── Day of the Week
@@ -19,7 +19,7 @@
    │ └────────── Minute (0-59 or "*")
    └──────────── Second (0-59)
                </code><br>
-               <span>Shedule in a unix-like <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron format</a> with seconds.</span>
+               <span>Schedule in a unix-like <a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron format</a> with seconds.</span>
             </v-card-text>
             <v-card-actions>
                <v-btn color="error" flat @click="hide()">Cancel</v-btn>

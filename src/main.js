@@ -9,7 +9,7 @@ import editor from './scripts_pages/editor.vue'
 import drivers from './scripts_pages/drivers.vue'
 import event_scripts from './scripts_pages/event_scripts.vue'
 import timer_scripts from './scripts_pages/timer_scripts.vue'
-import shedule_scripts from './scripts_pages/shedule_scripts.vue'
+import schedule_scripts from './scripts_pages/schedule_scripts.vue'
 import web_scripts from './scripts_pages/web_scripts.vue'
 
 import Vuetify from 'vuetify'
@@ -70,8 +70,8 @@ const router = new VueRouter({
       path: '/scripts/timerevent',
       component: timer_scripts
    }, {
-      path: '/scripts/sheduleevent',
-      component: shedule_scripts
+      path: '/scripts/scheduleevent',
+      component: schedule_scripts
    }, {
       path: '/manage',
       component: manage,
@@ -93,7 +93,7 @@ const store = new Vuex.Store({
       logs_visible: Vue.localStorage.get("logs_visible") !== null ? Vue.localStorage.get("logs_visible") === 'true' : true,
       editor_log_size: parseInt(Vue.localStorage.get("editor_log_size", 6)),
       bus_type: Vue.localStorage.get("bus_type", BUS_TYPE_TREE),
-      endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
+      endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SCHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
       server_address(state, address) {
@@ -235,8 +235,8 @@ Vue.filter("type2string", function (type) {
    if (type === "TIMER_EVENT") {
       return "Timer-event script";
    }
-   if (type === "SHEDULE_EVENT") {
-      return "Shedule-event script";
+   if (type === "SCHEDULE_EVENT") {
+      return "Schedule-event script";
    }
 })
 
@@ -248,8 +248,8 @@ Vue.filter("object_label", function (type) {
          return "Mask"
       case "TIMER_EVENT":
          return "Period"
-      case "SHEDULE_EVENT":
-         return "Shedule"
+      case "SCHEDULE_EVENT":
+         return "Schedule"
       default:
          return ''
    }
