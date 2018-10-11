@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog v-model="visible" max-width="900px">
+      <v-dialog v-on:keydown.esc="hide()" tabindex="0" v-model="visible" max-width="900px">
          <v-card>
             <v-card-title>
                <div class="title text-xs-center">{{$options.filters.type2string(type)}} "{{name}}"</div>

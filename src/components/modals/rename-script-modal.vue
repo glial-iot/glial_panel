@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog :value="visible" persistent max-width="290">
+      <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="290">
          <v-card>
             <v-card-title class="headline">Rename script</v-card-title>
             <v-card-text>

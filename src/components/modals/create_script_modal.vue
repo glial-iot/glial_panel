@@ -4,7 +4,7 @@
          <v-icon left small>fa-file</v-icon> Create {{$options.filters.type2string(type)}}
       </v-btn>
 
-      <v-dialog v-model="dialog_visible" max-width="500px">
+      <v-dialog v-on:keydown.esc="close()" v-on:keydown.enter="create_script()" v-model="dialog_visible" max-width="500px">
          <v-card>
             <v-card-title>
                <div class="title text-xs-center">Create new {{$options.filters.type2string(type).toLowerCase()}}</div>

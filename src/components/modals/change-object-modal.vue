@@ -1,6 +1,6 @@
 <template lang="html">
    <div>
-      <v-dialog :value="visible" persistent max-width="310">
+      <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="310">
          <v-card>
             <v-card-title class="headline">Change script {{$options.filters.object_label(type).toLowerCase()}}</v-card-title>
             <v-card-text>

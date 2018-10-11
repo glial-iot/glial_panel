@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog :value="visible" persistent max-width="500">
+      <v-dialog v-on:keydown.esc="hide()" :value="visible" persistent max-width="500">
          <v-card>
             <v-card-title class="headline">Edit Bus Topic</v-card-title>
             <v-divider></v-divider>
@@ -21,7 +21,7 @@
                   <v-btn small color="green darken-1" flat @click="edit('type')">Edit</v-btn>
                </div>
                <div class="subheading edit-form" v-show="edit_type">
-                  <v-text-field ref="edit_type_field" v-model="type"></v-text-field>
+                  <v-text-field ref="edit_type_field" v-model="type" v-on:keyup.enter="save('type')"></v-text-field>
                   <v-btn small color="green darken-1" flat @click="save('type')">Save</v-btn>
                   <v-btn small color="red darken-1" flat @click="cancel_edit('type')">Cancel</v-btn>
                </div>
@@ -34,7 +34,7 @@
                   <v-btn small color="green darken-1" flat @click="edit('tags')">Edit</v-btn>
                </div>
                <div class="subheading edit-form" v-show="edit_tags">
-                  <v-text-field ref="edit_tags_field" v-model="tags"></v-text-field>
+                  <v-text-field ref="edit_tags_field" v-model="tags" v-on:keyup.enter="save('tags')"></v-text-field>
                   <v-btn small color="green darken-1" flat @click="save('tags')">Save</v-btn>
                   <v-btn small color="red darken-1" flat @click="cancel_edit('tags')">Cancel</v-btn>
                </div>
@@ -47,7 +47,7 @@
                   <v-btn small color="green darken-1" flat @click="edit('value')">Edit</v-btn>
                </div>
                <div class="subheading edit-form" v-show="edit_value">
-                  <v-text-field ref="edit_value_field" v-model="value"></v-text-field>
+                  <v-text-field ref="edit_value_field" v-model="value" v-on:keyup.enter="save('value')"></v-text-field>
                   <v-btn small color="green darken-1" flat @click="save('value')">Save</v-btn>
                   <v-btn small color="red darken-1" flat @click="cancel_edit('value')">Cancel</v-btn>
                </div>
