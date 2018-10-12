@@ -23,7 +23,7 @@
 
          <v-divider></v-divider>
 
-         <v-data-table v-if="loaded" :headers="headers" :items="table_values" :search="search" :custom-filter="customFilter" hide-actions must-sort class="no-scroll" no-data-text="No log entries">
+         <v-data-table v-if="loaded" :headers="headers" :items="table_values" hide-actions must-sort class="no-scroll" no-data-text="No log entries">
 
             <template slot="headers" slot-scope="props">
                <tr>
@@ -168,7 +168,8 @@ export default {
         .get(this.$store.getters.server_url + "/logger", {
           params: {
             action: "get_logs",
-            limit: 100
+            limit: 100,
+            level: this.search
           }
         })
         .then(response => {
@@ -200,15 +201,6 @@ export default {
           3000
         );
       }
-    },
-    customFilter(items, search, filter) {
-      if (search === "ALL") {
-        return items;
-      }
-      if (search === "!USER") {
-        return items.filter(item => item.level !== "USER");
-      }
-      return items.filter(item => item.level === search);
     }
   }
 };
