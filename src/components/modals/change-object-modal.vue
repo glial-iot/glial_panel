@@ -10,21 +10,21 @@
                              required></v-text-field>
             </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'BUS_EVENT'">
-               <a class="pa-1" href="#" @click="set_object('.+')">All topics</a>
-               <a class="pa-1" href="#" @click="set_object('.+test.+')">All topics with 'test'</a>
+               <a class="dashed pa-1" href="#" @click="set_object('.+')">All topics</a>
+               <a class="dashed pa-1" href="#" @click="set_object('.+test.+')">All topics with 'test'</a>
             </v-card-text>
-            <v-card-text v-if="type === 'TIMER_EVENT'">
-               <a class="pa-1" href="#" @click="set_object('1')">Every second</a>
-               <a class="pa-1" href="#" @click="set_object('10')">Every 10 seconds</a>
+            <v-card-text class="pt-0" v-if="type === 'TIMER_EVENT'">
+               <a class="dashed pa-1" href="#" @click="set_object('1')">Every second</a>
+               <a class="dashed pa-1" href="#" @click="set_object('10')">Every 10 seconds</a>
             </v-card-text>
-            <v-card-text v-if="type === 'SHEDULE_EVENT'">
-               <a class="pa-1" href="#" @click="set_object('0 0 * * * *')">Every hour</a>
-               <a class="pa-1" href="#" @click="set_object('0 0 30 * * * *')">Every 30 minutes</a>
+            <v-card-text class="pt-0" v-if="type === 'SHEDULE_EVENT'">
+               <a class="dashed pa-1" href="#" @click="set_object('0 0 * * * *')">Every hour</a>
+               <a class="dashed pa-1" href="#" @click="set_object('0 0 30 * * * *')">Every 30 minutes</a>
             </v-card-text>
-            <v-card-text v-if="type === 'WEB_EVENT'">
-               <a class="pa-1" href="#" @click="set_object()">By the script name</a>
+            <v-card-text class="pt-0" v-if="type === 'WEB_EVENT'">
+               <a class="dashed pa-1" href="#" @click="set_object()">By the script name</a>
             </v-card-text>
-            <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
+            <v-card-text class="pt-0" v-if="type === 'SHEDULE_EVENT'">
                <code class="cron-code font-weight-thin">
                   * * * * * *
                   │ │ │ │ │ └── Day of the Week
@@ -114,3 +114,10 @@ export default {
   }
 };
 </script>
+
+<style>
+    .dashed {
+        text-decoration-line: underline;
+        text-decoration-style: dashed;
+    }
+</style>
