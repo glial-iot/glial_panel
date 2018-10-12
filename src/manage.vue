@@ -43,7 +43,7 @@
          </v-card-title>
          <v-divider> </v-divider>
          <v-form>
-            <v-layout row wrap pl-3 pt-3 pr-3 pb-3>
+            <v-layout justify-center row wrap pl-3 pt-3 pr-3 pb-3>
                <v-flex md3 justify-center>
                   <v-btn color="secondary" @click.native="send('tarantool_stop')">
                      <v-icon left small>fa-stop-circle</v-icon> Glue restart
@@ -55,13 +55,23 @@
                   </v-btn>
                </v-flex>
                <v-flex md3 justify-center>
+                  <v-btn color="success" @click.native="backup('create')">
+                     <v-icon left small>fa-download</v-icon>
+                     Create Backup
+                  </v-btn>
+               </v-flex>
+            </v-layout>
+            <v-layout justify-center row wrap pl-3 pt-3 pr-3 pb-3>
+               <v-flex md3 justify-center>
                   <v-btn color="warning" @click="$refs.reset_bus.show()">
-                     <v-icon left small>fa-trash-alt</v-icon> Delete all from Bus
+                     <v-icon left small>fa-trash-alt</v-icon>
+                     Delete all from Bus
                   </v-btn>
                </v-flex>
                <v-flex md3 justify-center>
                   <v-btn color="error" @click="$refs.confirm_modal.show()">
-                     <v-icon left small>fa-exclamation-triangle</v-icon> Wipe storage and stop
+                     <v-icon left small>fa-exclamation-triangle</v-icon>
+                     Wipe storage and stop
                   </v-btn>
                </v-flex>
             </v-layout>
@@ -139,6 +149,20 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Network error");
         });
+    },
+    backup(action) {
+        Vue.axios
+            .get(this.$store.getters.server_url + "/backups", {
+                params: {
+                    action: action
+                }
+            })
+            .then(response => {
+                this.$refs.snackbar.update("Backup created successfuly", "success", 5000);
+            })
+            .catch(error => {
+                this.$refs.snackbar.update(response.data.error_msg, "error", 5000);
+            });
     },
     topic_delete(item) {
       Vue.axios
