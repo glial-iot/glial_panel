@@ -17,14 +17,14 @@
                <a class="pa-1" href="#" @click="set_object('1')">Every second</a>
                <a class="pa-1" href="#" @click="set_object('10')">Every 10 seconds</a>
             </v-card-text>
-            <v-card-text v-if="type === 'SCHEDULE_EVENT'">
+            <v-card-text v-if="type === 'SHEDULE_EVENT'">
                <a class="pa-1" href="#" @click="set_object('0 0 * * * *')">Every hour</a>
                <a class="pa-1" href="#" @click="set_object('0 0 30 * * * *')">Every 30 minutes</a>
             </v-card-text>
             <v-card-text v-if="type === 'WEB_EVENT'">
                <a class="pa-1" href="#" @click="set_object()">By the script name</a>
             </v-card-text>
-            <v-card-text v-if="type === 'SCHEDULE_EVENT'" class="pt-0">
+            <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
                <code class="cron-code font-weight-thin">
                   * * * * * *
                   │ │ │ │ │ └── Day of the Week
@@ -87,6 +87,8 @@ export default {
         }
     },
     submit() {
+        console.log(this.type);
+        console.log(this.$store.state.endpoints[this.type]);
       Vue.axios
         .get(
           this.$store.getters.server_url +

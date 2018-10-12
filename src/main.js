@@ -93,7 +93,7 @@ const store = new Vuex.Store({
       logs_visible: Vue.localStorage.get("logs_visible") !== null ? Vue.localStorage.get("logs_visible") === 'true' : true,
       editor_log_size: parseInt(Vue.localStorage.get("editor_log_size", 6)),
       bus_type: Vue.localStorage.get("bus_type", BUS_TYPE_TREE),
-      endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SCHEDULE_EVENT": "/sheduleevents", }
+      endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
       server_address(state, address) {
@@ -235,7 +235,7 @@ Vue.filter("type2string", function (type) {
    if (type === "TIMER_EVENT") {
       return "Timer-event script";
    }
-   if (type === "SCHEDULE_EVENT") {
+   if (type === "SHEDULE_EVENT") {
       return "Schedule-event script";
    }
 })
@@ -248,7 +248,7 @@ Vue.filter("object_label", function (type) {
          return "Mask"
       case "TIMER_EVENT":
          return "Period"
-      case "SCHEDULE_EVENT":
+      case "SHEDULE_EVENT":
          return "Schedule"
       default:
          return ''

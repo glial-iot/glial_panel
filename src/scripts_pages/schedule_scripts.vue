@@ -11,7 +11,7 @@ Vue.component("scripts-table", scripts_table);
 
 export default {
   data: () => ({
-    type: "SCHEDULE_EVENT"
+    type: "SHEDULE_EVENT"
   })
 };
 </script>

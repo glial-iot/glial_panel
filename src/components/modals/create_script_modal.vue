@@ -21,7 +21,7 @@
                   <a :href="$store.getters.server_url+'/we/'+object" target="_blank">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
                </span>
             </v-card-text>
-            <v-card-text v-if="type === 'SCHEDULE_EVENT'" class="pt-0">
+            <v-card-text v-if="type === 'SHEDULE_EVENT'" class="pt-0">
                <code class="cron-code font-weight-thin">
    * * * * * *
    │ │ │ │ │ │
