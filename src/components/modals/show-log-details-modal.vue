@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog v-model="visible" max-width="600px">
+      <v-dialog v-on:keydown.esc="visible = false" v-model="visible" max-width="600px">
          <v-card>
             <v-card-title>
                <div class="title text-xs-center">Details log entry ({{level}}) #{{key}}({{source}})</div>

@@ -1,5 +1,5 @@
 <template>
-   <v-dialog :value="visible" persistent max-width="290">
+   <v-dialog v-on:keydown.esc="hide()" :value="visible" persistent max-width="290">
       <v-card>
          <v-card-title class="headline">Server Response</v-card-title>
          <v-card-text>

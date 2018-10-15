@@ -1,10 +1,10 @@
 <template>
    <div>
-      <v-dialog :value="visible" persistent max-width="290">
+      <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="290">
          <v-card>
             <v-card-title class="headline">Rename script</v-card-title>
             <v-card-text>
-               <v-text-field v-model="name" label="Edit name" required></v-text-field>
+               <v-text-field autofocus v-if="visible" v-model="name" label="Edit name" required></v-text-field>
             </v-card-text>
             <v-card-actions>
                <v-btn color="error" flat @click="hide()">Cancel</v-btn>

@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog v-model="visible" max-width="420">
+      <v-dialog v-on:keydown.esc="hide()" v-model="visible" max-width="420">
          <v-card>
             <v-card-title class="headline">Are you sure?</v-card-title>
             <v-card-text>

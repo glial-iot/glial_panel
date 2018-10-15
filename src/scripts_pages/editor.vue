@@ -255,7 +255,7 @@ export default {
         this.prev_content = content;
       }
     },
-    save_script: function(event) {
+    save_script: function(mode) {
       let data = new Blob([this.prev_content], {
         type: "text/plain"
       });
@@ -271,7 +271,9 @@ export default {
             reader.result
           )
           .then(response => {
-            this.$refs.snackbar.update("Script saved", "success", 3000);
+            if (mode !== 'silent') {
+                this.$refs.snackbar.update("Script saved", "success", 3000);
+            }
             this.saved = true;
           })
           .catch(error => {
@@ -308,6 +310,9 @@ export default {
         });
     },
     script_active_change(flag) {
+      if (flag === "ACTIVE")  {
+          this.save_script('silent');
+      }
       Vue.axios
         .get(
           this.$store.getters.server_url +

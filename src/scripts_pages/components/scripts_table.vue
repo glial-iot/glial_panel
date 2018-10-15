@@ -44,18 +44,24 @@
                      </div>
                      <div v-if="type !== 'WEB_EVENT' && type !== 'TIMER_EVENT'">
                         {{ props.item.object }}
-
                      </div>
 
                      <div v-if="type == 'TIMER_EVENT'">
                         {{ props.item.object }} seconds
-
                      </div>
 
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
                      <button-info title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                  </td>
+
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-copy title="Copy script" @click.native="$refs.copyscript.show(props.item)"></button-copy>
+                  </td>
+
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-save title="Save script" @click.native="save_script(props.item)"></button-save>
                   </td>
 
                   <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center button-sm">
@@ -92,6 +98,7 @@
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <script-details-modal ref="scriptdetails"></script-details-modal>
+      <copy-script-modal @copy_error="$refs.snackbar.update('Copy script: error')" @copy_successful="table_update()" ref="copyscript"></copy-script-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
    </div>
 </template>
@@ -108,9 +115,12 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
 import createScriptModal from "../../components/modals/create_script_modal.vue";
+import copyScriptModal from "../../components/modals/copy_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import buttonSave from "../../components/buttons/button-save.vue";
+import buttonCopy from "../../components/buttons/button-copy.vue";
 import buttonEdit from "../../components/buttons/button-edit.vue";
 import buttonActivate from "../../components/buttons/button-activate.vue";
 import buttonRocket from "../../components/buttons/button-rocket.vue";
@@ -125,9 +135,12 @@ import confirmRemoveScriptModal from "../../components/modals/confirm-remove-scr
 export default {
   components: {
     createScriptModal,
+    copyScriptModal,
     scriptDetailsModal,
     snackbar,
     buttonInfo,
+    buttonSave,
+    buttonCopy,
     buttonRocket,
     buttonActivate,
     buttonEdit,
@@ -180,6 +193,18 @@ export default {
       },
       {
         text: "Info",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
+      {
+        text: "Copy",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
+      {
+        text: "Save",
         align: "center",
         sortable: false,
         width: "5%"
@@ -298,7 +323,6 @@ export default {
           this.loaded = false;
         });
     },
-
     run_script(table_item) {
       Vue.axios
         .get(this.$store.getters.server_url + "/busevents", {
@@ -318,6 +342,38 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Run script error");
         });
+    },
+    save_script(table_item) {
+        Vue.axios
+            .get(
+                this.$store.getters.server_url +
+                this.$store.state.endpoints[this.type],
+                {
+                    params: {
+                        action: "get",
+                        uuid: table_item.uuid
+                    }
+                }
+            )
+            .then(response => {
+                let scriptJSON = {
+                    "name": response.data.name,
+                    "type": response.data.type,
+                    "object": response.data.object,
+                    "body": response.data.body
+                };
+                let scriptStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scriptJSON));
+                let downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href",     scriptStr);
+                downloadAnchorNode.setAttribute("download", response.data.name + ".gs.lua");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            })
+            .catch(error => {
+                console.log(error);
+                this.$refs.snackbar.update("Error: Can't save script");
+            });
     }
   }
 };

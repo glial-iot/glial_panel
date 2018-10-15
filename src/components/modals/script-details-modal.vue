@@ -1,12 +1,12 @@
 <template>
    <div>
-      <v-dialog v-model="visible" max-width="900px">
+      <v-dialog v-on:keydown.esc="hide()" tabindex="0" v-model="visible" max-width="900px">
          <v-card>
             <v-card-title>
                <div class="title text-xs-center">{{$options.filters.type2string(type)}} "{{name}}"</div>
                <v-spacer></v-spacer>
                <v-btn color="primary" flat @click="$refs.rename_script.show(uuid, type, name)">Rename</v-btn>
-               <v-btn color="primary" flat @click="$refs.change_object.show(uuid, object, type)">Change Object</v-btn>
+               <v-btn color="primary" v-if="type !== 'DRIVER'" flat @click="$refs.change_object.show(uuid, object, type)">Change Object</v-btn>
                <v-btn color="primary" flat v-if="type === 'BUS_EVENT'" @click="run_script()">Run</v-btn>
             </v-card-title>
             <v-divider></v-divider>
@@ -14,7 +14,7 @@
                <div class="subheading">Status: {{active_flag}}, {{status}}({{status_msg}})</div>
                <div class="subheading">UUID: {{uuid}}</div>
             </v-card-text>
-            <v-card-text>
+            <v-card-text v-if="type !== 'DRIVER'">
                <div class="subheading">{{$options.filters.object_label(type)}}: {{object}}</div>
             </v-card-text>
             <v-card-text>
