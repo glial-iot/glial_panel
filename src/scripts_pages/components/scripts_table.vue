@@ -60,6 +60,10 @@
                      <button-copy title="Copy script" @click.native="$refs.copyscript.show(props.item)"></button-copy>
                   </td>
 
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-save title="Save script" @click.native="save_script(props.item)"></button-save>
+                  </td>
+
                   <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center button-sm">
                      <button-rocket title="Run script once" @click.native="run_script(props.item)"></button-rocket>
                   </td>
@@ -115,6 +119,7 @@ import copyScriptModal from "../../components/modals/copy_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import buttonSave from "../../components/buttons/button-save.vue";
 import buttonCopy from "../../components/buttons/button-copy.vue";
 import buttonEdit from "../../components/buttons/button-edit.vue";
 import buttonActivate from "../../components/buttons/button-activate.vue";
@@ -134,6 +139,7 @@ export default {
     scriptDetailsModal,
     snackbar,
     buttonInfo,
+    buttonSave,
     buttonCopy,
     buttonRocket,
     buttonActivate,
@@ -193,6 +199,12 @@ export default {
       },
       {
         text: "Copy",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
+      {
+        text: "Save",
         align: "center",
         sortable: false,
         width: "5%"
@@ -330,6 +342,38 @@ export default {
           console.log(error);
           this.$refs.snackbar.update("Run script error");
         });
+    },
+    save_script(table_item) {
+        Vue.axios
+            .get(
+                this.$store.getters.server_url +
+                this.$store.state.endpoints[this.type],
+                {
+                    params: {
+                        action: "get",
+                        uuid: table_item.uuid
+                    }
+                }
+            )
+            .then(response => {
+                let scriptJSON = {
+                    "name": response.data.name,
+                    "type": response.data.type,
+                    "object": response.data.object,
+                    "body": response.data.body
+                };
+                let scriptStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scriptJSON));
+                let downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href",     scriptStr);
+                downloadAnchorNode.setAttribute("download", response.data.name + ".gs.lua");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            })
+            .catch(error => {
+                console.log(error);
+                this.$refs.snackbar.update("Error: Can't save script");
+            });
     }
   }
 };
