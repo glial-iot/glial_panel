@@ -5,13 +5,20 @@
             <v-card-title class="headline">Change script {{$options.filters.object_label(type).toLowerCase()}}
             </v-card-title>
             <v-card-text>
-               <v-text-field autofocus v-if="visible" v-model="object"
+               <v-text-field autofocus v-if="visible" v-model="object" v-on:input="get_mask_match()" v-on:change="object_keyup()"
                              :label="`Change ${$options.filters.object_label(type).toLowerCase()}`"
                              required></v-text-field>
             </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'BUS_EVENT'">
-               <a class="dashed pa-1" href="#" @click="set_object('.+')">All topics</a>
+               <a class="dashed pt-1 pr-1 pb-1" href="#" @click="set_object('.+')">All topics</a>
                <a class="dashed pa-1" href="#" @click="set_object('.+test.+')">All topics with 'test'</a>
+            </v-card-text>
+            <v-card-text class="pt-0" v-if="type === 'BUS_EVENT'">
+               <h4 class="matching_topics_header">Matching topics: </h4>
+               <div class="matching_topic" v-for="item in mask_topics">
+                  {{item.topic}}
+               </div>
+               <div class="matching_topic" v-if="Object.keys(mask_topics).length === 0" >No match</div>
             </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'TIMER_EVENT'">
                <a class="dashed pa-1" href="#" @click="set_object('1')">Every second</a>
@@ -64,7 +71,8 @@ export default {
     object: "",
     uuid: "",
     type: "",
-    visible: false
+    visible: false,
+    mask_topics: []
   }),
   methods: {
     show(uuid, object, type) {
@@ -72,18 +80,53 @@ export default {
       this.object = object;
       this.type = type;
       this.visible = true;
+      this.get_mask_match();
     },
     hide() {
       this.visible = false;
       this.object = "";
       this.uuid = "";
       this.type = "";
+      this.mask_topics = [];
     },
     set_object(value){
         if (this.type === "WEB_EVENT") {
             this.object = this.$parent.name;
         }else {
             this.object = value;
+        }
+        this.get_mask_match();
+    },
+    get_mask_match() {
+        console.log("hit");
+        if (this.object !== "" && this.type === "BUS_EVENT") {
+            Vue.axios
+                .get(
+                    "http://localhost:8080/system_bus",
+                    {
+                        params: {
+                            action: "get_bus",
+                            limit: 10,
+                            mask: btoa(this.object)
+                        }
+                    }
+                )
+                .then(response => {
+                    if(response.data.length > 0) {
+                        this.mask_topics = response.data;
+                    }
+                    else {
+                        this.mask_topics = [];
+                    }
+
+                })
+                .catch(error => {
+                    this.mask_topics = [];
+                    console.log(error);
+                });
+        }
+        else {
+            this.mask_topics = [];
         }
     },
     submit() {
