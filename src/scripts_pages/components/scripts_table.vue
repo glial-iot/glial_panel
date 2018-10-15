@@ -44,18 +44,20 @@
                      </div>
                      <div v-if="type !== 'WEB_EVENT' && type !== 'TIMER_EVENT'">
                         {{ props.item.object }}
-
                      </div>
 
                      <div v-if="type == 'TIMER_EVENT'">
                         {{ props.item.object }} seconds
-
                      </div>
 
                   </td>
 
                   <td class="justify-center text-xs-center button-sm">
                      <button-info title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                  </td>
+
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-copy title="Copy script" @click.native="$refs.copyscript.show(props.item)"></button-copy>
                   </td>
 
                   <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center button-sm">
@@ -92,6 +94,7 @@
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <script-details-modal ref="scriptdetails"></script-details-modal>
+      <copy-script-modal @copy_error="$refs.snackbar.update('Copy script: error')" @copy_successful="table_update()" ref="copyscript"></copy-script-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
    </div>
 </template>
@@ -108,9 +111,11 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
 import createScriptModal from "../../components/modals/create_script_modal.vue";
+import copyScriptModal from "../../components/modals/copy_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import buttonCopy from "../../components/buttons/button-copy.vue";
 import buttonEdit from "../../components/buttons/button-edit.vue";
 import buttonActivate from "../../components/buttons/button-activate.vue";
 import buttonRocket from "../../components/buttons/button-rocket.vue";
@@ -125,9 +130,11 @@ import confirmRemoveScriptModal from "../../components/modals/confirm-remove-scr
 export default {
   components: {
     createScriptModal,
+    copyScriptModal,
     scriptDetailsModal,
     snackbar,
     buttonInfo,
+    buttonCopy,
     buttonRocket,
     buttonActivate,
     buttonEdit,
@@ -180,6 +187,12 @@ export default {
       },
       {
         text: "Info",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
+      {
+        text: "Copy",
         align: "center",
         sortable: false,
         width: "5%"
@@ -298,7 +311,6 @@ export default {
           this.loaded = false;
         });
     },
-
     run_script(table_item) {
       Vue.axios
         .get(this.$store.getters.server_url + "/busevents", {
