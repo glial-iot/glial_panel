@@ -6,6 +6,7 @@
             <v-spacer></v-spacer>
 
             <create-script-modal @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
+            <load-script-modal @load_script_error="$refs.snackbar.update('Load script: error')" @script_loaded="table_update()" :type="type"></load-script-modal>
          </v-card-title>
 
          <v-divider></v-divider>
@@ -14,7 +15,6 @@
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
-
                   <td class="text-xs-center">
                      <div :title="props.item.status_msg">
                         <icon-normal v-show="props.item.status == 'NORMAL'">fa-check-circle</icon-normal>
@@ -116,6 +116,7 @@ Vue.use(VueTimers);
 
 import createScriptModal from "../../components/modals/create_script_modal.vue";
 import copyScriptModal from "../../components/modals/copy_script_modal.vue";
+import loadScriptModal from "../../components/modals/load_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
@@ -136,6 +137,7 @@ export default {
   components: {
     createScriptModal,
     copyScriptModal,
+    loadScriptModal,
     scriptDetailsModal,
     snackbar,
     buttonInfo,
