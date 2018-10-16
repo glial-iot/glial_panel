@@ -367,7 +367,7 @@ export default {
                 let scriptStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scriptJSON));
                 let downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href",     scriptStr);
-                downloadAnchorNode.setAttribute("download", response.data.name + ".gs.lua");
+                downloadAnchorNode.setAttribute("download", response.data.name + ".gs.json");
                 document.body.appendChild(downloadAnchorNode);
                 downloadAnchorNode.click();
                 downloadAnchorNode.remove();

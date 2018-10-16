@@ -10,26 +10,31 @@
                              required></v-text-field>
             </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'BUS_EVENT'">
-               <a class="dashed pt-1 pr-1 pb-1" href="#" @click="set_object('.+')">All topics</a>
-               <a class="dashed pa-1" href="#" @click="set_object('.+test.+')">All topics with 'test'</a>
+               <a title="Set mask to select all topics" class="pt-1 pr-1 pb-1" href="#" @click="set_object('.+')">All topics</a>
+               <a title="Set mask to filter only topics containing 'test'" class="pa-1" href="#" @click="set_object('.+test.+')">All topics with 'test'</a>
             </v-card-text>
-            <v-card-text class="pt-0" v-if="type === 'BUS_EVENT'">
+            <v-card-text class="matching_topics_list pt-0" v-if="type === 'BUS_EVENT'">
                <h4 class="matching_topics_header">Matching topics: </h4>
                <div class="matching_topic" v-for="item in mask_topics">
                   {{item.topic}}
                </div>
                <div class="matching_topic" v-if="Object.keys(mask_topics).length === 0" >No match</div>
             </v-card-text>
+            <v-card-text class="pt-0" v-if="type === 'WEB_EVENT'">
+               <a title="Set endpoint name equal to script name" class="pt-1 pr-1 pb-1" href="#" @click="set_object()">By the script name</a>
+            </v-card-text>
+            <v-card-text v-if="type === 'WEB_EVENT'">
+               <span>Full script URL:
+                  <a :href="$store.getters.server_url+'/we/'+object" target="_blank">{{$store.getters.server_url}}/we/{{object || "endpoint"}}</a>
+               </span>
+            </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'TIMER_EVENT'">
-               <a class="dashed pa-1" href="#" @click="set_object('1')">Every second</a>
-               <a class="dashed pa-1" href="#" @click="set_object('10')">Every 10 seconds</a>
+               <a title="Set interval to 1 second" class="pt-1 pr-1 pb-1" href="#" @click="set_object('1')">Every second</a>
+               <a title="Set interval to 10 seconds" class="pa-1" href="#" @click="set_object('10')">Every 10 seconds</a>
             </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'SHEDULE_EVENT'">
-               <a class="dashed pa-1" href="#" @click="set_object('0 0 * * * *')">Every hour</a>
-               <a class="dashed pa-1" href="#" @click="set_object('0 0 30 * * * *')">Every 30 minutes</a>
-            </v-card-text>
-            <v-card-text class="pt-0" v-if="type === 'WEB_EVENT'">
-               <a class="dashed pa-1" href="#" @click="set_object()">By the script name</a>
+               <a title="Set schedule to run script every hour" class="pt-1 pr-1 pb-1" href="#" @click="set_object('0 0 * * * *')">Every hour</a>
+               <a title="Set schedule to run script every 30 minutes" class="pa-1" href="#" @click="set_object('0 0 30 * * * *')">Every 30 minutes</a>
             </v-card-text>
             <v-card-text class="pt-0" v-if="type === 'SHEDULE_EVENT'">
                <code class="cron-code font-weight-thin">
@@ -157,10 +162,3 @@ export default {
   }
 };
 </script>
-
-<style>
-    .dashed {
-        text-decoration-line: underline;
-        text-decoration-style: dashed;
-    }
-</style>

@@ -201,3 +201,22 @@ button.icon-btn, button.icon-btn:before {
     background-color: #fff !important;
     border-color: initial !important;
 }
+
+.matching_topics_header {
+    color: rgba(0,0,0,.54);
+    font-weight: normal;
+}
+.matching_topic {
+    font-size:14px;
+    line-height: 16px;
+}
+.cron-code {
+    background: none;
+    color: inherit;
+    box-shadow: none;
+    line-height: 120%;
+}
+
+.matching_topics_list {
+    min-height: 200px;
+}
