@@ -11,11 +11,12 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-               <div class="subheading">Status: {{active_flag}}, {{status}}({{status_msg}})</div>
                <div class="subheading">UUID: {{uuid}}</div>
-            </v-card-text>
-            <v-card-text v-if="type !== 'DRIVER'">
-               <div class="subheading">{{$options.filters.object_label(type)}}: {{object}}</div>
+               <div class="subheading">Status: {{active_flag}}, {{status}}</div>
+               <div class="subheading" v-if="type !== 'DRIVER'">{{$options.filters.object_label(type)}}: {{object}}</div>
+               <div class="subheading">Message: "{{status_msg}}"</div>
+               <div class="subheading">System load percent(relative): {{worktime_percent}}%</div>
+               <div class="subheading">System load percent(absolute): {{alltime_percent}}%</div>
             </v-card-text>
             <v-card-text>
                <div class="subheading">Logs:</div>
@@ -74,6 +75,8 @@ export default {
     name: "",
     status: "",
     status_msg: "",
+    worktime_percent: "",
+    alltime_percent: "",
     type: "",
     uuid: "",
     active_flag: "",
@@ -161,6 +164,8 @@ export default {
           this.status_msg = response.data.status_msg;
           this.active_flag = response.data.active_flag;
           this.object = response.data.object;
+          this.worktime_percent = response.data.worktime_percent;
+          this.alltime_percent = response.data.alltime_percent;
           this.get_logs();
         })
         .catch(error => {});
@@ -195,6 +200,8 @@ export default {
       this.uuid = "";
       this.active_flag = "";
       this.object = "";
+      this.worktime_percent = "";
+      this.alltime_percent = "";
       this.logs = [];
       this.$timer.stop("get_script_data");
     },
