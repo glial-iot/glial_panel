@@ -13,7 +13,7 @@
             <v-card-text>
                <div class="subheading">UUID: {{uuid}}</div>
                <div class="subheading">Status: {{active_flag}}, {{status}}</div>
-               <div class="subheading" v-if="type !== 'DRIVER'">{{$options.filters.object_label(type)}}: {{object}}</div>
+               <div class="subheading" v-if="type !== 'DRIVER'">{{$options.filters.object_label(type)}}: "{{object}}"</div>
                <div class="subheading">Message: "{{status_msg}}"</div>
                <div class="subheading">System load percent(relative): {{worktime_percent}}%</div>
                <div class="subheading">System load percent(absolute): {{alltime_percent}}%</div>
