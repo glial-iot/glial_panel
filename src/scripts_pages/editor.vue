@@ -328,7 +328,12 @@ export default {
         .then(response => {
           console.log(response);
           this.active_flag = flag;
-          this.$refs.snackbar.update("Script is " + flag, "success", 1500);
+          if (flag === "ACTIVE") {
+              this.$refs.snackbar.update("Script saved and activated", "success", 1500);
+          }
+          else {
+              this.$refs.snackbar.update("Script deactivated", "success", 1500);
+          }
         })
         .catch(error => {
           console.log(error);
