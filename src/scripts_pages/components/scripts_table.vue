@@ -79,10 +79,6 @@
                   <td class="justify-center text-xs-center button-sm">
                      <button-trash title="Delete script" @click.native="$refs.remove_modal.show(props.item)"></button-trash>
                   </td>
-
-                  <td class="justify-center text-xs-center button-sm">
-                     <button-sync title="Restart" @click.native="script_restart(props.item)"></button-sync>
-                  </td>
                </tr>
             </template>
 
@@ -234,12 +230,6 @@ export default {
         sortable: false,
         align: "center",
         width: "5%"
-      },
-      {
-        text: "Restart",
-        sortable: false,
-        align: "center",
-        width: "5%"
       }
     ];
 
@@ -254,26 +244,6 @@ export default {
         path: "/editor",
         query: { uuid: table_item.uuid, type: table_item.type }
       });
-    },
-    script_restart(table_item) {
-      Vue.axios
-        .get(
-          this.$store.getters.server_url +
-            this.$store.state.endpoints[this.type],
-          {
-            params: {
-              action: "reload",
-              uuid: table_item.uuid
-            }
-          }
-        )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Reload script error");
-        });
     },
     script_active_change(table_item, current_flag) {
       let to_set_flag = "";
