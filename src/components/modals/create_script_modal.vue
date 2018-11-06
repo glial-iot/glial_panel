@@ -1,6 +1,6 @@
 <template lang="html">
    <div>
-      <v-btn right color="secondary" class="my-2" @click="dialog_visible = true">
+      <v-btn color="secondary" class="my-2" @click="dialog_visible = true">
          <v-icon left small>fa-file</v-icon> Create {{$options.filters.type2string(type)}}
       </v-btn>
 

@@ -4,8 +4,7 @@
 
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
-
-            <create-script-modal @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
+            <create-script-modal class="mr-3" @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
             <load-script-modal @load_script_error="$refs.snackbar.update('Load script: error')" @script_loaded="table_update()" :type="type"></load-script-modal>
          </v-card-title>
 
