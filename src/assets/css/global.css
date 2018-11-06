@@ -220,3 +220,7 @@ button.icon-btn, button.icon-btn:before {
 .matching_topics_list {
     min-height: 220px;
 }
+
+.script_object_cell {
+    cursor:pointer;
+}

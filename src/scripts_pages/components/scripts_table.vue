@@ -34,7 +34,7 @@
                      {{ props.item.name }}
                   </td>
 
-                  <td class="text-xs-left">
+                  <td class="text-xs-left script_object_cell" @click="$refs.change_object.show(props.item.uuid, props.item.object, props.item.type)">
                      <div v-if="type === 'WEB_EVENT'">
                         <span>
                            <a :href="$store.getters.server_url+'/we/'+props.item.object" target="_blank" style="text-decoration: none">
@@ -96,6 +96,7 @@
       <script-details-modal ref="scriptdetails"></script-details-modal>
       <copy-script-modal @copy_error="$refs.snackbar.update('Copy script: error')" @copy_successful="table_update()" ref="copyscript"></copy-script-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
+      <change-object-modal ref="change_object"></change-object-modal>
    </div>
 </template>
 
@@ -128,6 +129,7 @@ import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
 import iconWarning from "../../components/icons/icon-status-warning.vue";
 import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
+import changeObjectModal from "../../components/modals/change-object-modal";
 
 export default {
   components: {
@@ -148,7 +150,8 @@ export default {
     iconNormal,
     iconStopped,
     iconWarning,
-    confirmRemoveScriptModal
+    confirmRemoveScriptModal,
+    changeObjectModal
   },
   data: () => ({
     headers: [],
