@@ -221,6 +221,6 @@ button.icon-btn, button.icon-btn:before {
     min-height: 220px;
 }
 
-.script_object_cell {
+.script_object_cell, .script_tag_cell, .change_tags_field, .change_comment_field {
     cursor:pointer;
 }
