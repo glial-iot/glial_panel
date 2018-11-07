@@ -6,7 +6,7 @@
             <v-card-title class="headline">Change script comment</v-card-title>
 
             <v-card-text>
-               <v-text-field autofocus v-if="visible" v-model="comment" :label="`Comment`" required></v-text-field>
+               <v-textarea autofocus v-if="visible" v-model="comment" :label="`Comment`" required></v-textarea>
             </v-card-text>
 
             <v-card-actions>
