@@ -4,8 +4,7 @@
 
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
-
-            <create-script-modal @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
+            <create-script-modal class="mr-3" @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
             <load-script-modal @load_script_error="$refs.snackbar.update('Load script: error')" @script_loaded="table_update()" :type="type"></load-script-modal>
          </v-card-title>
 
@@ -34,7 +33,7 @@
                      {{ props.item.name }}
                   </td>
 
-                  <td class="text-xs-left">
+                  <td class="text-xs-left script_object_cell" @click="$refs.change_object.show(props.item.uuid, props.item.object, props.item.type)">
                      <div v-if="type === 'WEB_EVENT'">
                         <span>
                            <a :href="$store.getters.server_url+'/we/'+props.item.object" target="_blank" style="text-decoration: none">
@@ -79,10 +78,6 @@
                   <td class="justify-center text-xs-center button-sm">
                      <button-trash title="Delete script" @click.native="$refs.remove_modal.show(props.item)"></button-trash>
                   </td>
-
-                  <td class="justify-center text-xs-center button-sm">
-                     <button-sync title="Restart" @click.native="script_restart(props.item)"></button-sync>
-                  </td>
                </tr>
             </template>
 
@@ -100,6 +95,7 @@
       <script-details-modal ref="scriptdetails"></script-details-modal>
       <copy-script-modal @copy_error="$refs.snackbar.update('Copy script: error')" @copy_successful="table_update()" ref="copyscript"></copy-script-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
+      <change-object-modal ref="change_object"></change-object-modal>
    </div>
 </template>
 
@@ -132,6 +128,7 @@ import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
 import iconWarning from "../../components/icons/icon-status-warning.vue";
 import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
+import changeObjectModal from "../../components/modals/change-object-modal";
 
 export default {
   components: {
@@ -152,7 +149,8 @@ export default {
     iconNormal,
     iconStopped,
     iconWarning,
-    confirmRemoveScriptModal
+    confirmRemoveScriptModal,
+    changeObjectModal
   },
   data: () => ({
     headers: [],
@@ -234,12 +232,6 @@ export default {
         sortable: false,
         align: "center",
         width: "5%"
-      },
-      {
-        text: "Restart",
-        sortable: false,
-        align: "center",
-        width: "5%"
       }
     ];
 
@@ -254,26 +246,6 @@ export default {
         path: "/editor",
         query: { uuid: table_item.uuid, type: table_item.type }
       });
-    },
-    script_restart(table_item) {
-      Vue.axios
-        .get(
-          this.$store.getters.server_url +
-            this.$store.state.endpoints[this.type],
-          {
-            params: {
-              action: "reload",
-              uuid: table_item.uuid
-            }
-          }
-        )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Reload script error");
-        });
     },
     script_active_change(table_item, current_flag) {
       let to_set_flag = "";

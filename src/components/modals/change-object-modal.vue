@@ -5,18 +5,12 @@
             <v-card-title class="headline">Change script {{$options.filters.object_label(type).toLowerCase()}}
             </v-card-title>
             <v-card-text>
-               <v-text-field autofocus v-if="visible" v-model="object" v-on:input="get_mask_match()" v-on:change="object_keyup()"
+               <v-text-field autofocus v-if="visible" v-model="object" @keyup="$refs.matchingTopicsList.get_mask_match()"
                              :label="`Change ${$options.filters.object_label(type).toLowerCase()}`"
                              required></v-text-field>
             </v-card-text>
-            <bus-event-shortcuts class="pt-0" v-if="type === 'BUS_EVENT'" v-on:set_object="object = $event; get_mask_match()"></bus-event-shortcuts>
-            <v-card-text class="matching_topics_list pt-0" v-if="type === 'BUS_EVENT'">
-               <h4 class="matching_topics_header">Matching topics: </h4>
-               <div class="matching_topic" v-for="item in mask_topics">
-                  {{item.topic}}
-               </div>
-               <div class="matching_topic" v-if="Object.keys(mask_topics).length === 0" >No match</div>
-            </v-card-text>
+            <bus-event-shortcuts class="pt-0" v-if="type === 'BUS_EVENT'" v-on:set_object="object = $event; $refs.matchingTopicsList.get_mask_match()"></bus-event-shortcuts>
+            <matching-topics-list ref="matchingTopicsList" :mask="object" v-if="type === 'BUS_EVENT'"></matching-topics-list>
             <timer-event-shortcuts class="pt-0" v-if="type === 'TIMER_EVENT'" v-on:set_object="object = $event"></timer-event-shortcuts>
             <schedule-event-shortcuts class="pt-0" v-if="type === 'SHEDULE_EVENT'" v-on:set_object="object = $event"></schedule-event-shortcuts>
             <schedule-event-crontab-description class="pt-0" v-if="type === 'SHEDULE_EVENT'"></schedule-event-crontab-description>
@@ -48,6 +42,7 @@ import timerEventShortcuts from "../blocks/shortcuts/timer_event_shortcuts.vue";
 import scheduleEventShortcuts from "../blocks/shortcuts/schedule_event_shortcuts.vue";
 import webEventShortcuts from "../blocks/shortcuts/web_event_shortcuts.vue";
 import scheduleEventCrontabDescription from "../blocks/misc/schedule-event-crontab-description.vue";
+import matchingTopicsList from "../blocks/misc/matching-topics-list.vue";
 
 export default {
   components: {
@@ -56,7 +51,8 @@ export default {
         timerEventShortcuts,
         scheduleEventShortcuts,
         scheduleEventCrontabDescription,
-        webEventShortcuts
+        webEventShortcuts,
+        matchingTopicsList
     },
   props: ["updateObject"],
   data: () => ({
@@ -72,7 +68,6 @@ export default {
       this.object = object;
       this.type = type;
       this.visible = true;
-      this.get_mask_match();
     },
     hide() {
       this.visible = false;
@@ -80,38 +75,6 @@ export default {
       this.uuid = "";
       this.type = "";
       this.mask_topics = [];
-    },
-    get_mask_match() {
-        console.log("hit");
-        if (this.object !== "" && this.type === "BUS_EVENT") {
-            Vue.axios
-                .get(
-                    "http://localhost:8080/system_bus",
-                    {
-                        params: {
-                            action: "get_bus",
-                            limit: 10,
-                            mask: btoa(this.object)
-                        }
-                    }
-                )
-                .then(response => {
-                    if(response.data.length > 0) {
-                        this.mask_topics = response.data;
-                    }
-                    else {
-                        this.mask_topics = [];
-                    }
-
-                })
-                .catch(error => {
-                    this.mask_topics = [];
-                    console.log(error);
-                });
-        }
-        else {
-            this.mask_topics = [];
-        }
     },
     submit() {
         console.log(this.type);
