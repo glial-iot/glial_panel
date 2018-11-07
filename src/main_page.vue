@@ -175,8 +175,8 @@ export default {
             this.backend_version = response.data.version;
             this.server_online = true;
           } else {
-            throw new Error("Cant find version");
             this.server_online = false;
+            throw new Error("Cant find version");
           }
         })
         .catch(error => {
