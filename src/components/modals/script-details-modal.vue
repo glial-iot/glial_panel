@@ -18,13 +18,17 @@
                   <div class="subheading">Message: "{{status_msg}}"</div>
                   <div class="subheading">System load percent(relative): {{worktime_percent}}%</div>
                   <div class="subheading">System load percent(absolute): {{alltime_percent}}%</div>
-                  <div @click="$refs.change_tag.show(uuid, tag, type)" class="subheading change_tags_field">
+                  <div class="subheading">
                      Tags: {{tags}}<span class="grey--text" v-if="tags ===''">(Empty)</span>
-                     <i class="fa fa-edit blue--text"></i>
+                     <span class="change_tags_button" @click="$refs.change_tag.show(uuid, tags, type)">
+                        <i class="fa fa-edit blue--text"></i>
+                     </span>
                   </div>
-                  <div @click="$refs.change_comment.show(uuid, comment, type)" class="subheading change_comment_field">
+                  <div class="subheading">
                      Comment: {{comment}}<span class="grey--text" v-if="comment ===''">(Empty)</span>
-                     <i class="fa fa-edit blue--text"></i>
+                     <span class="change_comment_button" @click="$refs.change_comment.show(uuid, comment, type)">
+                        <i class="fa fa-edit blue--text"></i>
+                     </span>
                   </div>
                </div>
             </v-card-text>
