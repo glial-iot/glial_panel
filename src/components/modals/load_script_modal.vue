@@ -50,7 +50,7 @@
             create_loaded_script(name, object, body) {
                 let params = {
                     action: "create",
-                    name: name
+                    name: btoa(name)
                 };
                 if (this.type !== "DRIVER") {
                     params.object = object;

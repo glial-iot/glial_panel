@@ -357,6 +357,11 @@ export default {
         });
     },
     run_script() {
+      let script_saved = false;
+      if (this.prev_content !== this.content) {
+          this.save_script('silent');
+          script_saved = true;
+      }
       Vue.axios
         .get(this.$store.getters.server_url + "/busevents", {
           params: {
@@ -368,8 +373,9 @@ export default {
           if (response.data.error_msg) {
             throw new Error(response.data.error_msg);
           }
-
-          this.$refs.snackbar.update("");
+          script_saved ?
+              this.$refs.snackbar.update("Script was saved and run once!", "success", 2000) :
+              this.$refs.snackbar.update("Script was run once!", "success", 2000)
         })
         .catch(error => {
           console.log(error);

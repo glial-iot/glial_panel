@@ -1,16 +1,20 @@
-<template>
+<template lang="html">
    <div>
-      <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="290">
+      <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="420">
          <v-card>
-            <v-card-title class="headline">Rename script</v-card-title>
+
+            <v-card-title class="headline">Change script tags</v-card-title>
+
             <v-card-text>
-               <v-text-field autofocus v-if="visible" v-model="name" label="Edit name" required></v-text-field>
+               <v-text-field autofocus v-if="visible" v-model="tags" :label="`Tags`" required></v-text-field>
             </v-card-text>
+
             <v-card-actions>
                <v-btn color="error" flat @click="hide()">Cancel</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="green darken-1" flat @click="submit()">Rename</v-btn>
+               <v-btn color="green darken-1" flat @click="submit()">Change</v-btn>
             </v-card-actions>
+
          </v-card>
       </v-dialog>
       <snackbar ref="snackbar"></snackbar>
@@ -25,25 +29,27 @@ Vue.use(VueAxios, Axios);
 import snackbar from "../snackbar.vue";
 
 export default {
-  props: ["hideDetails", "updateName"],
+  components: {
+        snackbar
+    },
   data: () => ({
-    name: "",
+    tags: "",
     uuid: "",
     type: "",
     visible: false
   }),
   methods: {
-    show(uuid, type, name) {
+    show(uuid, tags, type) {
       this.uuid = uuid;
-      this.name = name;
+      this.tags = tags;
       this.type = type;
       this.visible = true;
     },
     hide() {
-      this.name = "";
-      this.uuid = "";
-      this.type = "";
-      this.visible = false;
+        this.uuid = "";
+        this.tags = "";
+        this.type = "";
+        this.visible = false;
     },
     submit() {
       Vue.axios
@@ -54,20 +60,18 @@ export default {
             params: {
               action: "update",
               uuid: this.uuid,
-              name: btoa(this.name)
+              tag: btoa(this.tags)
             }
           }
         )
         .then(response => {
+          if (response.data.tag === this.tags ) {
+              this.$emit("tags_updated", this.tags);
+          }
           this.hide();
-          if (this.hideDetails) {
-            this.hideDetails();
-          }
-          if (this.updateName && response.data.name) {
-            this.updateName(response.data.name);
-          }
         })
         .catch(error => {
+          this.$emit("tags_error", this.tags);
           console.log(error);
         });
     }

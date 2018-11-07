@@ -51,6 +51,10 @@
 
                   </td>
 
+                  <td class="text-xs-left ellipsis script_tag_cell" :title="props.item.tag" @click="$refs.change_tag.show(props.item.uuid, props.item.tag, props.item.type)">
+                     {{ props.item.tag}}
+                  </td>
+
                   <td class="justify-center text-xs-center button-sm">
                      <button-info title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
                   </td>
@@ -96,6 +100,8 @@
       <copy-script-modal @copy_error="$refs.snackbar.update('Copy script: error')" @copy_successful="table_update()" ref="copyscript"></copy-script-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
       <change-object-modal ref="change_object"></change-object-modal>
+      <change-tag-modal ref="change_tag" @tags_error="$refs.snackbar.update('Tags update: error')"
+                        @tags_updated="$refs.snackbar.update('Tags updated', 'success', 2000); table_update()"></change-tag-modal>
    </div>
 </template>
 
@@ -129,6 +135,7 @@ import iconStopped from "../../components/icons/icon-status-stopped.vue";
 import iconWarning from "../../components/icons/icon-status-warning.vue";
 import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
 import changeObjectModal from "../../components/modals/change-object-modal";
+import changeTagModal from "../../components/modals/change-tag-modal";
 
 export default {
   components: {
@@ -150,7 +157,8 @@ export default {
     iconStopped,
     iconWarning,
     confirmRemoveScriptModal,
-    changeObjectModal
+    changeObjectModal,
+    changeTagModal
   },
   data: () => ({
     headers: [],
@@ -190,6 +198,12 @@ export default {
         text: this.$options.filters.object_label(this.type),
         value: "object",
         align: "left"
+      },
+      {
+        text: "Tags",
+        value: "tags",
+        align: "left",
+        width: "5%"
       },
       {
         text: "Info",
@@ -287,6 +301,7 @@ export default {
         )
         .then(response => {
           Vue.set(this, "scripts_table", response.data);
+          console.log(response.data)
           this.loaded = true;
           this.$refs.snackbar.update("");
         })

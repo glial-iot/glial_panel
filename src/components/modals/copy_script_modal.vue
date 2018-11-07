@@ -60,7 +60,7 @@ export default {
                         params: {
                             action: "copy",
                             uuid: this.uuid,
-                            name: this.name
+                            name: btoa(this.name)
                         }
                     }
                 )
