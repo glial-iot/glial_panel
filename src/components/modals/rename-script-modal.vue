@@ -54,7 +54,7 @@ export default {
             params: {
               action: "update",
               uuid: this.uuid,
-              name: this.name
+              name: btoa(this.name)
             }
           }
         )

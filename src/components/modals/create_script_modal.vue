@@ -91,13 +91,13 @@ export default {
       if (this.type === "DRIVER") {
         params = {
           action: "create",
-          name: this.name
+          name: btoa(this.name)
         };
       } else {
         params = {
           action: "create",
-          name: this.name,
-          object: this.object
+          name: btoa(this.name),
+          object: btoa(this.object)
         };
       }
 

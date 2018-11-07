@@ -232,12 +232,6 @@ export default {
     },
     update_object(value) {
       this.object = value;
-    },
-    update_tags(value) {
-      this.tags = value;
-    },
-    update_comment(value) {
-      this.comment = value;
     }
   },
   watch: {
