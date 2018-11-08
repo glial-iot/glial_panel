@@ -52,7 +52,7 @@ export default {
       this.entry = item.entry;
       this.key = item.key;
       this.timestamp = item.time;
-      this.date = item.date_abs;
+      this.date = this.$options.filters.moment(item.time_ms, 'YYYY-MM-DD, HH:MM:SS');
       this.source = item.source;
       this.level = item.level;
       this.visible = true;
