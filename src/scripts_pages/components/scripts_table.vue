@@ -302,7 +302,7 @@ export default {
         )
         .then(response => {
           Vue.set(this, "scripts_table", response.data);
-          console.log(response.data)
+          console.log(response.data);
           this.loaded = true;
           this.$refs.snackbar.update("");
         })
@@ -334,36 +334,41 @@ export default {
         });
     },
     save_script(table_item) {
-        Vue.axios
-            .get(
-                this.$store.getters.server_url +
-                this.$store.state.endpoints[this.type],
-                {
-                    params: {
-                        action: "get",
-                        uuid: table_item.uuid
-                    }
-                }
-            )
-            .then(response => {
-                let scriptJSON = {
-                    "name": response.data.name,
-                    "type": response.data.type,
-                    "object": response.data.object,
-                    "body": response.data.body
-                };
-                let scriptStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scriptJSON));
-                let downloadAnchorNode = document.createElement('a');
-                downloadAnchorNode.setAttribute("href",     scriptStr);
-                downloadAnchorNode.setAttribute("download", response.data.name + ".gs.json");
-                document.body.appendChild(downloadAnchorNode);
-                downloadAnchorNode.click();
-                downloadAnchorNode.remove();
-            })
-            .catch(error => {
-                console.log(error);
-                this.$refs.snackbar.update("Error: Can't save script");
-            });
+      Vue.axios
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "get",
+              uuid: table_item.uuid
+            }
+          }
+        )
+        .then(response => {
+          let scriptJSON = {
+            name: response.data.name,
+            type: response.data.type,
+            object: response.data.object,
+            body: response.data.body
+          };
+          let scriptStr =
+            "data:text/json;charset=utf-8," +
+            encodeURIComponent(JSON.stringify(scriptJSON));
+          let downloadAnchorNode = document.createElement("a");
+          downloadAnchorNode.setAttribute("href", scriptStr);
+          downloadAnchorNode.setAttribute(
+            "download",
+            response.data.name + ".gs.json"
+          );
+          document.body.appendChild(downloadAnchorNode);
+          downloadAnchorNode.click();
+          downloadAnchorNode.remove();
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Error: Can't save script");
+        });
     }
   }
 };
