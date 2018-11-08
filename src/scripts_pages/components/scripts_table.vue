@@ -197,13 +197,14 @@ export default {
       {
         text: this.$options.filters.object_label(this.type),
         value: "object",
-        align: "left"
+        align: "left",
+        width: "15%"
       },
       {
         text: "Tags",
         value: "tags",
         align: "left",
-        width: "5%"
+        width: "20%"
       },
       {
         text: "Info",
