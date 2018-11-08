@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog :value="visible" persistent max-width="290">
+      <v-dialog v-on:keydown.esc="hide()" :value="visible" persistent max-width="290">
          <v-card>
             <v-card-title class="headline">Confirm wipe</v-card-title>
             <v-card-text>Do you want to delete database and storage? <br> All scripts, logs, data bus will be deleted! <br> Backups will not be deleted</v-card-text>

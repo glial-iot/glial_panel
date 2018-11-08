@@ -1,7 +1,7 @@
 <template>
    <v-app id="inspire">
 
-      <v-navigation-drawer fixed app clipped disable-resize-watcher permanent touchless width=150>
+      <v-navigation-drawer fixed app clipped disable-resize-watcher permanent touchless width=160>
          <v-list dense>
             <template v-for="item in menuitems">
                <v-list-tile :to="{path: item.path}" :key="item.path">
@@ -118,8 +118,8 @@ let menu = [
     color: "green darken-2"
   },
   {
-    path: "/scripts/sheduleevent",
-    name: "Shedule scripts",
+    path: "/scripts/scheduleevent",
+    name: "Schedule scripts",
     icon: "fa-calendar-alt",
     color: "green darken-2"
   },
@@ -175,8 +175,8 @@ export default {
             this.backend_version = response.data.version;
             this.server_online = true;
           } else {
-            throw new Error("Cant find version");
             this.server_online = false;
+            throw new Error("Cant find version");
           }
         })
         .catch(error => {

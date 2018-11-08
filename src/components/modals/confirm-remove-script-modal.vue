@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog :value="visible" persistent max-width="290">
+      <v-dialog v-on:keydown.esc="hide()" :value="visible" persistent max-width="290">
          <v-card>
             <v-card-title class="headline">Confirm remove script</v-card-title>
             <v-card-text>Do you really want to remove script "{{item.name}}"?</v-card-text>

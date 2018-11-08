@@ -4,8 +4,8 @@
 
          <v-card-title class="py-0 px-0">
             <v-spacer></v-spacer>
-
-            <create-script-modal @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
+            <create-script-modal class="mr-3" @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
+            <load-script-modal @load_script_error="$refs.snackbar.update('Load script: error')" @script_loaded="table_update()" :type="type"></load-script-modal>
          </v-card-title>
 
          <v-divider></v-divider>
@@ -14,7 +14,6 @@
 
             <template slot="items" slot-scope="props">
                <tr :key="props.item.uuid">
-
                   <td class="text-xs-center">
                      <div :title="props.item.status_msg">
                         <icon-normal v-show="props.item.status == 'NORMAL'">fa-check-circle</icon-normal>
@@ -34,7 +33,7 @@
                      {{ props.item.name }}
                   </td>
 
-                  <td class="text-xs-left">
+                  <td class="text-xs-left script_object_cell" @click="$refs.change_object.show(props.item.uuid, props.item.object, props.item.type)">
                      <div v-if="type === 'WEB_EVENT'">
                         <span>
                            <a :href="$store.getters.server_url+'/we/'+props.item.object" target="_blank" style="text-decoration: none">
@@ -44,18 +43,28 @@
                      </div>
                      <div v-if="type !== 'WEB_EVENT' && type !== 'TIMER_EVENT'">
                         {{ props.item.object }}
-
                      </div>
 
                      <div v-if="type == 'TIMER_EVENT'">
                         {{ props.item.object }} seconds
-
                      </div>
 
                   </td>
 
+                  <td class="text-xs-left ellipsis script_tag_cell" :title="props.item.tag" @click="$refs.change_tag.show(props.item.uuid, props.item.tag, props.item.type)">
+                     {{ props.item.tag}}
+                  </td>
+
                   <td class="justify-center text-xs-center button-sm">
                      <button-info title="Show scripts info" @click.native="$refs.scriptdetails.show(props.item)"></button-info>
+                  </td>
+
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-copy title="Copy script" @click.native="$refs.copyscript.show(props.item)"></button-copy>
+                  </td>
+
+                  <td class="justify-center text-xs-center button-sm">
+                     <button-save title="Save script" @click.native="save_script(props.item)"></button-save>
                   </td>
 
                   <td v-if="type === 'BUS_EVENT'" class="justify-center text-xs-center button-sm">
@@ -73,10 +82,6 @@
                   <td class="justify-center text-xs-center button-sm">
                      <button-trash title="Delete script" @click.native="$refs.remove_modal.show(props.item)"></button-trash>
                   </td>
-
-                  <td class="justify-center text-xs-center button-sm">
-                     <button-sync title="Restart" @click.native="script_restart(props.item)"></button-sync>
-                  </td>
                </tr>
             </template>
 
@@ -92,7 +97,11 @@
       </v-card>
       <snackbar ref="snackbar"></snackbar>
       <script-details-modal ref="scriptdetails"></script-details-modal>
+      <copy-script-modal @copy_error="$refs.snackbar.update('Copy script: error')" @copy_successful="table_update()" ref="copyscript"></copy-script-modal>
       <confirm-remove-script-modal ref="remove_modal" :update="table_update"></confirm-remove-script-modal>
+      <change-object-modal ref="change_object"></change-object-modal>
+      <change-tag-modal ref="change_tag" @tags_error="$refs.snackbar.update('Tags update: error')"
+                        @tags_updated="$refs.snackbar.update('Tags updated', 'success', 2000); table_update()"></change-tag-modal>
    </div>
 </template>
 
@@ -108,9 +117,13 @@ import VueTimers from "vue-timers";
 Vue.use(VueTimers);
 
 import createScriptModal from "../../components/modals/create_script_modal.vue";
+import copyScriptModal from "../../components/modals/copy_script_modal.vue";
+import loadScriptModal from "../../components/modals/load_script_modal.vue";
 import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
 import snackbar from "../../components/snackbar.vue";
 import buttonInfo from "../../components/buttons/button-info.vue";
+import buttonSave from "../../components/buttons/button-save.vue";
+import buttonCopy from "../../components/buttons/button-copy.vue";
 import buttonEdit from "../../components/buttons/button-edit.vue";
 import buttonActivate from "../../components/buttons/button-activate.vue";
 import buttonRocket from "../../components/buttons/button-rocket.vue";
@@ -121,13 +134,19 @@ import iconNormal from "../../components/icons/icon-status-normal.vue";
 import iconStopped from "../../components/icons/icon-status-stopped.vue";
 import iconWarning from "../../components/icons/icon-status-warning.vue";
 import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
+import changeObjectModal from "../../components/modals/change-object-modal";
+import changeTagModal from "../../components/modals/change-tag-modal";
 
 export default {
   components: {
     createScriptModal,
+    copyScriptModal,
+    loadScriptModal,
     scriptDetailsModal,
     snackbar,
     buttonInfo,
+    buttonSave,
+    buttonCopy,
     buttonRocket,
     buttonActivate,
     buttonEdit,
@@ -137,7 +156,9 @@ export default {
     iconNormal,
     iconStopped,
     iconWarning,
-    confirmRemoveScriptModal
+    confirmRemoveScriptModal,
+    changeObjectModal,
+    changeTagModal
   },
   data: () => ({
     headers: [],
@@ -176,10 +197,29 @@ export default {
       {
         text: this.$options.filters.object_label(this.type),
         value: "object",
-        align: "left"
+        align: "left",
+        width: "15%"
+      },
+      {
+        text: "Tags",
+        value: "tags",
+        align: "left",
+        width: "20%"
       },
       {
         text: "Info",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
+      {
+        text: "Copy",
+        align: "center",
+        sortable: false,
+        width: "5%"
+      },
+      {
+        text: "Save",
         align: "center",
         sortable: false,
         width: "5%"
@@ -207,12 +247,6 @@ export default {
         sortable: false,
         align: "center",
         width: "5%"
-      },
-      {
-        text: "Restart",
-        sortable: false,
-        align: "center",
-        width: "5%"
       }
     ];
 
@@ -227,26 +261,6 @@ export default {
         path: "/editor",
         query: { uuid: table_item.uuid, type: table_item.type }
       });
-    },
-    script_restart(table_item) {
-      Vue.axios
-        .get(
-          this.$store.getters.server_url +
-            this.$store.state.endpoints[this.type],
-          {
-            params: {
-              action: "reload",
-              uuid: table_item.uuid
-            }
-          }
-        )
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-          this.$refs.snackbar.update("Reload script error");
-        });
     },
     script_active_change(table_item, current_flag) {
       let to_set_flag = "";
@@ -288,6 +302,7 @@ export default {
         )
         .then(response => {
           Vue.set(this, "scripts_table", response.data);
+          console.log(response.data);
           this.loaded = true;
           this.$refs.snackbar.update("");
         })
@@ -298,7 +313,6 @@ export default {
           this.loaded = false;
         });
     },
-
     run_script(table_item) {
       Vue.axios
         .get(this.$store.getters.server_url + "/busevents", {
@@ -317,6 +331,43 @@ export default {
         .catch(error => {
           console.log(error);
           this.$refs.snackbar.update("Run script error");
+        });
+    },
+    save_script(table_item) {
+      Vue.axios
+        .get(
+          this.$store.getters.server_url +
+            this.$store.state.endpoints[this.type],
+          {
+            params: {
+              action: "get",
+              uuid: table_item.uuid
+            }
+          }
+        )
+        .then(response => {
+          let scriptJSON = {
+            name: response.data.name,
+            type: response.data.type,
+            object: response.data.object,
+            body: response.data.body
+          };
+          let scriptStr =
+            "data:text/json;charset=utf-8," +
+            encodeURIComponent(JSON.stringify(scriptJSON));
+          let downloadAnchorNode = document.createElement("a");
+          downloadAnchorNode.setAttribute("href", scriptStr);
+          downloadAnchorNode.setAttribute(
+            "download",
+            response.data.name + ".gs.json"
+          );
+          document.body.appendChild(downloadAnchorNode);
+          downloadAnchorNode.click();
+          downloadAnchorNode.remove();
+        })
+        .catch(error => {
+          console.log(error);
+          this.$refs.snackbar.update("Error: Can't save script");
         });
     }
   }

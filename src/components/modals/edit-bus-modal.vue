@@ -1,6 +1,6 @@
 <template>
    <div>
-      <v-dialog :value="visible" persistent max-width="500">
+      <v-dialog v-on:keydown.esc="hide()" :value="visible" persistent max-width="500">
          <v-card>
             <v-card-title class="headline">Edit Bus Topic</v-card-title>
             <v-divider></v-divider>
@@ -16,12 +16,12 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Type</div>
-               <div class="subheading subheading-value" v-if="!edit_type">
+               <div class="subheading subheading-value" v-show="!edit_type">
                   <v-text-field :value="get_text(item.type)" disabled></v-text-field>
                   <v-btn small color="green darken-1" flat @click="edit('type')">Edit</v-btn>
                </div>
-               <div class="subheading edit-form" v-if="edit_type">
-                  <v-text-field v-model="type"></v-text-field>
+               <div class="subheading edit-form" v-show="edit_type">
+                  <v-text-field ref="edit_type_field" v-model="type" v-on:keyup.enter="save('type')"></v-text-field>
                   <v-btn small color="green darken-1" flat @click="save('type')">Save</v-btn>
                   <v-btn small color="red darken-1" flat @click="cancel_edit('type')">Cancel</v-btn>
                </div>
@@ -29,12 +29,12 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Tags</div>
-               <div class="subheading subheading-value" v-if="!edit_tags">
+               <div class="subheading subheading-value" v-show="!edit_tags">
                   <v-text-field :value="get_text(item.tags)" disabled></v-text-field>
                   <v-btn small color="green darken-1" flat @click="edit('tags')">Edit</v-btn>
                </div>
-               <div class="subheading edit-form" v-if="edit_tags">
-                  <v-text-field v-model="tags"></v-text-field>
+               <div class="subheading edit-form" v-show="edit_tags">
+                  <v-text-field ref="edit_tags_field" v-model="tags" v-on:keyup.enter="save('tags')"></v-text-field>
                   <v-btn small color="green darken-1" flat @click="save('tags')">Save</v-btn>
                   <v-btn small color="red darken-1" flat @click="cancel_edit('tags')">Cancel</v-btn>
                </div>
@@ -42,12 +42,12 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Value</div>
-               <div class="subheading subheading-value" v-if="!edit_value">
+               <div class="subheading subheading-value" v-show="!edit_value">
                   <v-text-field :value="get_text(item.value)" disabled></v-text-field>
                   <v-btn small color="green darken-1" flat @click="edit('value')">Edit</v-btn>
                </div>
-               <div class="subheading edit-form" v-if="edit_value">
-                  <v-text-field v-model="value"></v-text-field>
+               <div class="subheading edit-form" v-show="edit_value">
+                  <v-text-field ref="edit_value_field" v-model="value" v-on:keyup.enter="save('value')"></v-text-field>
                   <v-btn small color="green darken-1" flat @click="save('value')">Save</v-btn>
                   <v-btn small color="red darken-1" flat @click="cancel_edit('value')">Cancel</v-btn>
                </div>
@@ -101,14 +101,23 @@ export default {
         case "type":
           this.type = this.item.type;
           this.edit_type = true;
+            this.$nextTick(function(){
+                this.$refs.edit_type_field.focus();
+            });
           break;
         case "tags":
           this.tags = this.item.tags;
           this.edit_tags = true;
+            this.$nextTick(function(){
+                this.$refs.edit_tags_field.focus();
+            });
           break;
         case "value":
           this.value = this.item.value;
           this.edit_value = true;
+          this.$nextTick(function(){
+                this.$refs.edit_value_field.focus();
+          });
           break;
       }
     },

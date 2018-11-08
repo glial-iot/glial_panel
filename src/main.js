@@ -9,7 +9,7 @@ import editor from './scripts_pages/editor.vue'
 import drivers from './scripts_pages/drivers.vue'
 import event_scripts from './scripts_pages/event_scripts.vue'
 import timer_scripts from './scripts_pages/timer_scripts.vue'
-import shedule_scripts from './scripts_pages/shedule_scripts.vue'
+import schedule_scripts from './scripts_pages/schedule_scripts.vue'
 import web_scripts from './scripts_pages/web_scripts.vue'
 
 import Vuetify from 'vuetify'
@@ -70,8 +70,8 @@ const router = new VueRouter({
       path: '/scripts/timerevent',
       component: timer_scripts
    }, {
-      path: '/scripts/sheduleevent',
-      component: shedule_scripts
+      path: '/scripts/scheduleevent',
+      component: schedule_scripts
    }, {
       path: '/manage',
       component: manage,
@@ -236,7 +236,7 @@ Vue.filter("type2string", function (type) {
       return "Timer-event script";
    }
    if (type === "SHEDULE_EVENT") {
-      return "Shedule-event script";
+      return "Schedule-event script";
    }
 })
 
@@ -249,7 +249,7 @@ Vue.filter("object_label", function (type) {
       case "TIMER_EVENT":
          return "Period"
       case "SHEDULE_EVENT":
-         return "Shedule"
+         return "Schedule"
       default:
          return ''
    }
