@@ -42,7 +42,9 @@
                      <div class="ellipsis" :title="props.item.uuid_source">{{ props.item.source }}</div>
                   </td>
                   <td class="text-xs-center">
-                     <div class="ellipsis" :title="time_format_rel ? props.item.date_abs : $options.filters.toRelativeTime(props.item.time)">{{ time_format_rel ? $options.filters.toRelativeTime(props.item.time) : props.item.date_abs }}</div>
+                     <div class="ellipsis" :title="time_format_rel ? $options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS') : $options.filters.toRelativeTime(props.item.time)">
+                        {{ time_format_rel ? $options.filters.toRelativeTime(props.item.time) : props.item.time_ms | moment("YYYY-MM-DD, HH:MM:SS") }}
+                     </div>
                   </td>
                   <td class="text-xs-left">
                      <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
@@ -56,7 +58,7 @@
          <v-divider></v-divider>
          <v-card-title class="py-0 px-0 small_title">
             <v-spacer></v-spacer>
-            <span class="body-2 mx-4 grey--text"> Log records: {{table_values.length}} </span>
+            <span class="body-2 mx-4 grey--text"> Log ыыыыrecords: {{table_values.length}} </span>
          </v-card-title>
       </v-card>
       <snackbar ref="snackbar_error"></snackbar>
