@@ -24,15 +24,17 @@
             };
         },
         methods: {
-            get_mask_match() {
-                if (this.$props.mask !== "") {
+            get_mask_match(force_topic) {
+                let mask = force_topic ? force_topic : this.$props.mask;
+                console.log(mask);
+                if (mask !== "") {
                     Vue.axios
                         .get(
                             this.$store.getters.server_url + "/system_bus",
                             {
                                 params: {
                                     action: "get_bus",
-                                    mask: btoa(this.$props.mask)
+                                    mask: btoa(mask)
                                 }
                             }
                         )

@@ -26,11 +26,6 @@
                   <v-btn flat :value="BUS_TYPE_LINEAR">Linear View</v-btn>
                </v-btn-toggle>
             </div>
-            <div class="pl-2">
-               <create-script-modal @create_error="$refs.snackbar.update('Create script: error')"
-                                    @data_updated="$refs.snackbar.update('Bus-event script created!', 'success', 2000)"
-                                    :type="'BUS_EVENT'"></create-script-modal>
-            </div>
          </v-card-title>
          <bus-tree ref="bus_tree" v-if="bus_type === BUS_TYPE_TREE" :json="bus_values" :topicDelete="topic_delete"></bus-tree>
          <bus-linear v-if="bus_type === BUS_TYPE_LINEAR" :items="bus_values" :topicDelete="topic_delete" :loaded="loaded"></bus-linear>
@@ -57,7 +52,6 @@ import busLinear from "./components/blocks/bus/bus-linear.vue";
 import editBusModal from "./components/modals/edit-bus-modal.vue";
 import buttonTrash from "./components/buttons/button-trash.vue";
 import buttonInfo from "./components/buttons/button-info.vue";
-import createScriptModal from "./components/modals/create_script_modal.vue";
 
 export default {
   components: {
@@ -66,8 +60,7 @@ export default {
     busLinear,
     editBusModal,
     buttonTrash,
-    buttonInfo,
-    createScriptModal
+    buttonInfo
   },
   data: () => ({
     BUS_TYPE_LINEAR,

@@ -50,6 +50,7 @@
                      <div class="viewer-item__key__tags" :title="node.data.objectKey.tags">{{ node.data.objectKey.tags }}</div>
                      <div class="viewer-item__key__update" :title="get_time(node.data.objectKey.update_time)">{{ get_time(node.data.objectKey.update_time) }}</div>
                      <div class="viewer-item__key__actions">
+                        <button-create-script @click.native="$refs.create_event_script.open(props.item)"></button-create-script>
                         <button-info @click.native="$refs.edit_bus.show(node.data.objectKey)"></button-info>
                         <button-trash @click.native="topicDelete(node.data.objectKey)"></button-trash>
                      </div>
@@ -63,6 +64,7 @@
          <span class="body-2 mx-4 grey--text"> Bus records: {{dataElements}} </span>
       </v-card-title>
       <edit-bus-modal ref="edit_bus"></edit-bus-modal>
+      <create-script-modal ref="create_event_script" :visual="'none'" :type="'BUS_EVENT'"></create-script-modal>
    </div>
 </template>
 
@@ -75,6 +77,8 @@ import moment from "moment";
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
 import buttonInfo from "../../buttons/button-info.vue";
+import buttonCreateScript from "../../buttons/button-create-script.vue";
+import createScriptModal from "../../modals/create_script_modal.vue";
 
 const DATA_KEY = "__data__";
 
@@ -83,7 +87,9 @@ export default {
     tree: LiquorTree,
     editBusModal,
     buttonTrash,
-    buttonInfo
+    buttonInfo,
+    buttonCreateScript,
+    createScriptModal
   },
   props: ["json", "topicDelete"],
   data() {

@@ -19,6 +19,7 @@
                   <div class="ellipsis" :title="get_time(props.item.time)">{{ get_time(props.item.time) }}</div>
                </td>
                <td class="justify-center text-xs-center cell-flex">
+                  <button-create-script @click.native="$refs.create_event_script.open(props.item)"></button-create-script>
                   <button-info @click.native="$refs.edit_bus.show(props.item)"></button-info>
                   <button-trash @click.native="topicDelete(props.item)"></button-trash>
                </td>
@@ -31,6 +32,7 @@
          <span class="body-2 mx-4 grey--text"> Bus records: {{items.length}} </span>
       </v-card-title>
       <edit-bus-modal ref="edit_bus"></edit-bus-modal>
+      <create-script-modal ref="create_event_script" :visual="'none'" :type="'BUS_EVENT'"></create-script-modal>
    </div>
 </template>
 
@@ -41,6 +43,8 @@ import Vue from "vue";
 import editBusModal from "../../modals/edit-bus-modal.vue";
 import buttonTrash from "../../buttons/button-trash.vue";
 import buttonInfo from "../../buttons/button-info.vue";
+import buttonCreateScript from "../../buttons/button-create-script.vue";
+import createScriptModal from "../../modals/create_script_modal.vue";
 
 Vue.use(require("vue-moment"));
 
@@ -48,7 +52,9 @@ export default {
   components: {
     editBusModal,
     buttonTrash,
-    buttonInfo
+    buttonInfo,
+    buttonCreateScript,
+    createScriptModal
   },
   props: ["items", "topicDelete", "loaded"],
   methods: {

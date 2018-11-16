@@ -1,6 +1,6 @@
 <template lang="html">
    <div>
-      <v-btn color="secondary" class="my-2" @click="dialog_visible = true">
+      <v-btn v-if="visual !== 'none'" color="secondary" class="my-2" @click="dialog_visible = true">
          <v-icon left small>fa-file</v-icon> Create {{$options.filters.type2string(type)}}
       </v-btn>
 
@@ -70,13 +70,20 @@ export default {
       mask_topics: []
     };
   },
-  props: ["type"],
+  props: ["type", "visual"],
   methods: {
     close() {
       this.name = "";
       this.object = "";
       this.dialog_visible = false;
       this.mask_topics = [];
+    },
+    open(item) {
+        this.name = "";
+        this.object = item.topic;
+        this.dialog_visible = true;
+        this.mask_topics = [];
+        this.$refs.matchingTopicsList.get_mask_match(item.topic);
     },
     create_script() {
       let params = {};
