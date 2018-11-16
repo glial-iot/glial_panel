@@ -68,7 +68,7 @@
                         <div class="ellipsis">{{ props.item.level }}</div>
                      </td>
                      <td class="text-xs-left">
-                        <div class="ellipsis" :title="$options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS')">{{$options.filters.toRelativeTime(props.item.time)}}</div>
+                        <div class="ellipsis" :title="$options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS')">{{$options.filters.toRelativeTime(props.item.time_ms)}}</div>
                      </td>
                      <td class="text-xs-left">
                         <div class="ellipsis mw-100" :title="props.item.entry">{{ props.item.entry }}</div>
