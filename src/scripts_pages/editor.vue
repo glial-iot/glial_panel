@@ -271,8 +271,8 @@ export default {
             reader.result
           )
           .then(response => {
-            if (mode !== 'silent') {
-                this.$refs.snackbar.update("Script saved", "success", 3000);
+            if (mode !== "silent") {
+              this.$refs.snackbar.update("Script saved", "success", 3000);
             }
             this.saved = true;
           })
@@ -310,8 +310,8 @@ export default {
         });
     },
     script_active_change(flag) {
-      if (flag === "ACTIVE")  {
-          this.save_script('silent');
+      if (flag === "ACTIVE") {
+        this.save_script("silent");
       }
       Vue.axios
         .get(
@@ -329,10 +329,13 @@ export default {
           console.log(response);
           this.active_flag = flag;
           if (flag === "ACTIVE") {
-              this.$refs.snackbar.update("Script saved and activated", "success", 1500);
-          }
-          else {
-              this.$refs.snackbar.update("Script deactivated", "success", 1500);
+            this.$refs.snackbar.update(
+              "Script saved and activated",
+              "success",
+              1500
+            );
+          } else {
+            this.$refs.snackbar.update("Script deactivated", "success", 1500);
           }
         })
         .catch(error => {
@@ -359,8 +362,8 @@ export default {
     run_script() {
       let script_saved = false;
       if (this.prev_content !== this.content) {
-          this.save_script('silent');
-          script_saved = true;
+        this.save_script("silent");
+        script_saved = true;
       }
       Vue.axios
         .get(this.$store.getters.server_url + "/busevents", {
@@ -373,9 +376,17 @@ export default {
           if (response.data.error_msg) {
             throw new Error(response.data.error_msg);
           }
-          script_saved ?
-              this.$refs.snackbar.update("Script was saved and run once!", "success", 2000) :
-              this.$refs.snackbar.update("Script was run once!", "success", 2000)
+          script_saved
+            ? this.$refs.snackbar.update(
+                "Script was saved and run once!",
+                "success",
+                2000
+              )
+            : this.$refs.snackbar.update(
+                "Script was run once!",
+                "success",
+                2000
+              );
         })
         .catch(error => {
           console.log(error);
