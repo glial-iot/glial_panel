@@ -34,18 +34,18 @@
                   </td>
 
                   <td class="text-xs-left script_object_cell" @click="$refs.change_object.show(props.item.uuid, props.item.object, props.item.type)">
-                     <div v-if="type === 'WEB_EVENT'">
+                     <div v-if="type === 'WEB_EVENT'" class="ellipsis">
                         <span>
                            <a :href="$store.getters.server_url+'/we/'+props.item.object" target="_blank" style="text-decoration: none">
                               <span class="grey--text">/we/</span><span class="black--text">{{props.item.object}}</span>
                            </a>
                         </span>
                      </div>
-                     <div v-if="type !== 'WEB_EVENT' && type !== 'TIMER_EVENT'">
+                     <div v-if="type !== 'WEB_EVENT' && type !== 'TIMER_EVENT'" class="ellipsis">
                         {{ props.item.object }}
                      </div>
 
-                     <div v-if="type == 'TIMER_EVENT'">
+                     <div v-if="type == 'TIMER_EVENT'" class="ellipsis">
                         {{ props.item.object }} seconds
                      </div>
 
