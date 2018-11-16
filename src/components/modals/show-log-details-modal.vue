@@ -51,7 +51,7 @@ export default {
       this.trace = item.trace;
       this.entry = item.entry;
       this.key = item.key;
-      this.timestamp = item.time;
+      this.timestamp = item.time_ms;
       this.date = this.$options.filters.moment(item.time_ms, 'YYYY-MM-DD, HH:MM:SS');
       this.source = item.source;
       this.level = item.level;

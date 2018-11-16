@@ -11,7 +11,7 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Update time</div>
-               <div class="subheading subheading-value">{{item.text_time}}</div>
+               <div class="subheading subheading-value">{{$parent.get_time(item.time)}}</div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>

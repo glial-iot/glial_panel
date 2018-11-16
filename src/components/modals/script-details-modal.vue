@@ -45,7 +45,7 @@
                         </td>
                         <td class="text-xs-center">
                            <div class="ellipsis" :title="$options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS')">
-                              {{$options.filters.toRelativeTime(props.item.time)}}
+                              {{$options.filters.toRelativeTime(props.item.time_ms)}}
                            </div>
                         </td>
                         <td class="text-xs-left">

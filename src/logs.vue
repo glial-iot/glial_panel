@@ -42,8 +42,8 @@
                      <div class="ellipsis" :title="props.item.uuid_source">{{ props.item.source }}</div>
                   </td>
                   <td class="text-xs-center">
-                     <div class="ellipsis" :title="time_format_rel ? $options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS') : $options.filters.toRelativeTime(props.item.time)">
-                        {{ time_format_rel ? $options.filters.toRelativeTime(props.item.time) : props.item.time_ms | moment("YYYY-MM-DD, HH:MM:SS") }}
+                     <div class="ellipsis" :title="time_format_rel ? $options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS') : $options.filters.toRelativeTime(props.item.time_ms)">
+                        {{ time_format_rel ? $options.filters.toRelativeTime(props.item.time_ms) : props.item.time_ms | moment("YYYY-MM-DD, HH:MM:SS") }}
                      </div>
                   </td>
                   <td class="text-xs-left">
