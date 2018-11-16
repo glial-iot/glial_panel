@@ -1,3 +1,4 @@
+rm -rf ./panel
 mkdir panel
 mkdir panel/public
 mkdir panel/public/admin
