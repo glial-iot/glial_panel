@@ -256,6 +256,9 @@ Vue.filter("object_label", function (type) {
    }
 })
 
+import {Base64} from 'js-base64';
+Object.defineProperty(Vue.prototype, '$base64', { value: Base64 });
+
 var vm = new Vue({
    el: '#app',
    router,

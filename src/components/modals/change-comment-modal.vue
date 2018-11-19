@@ -60,7 +60,7 @@ export default {
             params: {
               action: "update",
               uuid: this.uuid,
-              comment: btoa(this.comment)
+              comment: this.$base64.encode(this.comment)
             }
           }
         )

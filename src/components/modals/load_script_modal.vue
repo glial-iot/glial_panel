@@ -50,7 +50,7 @@
             create_loaded_script(name, object, body) {
                 let params = {
                     action: "create",
-                    name: btoa(name)
+                    name: this.$base64.encode(name)
                 };
                 if (this.type !== "DRIVER") {
                     params.object = object;

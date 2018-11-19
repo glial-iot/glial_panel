@@ -98,13 +98,13 @@ export default {
       if (this.type === "DRIVER") {
         params = {
           action: "create",
-          name: btoa(this.name)
+          name: this.$base64.encode(this.name)
         };
       } else {
         params = {
           action: "create",
-          name: btoa(this.name),
-          object: btoa(this.object)
+          name: this.$base64.encode(this.name),
+          object: this.$base64.encode(this.object)
         };
       }
 

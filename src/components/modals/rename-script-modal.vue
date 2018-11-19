@@ -54,7 +54,7 @@ export default {
             params: {
               action: "update",
               uuid: this.uuid,
-              name: btoa(this.name)
+              name: this.$base64.encode(this.name)
             }
           }
         )
