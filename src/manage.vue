@@ -14,22 +14,22 @@
                </v-flex>
                <v-spacer></v-spacer>
                <v-flex md2 pt-1>
-                  <v-select label="server scheme" v-model="server_scheme" :items="scheme_items">
+                  <v-select label="server scheme" v-model="server_scheme" :items="scheme_items" :disabled="is_tarantool === true">
                   </v-select>
                </v-flex>
                <v-spacer></v-spacer>
                <v-flex md2 pt-1>
-                  <v-text-field label="server address" v-model="server_address">
+                  <v-text-field label="server address" v-model="server_address" :disabled="is_tarantool === true">
                   </v-text-field>
                </v-flex>
                <v-spacer></v-spacer>
                <v-flex md2 pt-1 ml-1>
-                  <v-text-field label="port" v-model="server_port">
+                  <v-text-field label="port" v-model="server_port" :disabled="is_tarantool === true">
                   </v-text-field>
                </v-flex>
                <v-spacer></v-spacer>
                <v-flex md2 pt-2 ml-1>
-                  <v-btn @click="update">
+                  <v-btn @click="update" :disabled="is_tarantool === true">
                      <v-icon left small>fa-arrow-alt-circle-right</v-icon> Save
                   </v-btn>
                </v-flex>
@@ -111,6 +111,11 @@ export default {
       server_scheme: "",
       scheme_items: ["http", "https"]
     };
+  },
+  computed: {
+    is_tarantool() {
+        return this.$store.getters.check_if_tarantool
+    }
   },
   created: function() {
     this.server_address = this.$store.state.server_address;

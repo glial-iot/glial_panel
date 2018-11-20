@@ -93,6 +93,7 @@ const store = new Vuex.Store({
       logs_visible: Vue.localStorage.get("logs_visible") !== null ? Vue.localStorage.get("logs_visible") === 'true' : true,
       editor_log_size: parseInt(Vue.localStorage.get("editor_log_size", 6)),
       bus_type: Vue.localStorage.get("bus_type", BUS_TYPE_TREE),
+      is_tarantool: "null",
       endpoints: { "WEB_EVENT": "/webevents", "DRIVER": "/drivers", "BUS_EVENT": "/busevents", "TIMER_EVENT": "/timerevents", "SHEDULE_EVENT": "/sheduleevents", }
    },
    mutations: {
@@ -140,14 +141,25 @@ const store = new Vuex.Store({
       bus_type(state, type) {
          state.bus_type = type
          Vue.localStorage.set("bus_type", type);
+      },
+      set_tarantool(state, bool_value) {
+         state.is_tarantool = bool_value;
       }
    },
    getters: {
       server_url: state => {
-         return `${state.server_scheme}://${state.server_address}:${state.server_port}`;
+         if (state.is_tarantool !== true) {
+            return ``
+         }
+         else {
+             return `${state.server_scheme}://${state.server_address}:${state.server_port}`;
+         }
       },
       server_ip: state => {
          return `${state.server_address}`;
+      },
+      check_if_tarantool: state => {
+         return `${state.is_tarantool}`
       }
    },
    actions: {
@@ -172,6 +184,9 @@ const store = new Vuex.Store({
             const size = state.editor_log_size - 1
             commit("editor_log_size", size)
          }
+      },
+      set_tarantool_state: ({commit}, status) => {
+         commit("set_tarantool", status)
       }
    }
 })
