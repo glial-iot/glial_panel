@@ -130,7 +130,7 @@ export default {
     get_time(time) {
       let time_abs = this.$moment.unix(time).format("Do MMMM, HH:mm:ss");
       let time_diff = time - Date.now() / 1000;
-      let time_rel = this.$options.filters.toRelativeTime(time);
+      let time_rel = this.$options.filters.toRelativeTime(time * 1000);
       if (time_diff < 2) {
         return time_abs.toString() + " (" + time_rel.toString() + ")";
       } else {
