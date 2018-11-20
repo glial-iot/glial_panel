@@ -159,7 +159,7 @@ const store = new Vuex.Store({
          return `${state.server_address}`;
       },
       check_if_tarantool: state => {
-         return `${state.is_tarantool}`
+         return state.is_tarantool
       }
    },
    actions: {
