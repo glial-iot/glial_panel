@@ -34,7 +34,7 @@
                             {
                                 params: {
                                     action: "get_bus",
-                                    mask: btoa(mask)
+                                    mask: this.$base64.encode(mask)
                                 }
                             }
                         )

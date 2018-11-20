@@ -353,6 +353,7 @@ export default {
           }
         })
         .then(response => {
+          this.pagination.totalItems = response.data.length;
           this.logs = response.data;
         })
         .catch(error => {

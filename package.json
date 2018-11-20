@@ -34,7 +34,8 @@
       "vue-timers": "^1.7.3",
       "vue2-ace-editor": "0.0.10",
       "vuetify": "^1.1.1",
-      "vuex": "^3.0.1"
+      "vuex": "^3.0.1",
+      "js-base64": "^2.4.9"
    },
    "browserslist": [
       "> 1%",

@@ -46,6 +46,8 @@ import buttonInfo from "../../buttons/button-info.vue";
 import buttonCreateScript from "../../buttons/button-create-script.vue";
 import createScriptModal from "../../modals/create_script_modal.vue";
 
+import {get_time} from "../../mixins/get_time.js"
+
 Vue.use(require("vue-moment"));
 
 export default {
@@ -57,28 +59,7 @@ export default {
     createScriptModal
   },
   props: ["items", "topicDelete", "loaded"],
-  methods: {
-    get_time(time) {
-      let time_unix_now = Date.now() / 1000;
-      let time_abs;
-      if (
-        this.$moment.unix(time_unix_now).format("Do MMMM") ===
-        this.$moment.unix(time).format("Do MMMM")
-      ) {
-        time_abs = "Today, " + this.$moment.unix(time).format("HH:mm:ss");
-      } else {
-        time_abs = this.$moment.unix(time).format("Do MMMM, HH:mm:ss");
-      }
-
-      let time_diff = time - time_unix_now;
-      let time_rel = this.$options.filters.toRelativeTime(time*1000);
-      if (time_diff < 2) {
-        return time_abs.toString() + " (" + time_rel.toString() + ")";
-      } else {
-        return time_abs.toString();
-      }
-    }
-  },
+  mixins: [get_time],
 
   data() {
     return {

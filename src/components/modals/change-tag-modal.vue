@@ -60,7 +60,7 @@ export default {
             params: {
               action: "update",
               uuid: this.uuid,
-              tag: btoa(this.tags)
+              tag: this.$base64.encode(this.tags)
             }
           }
         )

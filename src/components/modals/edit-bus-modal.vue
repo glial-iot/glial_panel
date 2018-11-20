@@ -11,7 +11,8 @@
             <v-divider></v-divider>
             <v-card-text>
                <div class="subheading">Update time</div>
-               <div class="subheading subheading-value">{{$parent.get_time(item.time)}}</div>
+               <div v-if="item.time" class="subheading subheading-value">{{get_time(item.time)}}</div>
+               <div v-if="item.update_time" class="subheading subheading-value">{{get_time(item.update_time)}}</div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
@@ -70,6 +71,8 @@ import VueAxios from "vue-axios";
 Vue.use(VueAxios, Axios);
 import snackbar from "../snackbar.vue";
 
+import {get_time} from "../mixins/get_time.js"
+
 export default {
   data: () => ({
     visible: false,
@@ -81,6 +84,7 @@ export default {
     edit_tags: false,
     edit_value: false
   }),
+  mixins: [get_time],
   methods: {
     show(item) {
       this.visible = true;

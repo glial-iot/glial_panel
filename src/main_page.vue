@@ -41,7 +41,7 @@
             <v-spacer></v-spacer>
 
             <v-flex xs2 class="flex-end">
-               <v-menu offset-y>
+               <v-menu offset-y :disabled="$store.getters.check_if_tarantool === true">
                   <v-btn slot="activator" color="primary" depressed dark class="select-server">
                      <p>{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
                      <div class="icon-wrapper" v-show="server_online">
@@ -164,6 +164,25 @@ export default {
       this.$store.dispatch("change_server", server);
     },
     get_backend_version() {
+      if (this.$store.getters.check_if_tarantool === "null") {
+          console.log("trying to get Tarantool")
+          Vue.axios
+              .get("/system_event", {
+                  params: {
+                      action: "get_git_version"
+                  }
+              })
+              .then(response => {
+                  if (response.data && response.data.version) {
+                      this.$store.dispatch("set_tarantool_state", true);
+                  } else {
+                      this.$store.dispatch("set_tarantool_state", false);
+                  }
+              })
+              .catch(error => {
+                  this.$store.dispatch("set_tarantool_state", false);
+              });
+      }
       Vue.axios
         .get(this.$store.getters.server_url + "/system_event", {
           params: {

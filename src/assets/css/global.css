@@ -228,3 +228,11 @@ button.icon-btn, button.icon-btn:before {
 .change_tags_button, .change_comment_button {
     margin-left:5px;
 }
+
+.tags_selector {
+    max-width: 320px;
+}
+
+.tags_selector .v-label {
+    transition: 0s;
+}

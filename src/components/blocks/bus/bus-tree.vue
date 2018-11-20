@@ -80,6 +80,8 @@ import buttonInfo from "../../buttons/button-info.vue";
 import buttonCreateScript from "../../buttons/button-create-script.vue";
 import createScriptModal from "../../modals/create_script_modal.vue";
 
+import {get_time} from "../../mixins/get_time.js"
+
 const DATA_KEY = "__data__";
 
 export default {
@@ -92,6 +94,7 @@ export default {
     createScriptModal
   },
   props: ["json", "topicDelete"],
+  mixins: [get_time],
   data() {
     return {
       treeData: this.parser(this.json),
@@ -127,16 +130,6 @@ export default {
     }
   },
   methods: {
-    get_time(time) {
-      let time_abs = this.$moment.unix(time).format("Do MMMM, HH:mm:ss");
-      let time_diff = time - Date.now() / 1000;
-      let time_rel = this.$options.filters.toRelativeTime(time);
-      if (time_diff < 2) {
-        return time_abs.toString() + " (" + time_rel.toString() + ")";
-      } else {
-        return time_abs.toString();
-      }
-    },
     merge(target, source) {
       for (let key of Object.keys(source)) {
         let sourceElem;

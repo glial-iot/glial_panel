@@ -1,13 +1,12 @@
 <template lang="html">
    <div>
       <v-card class="elevation-3">
-
          <v-card-title class="py-0 px-0">
+            <v-select v-show="loaded" class="tags_selector ml-4 mt-4"  return-object dense v-model="tag_selected" :items="tags" flat label="Select a tag to filter the scripts"></v-select>
             <v-spacer></v-spacer>
             <create-script-modal class="mr-3" @create_error="$refs.snackbar.update('Create script: error')" @data_updated="table_update()" :type="type"></create-script-modal>
             <load-script-modal @load_script_error="$refs.snackbar.update('Load script: error')" @script_loaded="table_update()" :type="type"></load-script-modal>
          </v-card-title>
-
          <v-divider></v-divider>
 
          <v-data-table class="no-scroll" v-if="loaded" :headers="headers" :items="scripts_table" hide-actions no-data-text="No scripts">
@@ -163,6 +162,10 @@ export default {
   data: () => ({
     headers: [],
     scripts_table: [],
+    tags: [],
+    tag_selected:  localStorage.tag_selected ?
+          {text: localStorage.tag_selected, value: localStorage.tag_selected} :
+          {text: "All scripts", value: ""},
     loaded: false
   }),
   props: ["type"],
@@ -179,7 +182,12 @@ export default {
     this.$timer.stop("table_update");
     next();
   },
-
+  watch: {
+      tag_selected(new_tag) {
+      localStorage.tag_selected = new_tag.value;
+      this.table_update();
+    }
+  },
   mounted: function() {
     this.table_update();
     this.headers = [
@@ -288,21 +296,51 @@ export default {
           this.$refs.snackbar.update("Active change error");
         });
     },
-
+    tags_update() {
+        Vue.axios
+            .get(
+                this.$store.getters.server_url +
+                this.$store.state.endpoints[this.type],
+                {
+                    params: {
+                        action: "get_tags"
+                    }
+                }
+            )
+            .then(response => {
+                this.tags = [];
+                response.data.forEach((tag, i) => {
+                    this.tags[i] = {
+                        text: tag,
+                        value: tag
+                    };
+                });
+                this.tags.unshift({
+                    text: "All scripts",
+                    value: ""
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
     table_update() {
+      let request_params = {
+          action: "get_list"
+      };
+      if (this.tag_selected.value && this.tag_selected.value !== "") {
+         request_params.tag = this.$base64.encode(this.tag_selected.value)
+      }
       Vue.axios
         .get(
           this.$store.getters.server_url +
             this.$store.state.endpoints[this.type],
           {
-            params: {
-              action: "get_list"
-            }
+            params: request_params
           }
         )
         .then(response => {
           Vue.set(this, "scripts_table", response.data);
-          console.log(response.data);
           this.loaded = true;
           this.$refs.snackbar.update("");
         })
@@ -312,6 +350,7 @@ export default {
           this.$refs.snackbar.update("Get script list error");
           this.loaded = false;
         });
+      this.tags_update()
     },
     run_script(table_item) {
       Vue.axios
