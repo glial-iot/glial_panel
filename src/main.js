@@ -152,7 +152,7 @@ const store = new Vuex.Store({
             return ``
          }
          else {
-             return `${state.server_scheme}://${state.server_address}:${state.server_port}`;
+            return `${state.server_scheme}://${state.server_address}:${state.server_port}`;
          }
       },
       server_ip: state => {
@@ -185,7 +185,7 @@ const store = new Vuex.Store({
             commit("editor_log_size", size)
          }
       },
-      set_tarantool_state: ({commit}, status) => {
+      set_tarantool_state: ({ commit }, status) => {
          commit("set_tarantool", status)
       }
    }
@@ -271,7 +271,7 @@ Vue.filter("object_label", function (type) {
    }
 })
 
-import {Base64} from 'js-base64';
+import { Base64 } from 'js-base64';
 Object.defineProperty(Vue.prototype, '$base64', { value: Base64 });
 
 var vm = new Vue({
