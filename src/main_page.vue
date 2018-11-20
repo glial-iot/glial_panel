@@ -43,7 +43,7 @@
             <v-flex xs2 class="flex-end">
                <v-menu offset-y :disabled="$store.getters.check_if_tarantool === true">
                   <v-btn slot="activator" color="primary" depressed dark class="select-server">
-                     <p>{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
+                     <p v-if="$store.getters.check_if_tarantool !== true">{{ `${server_scheme}://${server_address}:${server_port}` }}</p>
                      <div class="icon-wrapper" v-show="server_online">
                         <v-icon title="Server online" color="green" small>fa-link</v-icon>
                      </div>
