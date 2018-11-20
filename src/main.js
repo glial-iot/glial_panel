@@ -148,7 +148,7 @@ const store = new Vuex.Store({
    },
    getters: {
       server_url: state => {
-         if (state.is_tarantool !== true) {
+         if (state.is_tarantool === true) {
             return ``
          }
          else {
