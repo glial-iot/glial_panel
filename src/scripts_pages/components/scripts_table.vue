@@ -210,7 +210,7 @@ export default {
       },
       {
         text: "Tags",
-        value: "tags",
+        value: "tag",
         align: "left",
         width: "20%"
       },
