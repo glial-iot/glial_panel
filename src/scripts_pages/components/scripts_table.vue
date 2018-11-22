@@ -209,7 +209,7 @@ export default {
         width: "15%"
       },
       {
-        text: "Tags",
+        text: "Tag",
         value: "tag",
         align: "left",
         width: "20%"
