@@ -19,7 +19,7 @@
                   <div class="subheading">System load percent(relative): {{worktime_percent}}%</div>
                   <div class="subheading">System load percent(absolute): {{alltime_percent}}%</div>
                   <div class="subheading">
-                     Tags: {{tags}}<span class="grey--text" v-if="tags ===''">(Empty)</span>
+                     Tag: {{tags}}<span class="grey--text" v-if="tags ===''">(Empty)</span>
                      <span class="change_tags_button" @click="$refs.change_tag.show(uuid, tags, type)">
                         <i class="fa fa-edit blue--text"></i>
                      </span>
