@@ -255,7 +255,11 @@ export default {
         this.prev_content = content;
       }
     },
-    save_script: function(mode) {
+    save_script: function(mode, reload_type) {
+      let reload = "";
+      if (reload_type === "none") {
+        reload = "reload=none&";
+      }
       let data = new Blob([this.prev_content], {
         type: "text/plain"
       });
@@ -266,7 +270,9 @@ export default {
           .post(
             this.$store.getters.server_url +
               this.$store.state.endpoints[this.type] +
-              "?action=update_body&uuid=" +
+              "?" +
+              reload +
+              "action=update_body&uuid=" +
               this.uuid,
             reader.result
           )
@@ -311,7 +317,7 @@ export default {
     },
     script_active_change(flag) {
       if (flag === "ACTIVE") {
-        this.save_script("silent");
+        this.save_script("silent", "none");
       }
       Vue.axios
         .get(
@@ -363,7 +369,7 @@ export default {
     run_script() {
       let script_saved = false;
       if (this.prev_content !== this.content) {
-        this.save_script("silent");
+        this.save_script("silent", "none");
         script_saved = true;
       }
       Vue.axios
