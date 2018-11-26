@@ -30,9 +30,7 @@
                <br>>>print(store.value)
                <br><br>
                <h2>Work with bus:</h2>
-               <b>set_value(topic, value)</b>: Updates the topic "topic" with a value from the variable "value"
-               <br>
-               <b>shadow_set_value(topic, value)</b>: Updates topic "topic" value from the variable "value", but does not launch the event-scripts assigned to this topic
+               <b>update{topic = "/test_topic/", value=10}</b>: Updates the topic "test_topic" with a value from the variable 10
                <br>
                <b>get_value(topic)</b>: Gets the topic value "topic"
                <br>
