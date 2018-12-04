@@ -196,6 +196,7 @@ export default {
       },
       false
     );
+    document.getElementsByClassName("ace_text-input")[0].focus();
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.force_update);
