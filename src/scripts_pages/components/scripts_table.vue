@@ -277,7 +277,7 @@
     methods: {
       script_edit(table_item) {
         this.$router.push({
-          path: "/editor",
+          path: this.$route.path+"/editor",
           query: {uuid: table_item.uuid, type: table_item.type}
         });
       },

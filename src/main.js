@@ -80,7 +80,19 @@ const router = new VueRouter({
     path: '/manage',
     component: manage,
   }, {
-    path: '/editor',
+    path: '/scripts/drivers/editor',
+    component: editor
+  }, {
+    path: '/scripts/busevent/editor',
+    component: editor
+  }, {
+    path: '/scripts/webevent/editor',
+    component: editor
+  }, {
+    path: '/scripts/timerevent/editor',
+    component: editor
+  }, {
+    path: '/scripts/scheduleevent/editor',
     component: editor
   }, {
     path: '*',
