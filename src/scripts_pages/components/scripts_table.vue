@@ -400,7 +400,9 @@
               name: response.data.name,
               type: response.data.type,
               object: response.data.object,
-              body: response.data.body
+              body: response.data.body,
+              tag: response.data.tag,
+              comment: response.data.comment
             };
             let scriptStr =
               "data:text/json;charset=utf-8," +

@@ -36,7 +36,7 @@
         fr.onload = (event) => {
           result = JSON.parse(event.target.result);
           if (result.type === this.type) {
-            this.create_loaded_script(result.name, result.object, result.body)
+            this.create_loaded_script(result.name, result.object, result.body, result.tag, result.comment)
           }
           else {
             this.$refs.snackbar.update(
@@ -47,13 +47,15 @@
         fr.readAsText(event.target.files[0]);
         this.$refs.fileInputImport.value = ""
       },
-      create_loaded_script(name, object, body) {
+      create_loaded_script(name, object, body, tag, comment) {
         let params = {
           action: "create",
-          name: this.$base64.encode(name)
+          name: this.$base64.encode(name),
+          tag: this.$base64.encode(tag),
+          comment: this.$base64.encode(comment)
         };
         if (this.type !== "DRIVER") {
-          params.object = object;
+          params.object = this.$base64.encode(object);
         }
         Vue.axios.get(
           this.$store.getters.server_url +
