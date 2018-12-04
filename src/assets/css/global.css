@@ -286,3 +286,6 @@ button.icon-btn, button.icon-btn:before {
 .tags_selector .v-label {
   transition: 0s;
 }
+.cursor-pointer{
+  cursor:pointer;
+}

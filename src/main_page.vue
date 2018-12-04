@@ -53,8 +53,11 @@
               </div>
             </v-btn>
             <v-list>
-              <v-list-tile v-for="(server, index) in server_history" :key="index" @click="change_server(server)">
-                <v-list-tile-title>{{ `${server.scheme}://${server.address}:${server.port}` }}</v-list-tile-title>
+              <v-list-tile v-for="(server, index) in server_history" :key="index">
+                <v-list-tile-title class="cursor-pointer"  @click="change_server(server)">
+                  {{ `${server.scheme}://${server.address}:${server.port}` }}
+                </v-list-tile-title>
+                <span @click="removeServer(index)" class="red--text ml-1 cursor-pointer" >✖</span>
               </v-list-tile>
             </v-list>
           </v-menu>
@@ -165,6 +168,9 @@
     methods: {
       change_server(server) {
         this.$store.dispatch("change_server", server);
+      },
+      removeServer(index) {
+        this.$store.dispatch("remove_server", index);
       },
       get_backend_version() {
         if (this.$store.getters.check_if_tarantool === "null") {
