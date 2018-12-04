@@ -1,18 +1,19 @@
 <template>
-   <div>
-      <scripts-table :type="type"></scripts-table>
-   </div>
+  <div>
+    <scripts-table :type="type"></scripts-table>
+  </div>
 </template>
 
 
 <script>
-import Vue from "vue";
-import scripts_table from "./components/scripts_table.vue";
-Vue.component("scripts-table", scripts_table);
+  import Vue from "vue";
+  import scripts_table from "./components/scripts_table.vue";
 
-export default {
-  data: () => ({
-    type: "DRIVER"
-  })
-};
+  Vue.component("scripts-table", scripts_table);
+
+  export default {
+    data: () => ({
+      type: "DRIVER"
+    })
+  };
 </script>
