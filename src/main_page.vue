@@ -57,7 +57,7 @@
                 <v-list-tile-title class="cursor-pointer"  @click="change_server(server)">
                   {{ `${server.scheme}://${server.address}:${server.port}` }}
                 </v-list-tile-title>
-                <span @click="removeServer(index)" class="red--text ml-1 cursor-pointer" >✖</span>
+                <span @click.stop="removeServer(index)" class="red--text ml-1 cursor-pointer" >✖</span>
               </v-list-tile>
             </v-list>
           </v-menu>
