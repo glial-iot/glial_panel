@@ -411,7 +411,7 @@
             downloadAnchorNode.setAttribute("href", scriptStr);
             downloadAnchorNode.setAttribute(
               "download",
-              response.data.name + ".gs.json"
+              response.data.type + "_" + response.data.name + ".gs.json"
             );
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
