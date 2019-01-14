@@ -272,7 +272,6 @@
             }
           )
           .then(response => {
-            console.log(response);
             this.active_flag = flag;
             if (flag === "ACTIVE") {
               this.$refs.snackbar.update(
@@ -335,7 +334,6 @@
           document.querySelector("#logs-card").offsetHeight > 51
             ? document.querySelector("#logs-card").offsetHeight + 12
             : 217;
-        console.log(logs_height);
         const content_padding = 24;
         let height =
           window.innerHeight -
