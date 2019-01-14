@@ -41,7 +41,7 @@
             }
             else {
               this.$refs.snackbar.update(
-                `This file doesn't contain ${this.$options.filters.type2string(this.type).toLowerCase()}!`
+                `"`+result.name+`" is not a ${this.$options.filters.type2string(this.type).toLowerCase()}!`
               );
             }
           };
