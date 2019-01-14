@@ -53,11 +53,11 @@
         let params = {
           action: "create",
           name: this.$base64.encode(name),
-          tag: this.$base64.encode(tag),
-          comment: this.$base64.encode(comment)
+          tag: tag ? this.$base64.encode(tag) : "",
+          comment: comment ? this.$base64.encode(comment) : ""
         };
         if (this.type !== "DRIVER") {
-          params.object = this.$base64.encode(object);
+          params.object = object ? this.$base64.encode(object) : "";
         }
         Vue.axios.get(
           this.$store.getters.server_url +
