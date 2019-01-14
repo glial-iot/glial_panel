@@ -126,26 +126,26 @@
 
   Vue.use(VueTimers);
 
-  import createScriptModal from "../../components/modals/create_script_modal.vue";
-  import copyScriptModal from "../../components/modals/copy_script_modal.vue";
-  import loadScriptModal from "../../components/modals/load_script_modal.vue";
-  import scriptDetailsModal from "../../components/modals/script-details-modal.vue";
-  import snackbar from "../../components/snackbar.vue";
-  import buttonInfo from "../../components/buttons/button-info.vue";
-  import buttonSave from "../../components/buttons/button-save.vue";
-  import buttonCopy from "../../components/buttons/button-copy.vue";
-  import buttonEdit from "../../components/buttons/button-edit.vue";
-  import buttonActivate from "../../components/buttons/button-activate.vue";
-  import buttonRocket from "../../components/buttons/button-rocket.vue";
-  import buttonTrash from "../../components/buttons/button-trash.vue";
-  import buttonSync from "../../components/buttons/button-sync.vue";
-  import iconError from "../../components/icons/icon-status-error.vue";
-  import iconNormal from "../../components/icons/icon-status-normal.vue";
-  import iconStopped from "../../components/icons/icon-status-stopped.vue";
-  import iconWarning from "../../components/icons/icon-status-warning.vue";
-  import confirmRemoveScriptModal from "../../components/modals/confirm-remove-script-modal.vue";
-  import changeObjectModal from "../../components/modals/change-object-modal";
-  import changeTagModal from "../../components/modals/change-tag-modal";
+  import createScriptModal from "../components/modals/create_script_modal.vue";
+  import copyScriptModal from "../components/modals/copy_script_modal.vue";
+  import loadScriptModal from "../components/modals/load_script_modal.vue";
+  import scriptDetailsModal from "../components/modals/script-details-modal.vue";
+  import snackbar from "../components/snackbar.vue";
+  import buttonInfo from "../components/buttons/button-info.vue";
+  import buttonSave from "../components/buttons/button-save.vue";
+  import buttonCopy from "../components/buttons/button-copy.vue";
+  import buttonEdit from "../components/buttons/button-edit.vue";
+  import buttonActivate from "../components/buttons/button-activate.vue";
+  import buttonRocket from "../components/buttons/button-rocket.vue";
+  import buttonTrash from "../components/buttons/button-trash.vue";
+  import buttonSync from "../components/buttons/button-sync.vue";
+  import iconError from "../components/icons/icon-status-error.vue";
+  import iconNormal from "../components/icons/icon-status-normal.vue";
+  import iconStopped from "../components/icons/icon-status-stopped.vue";
+  import iconWarning from "../components/icons/icon-status-warning.vue";
+  import confirmRemoveScriptModal from "../components/modals/confirm-remove-script-modal.vue";
+  import changeObjectModal from "../components/modals/change-object-modal";
+  import changeTagModal from "../components/modals/change-tag-modal";
 
   export default {
     components: {
@@ -188,7 +188,6 @@
         time: 1000
       }
     },
-
     beforeRouteLeave(to, from, next) {
       this.$timer.stop("table_update");
       next();
@@ -196,6 +195,9 @@
     watch: {
       tag_selected(new_tag) {
         localStorage.tag_selected = new_tag.value;
+        this.table_update();
+      },
+      $route(from, to) {
         this.table_update();
       }
     },
