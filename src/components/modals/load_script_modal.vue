@@ -2,11 +2,11 @@
   <div>
     <v-btn right color="secondary" class="my-2" @click="load_script_file(type)">
       <v-icon left small>fa-upload</v-icon>
-      Load {{$options.filters.type2string(type)}}(S)
+      Load {{$options.filters.type2string(type)}}
     </v-btn>
 
     <form>
-      <input ref="fileInputImport" multiple="multiple" @change="handle_file_change" id="fileInput" type="file" style="display:none;"/>
+      <input ref="fileInputImport" @change="handle_file_change" id="fileInput" type="file" style="display:none;"/>
     </form>
 
     <snackbar ref="snackbar"></snackbar>
@@ -31,23 +31,21 @@
         file_input.click();
       },
       handle_file_change(event) {
-        Array.from(event.target.files).forEach(file => {
-          let result = {};
-          let fr = new FileReader();
-          fr.onload = (event) => {
-            result = JSON.parse(event.target.result);
-            if (result.type === this.type) {
-              this.create_loaded_script(result.name, result.object, result.body, result.tag, result.comment)
-            }
-            else {
-              this.$refs.snackbar.update(
-                `"`+result.name+`" is not a ${this.$options.filters.type2string(this.type).toLowerCase()}!`
-              );
-            }
-          };
-          fr.readAsText(file);
-        });
-        this.$refs.fileInputImport.value = "";
+        let result = {};
+        let fr = new FileReader();
+        fr.onload = (event) => {
+          result = JSON.parse(event.target.result);
+          if (result.type === this.type) {
+            this.create_loaded_script(result.name, result.object, result.body, result.tag, result.comment)
+          }
+          else {
+            this.$refs.snackbar.update(
+              `This file doesn't contain ${this.$options.filters.type2string(this.type).toLowerCase()}!`
+            );
+          }
+        };
+        fr.readAsText(event.target.files[0]);
+        this.$refs.fileInputImport.value = ""
       },
       create_loaded_script(name, object, body, tag, comment) {
         let params = {
@@ -88,7 +86,7 @@
           )
             .then(response => {
               this.$emit("script_loaded", this.item);
-              this.$refs.snackbar.update("Script(s) loaded and saved", "success", 3000);
+              this.$refs.snackbar.update("Script loaded and saved", "success", 3000);
             })
             .catch(error => {
               console.log(error);
