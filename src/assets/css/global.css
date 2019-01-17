@@ -289,3 +289,53 @@ button.icon-btn, button.icon-btn:before {
 .cursor-pointer{
   cursor:pointer;
 }
+
+.filetarget {
+  width: 80rem;
+  height: 12rem;
+  margin: 1rem auto;
+  color: #40444f;
+  border: .2rem dashed #616778;
+  border-radius: 1.5rem !important;
+  cursor: pointer;
+}
+
+.filetarget:hover {
+  color: #777f8c;
+  border: .2rem dashed #a6acbd;
+}
+
+.filetarget-text {
+  margin: 0 .5rem .5rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+.filetarget-text-small {
+  margin: 0 .5rem .5rem;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.file-upload-icon {
+  width: 6rem;
+  height: 6rem;
+  font-size:4rem;
+  margin: 0.5rem auto .5rem;
+  display: block;
+}
+
+.invalid-script-upload {
+  background-color: #ffa089;
+}
+
+.inprogress-script-upload {
+  background-color: #ffff99;
+}
+
+.uploaded-script-upload {
+  background-color: #98ff98;
+}

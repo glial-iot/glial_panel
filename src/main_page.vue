@@ -141,6 +141,12 @@
       name: "Manage",
       icon: "fa-sliders-h",
       color: "brown"
+    },
+    {
+      path: "/scripts/upload",
+      name: "Upload scripts",
+      icon: "fa-upload",
+      color: "blue"
     }
   ];
 

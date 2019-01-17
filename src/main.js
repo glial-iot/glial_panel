@@ -6,8 +6,8 @@ import logs from './logs.vue'
 import backups from './backups.vue'
 
 import editor from './scripts_pages/editor.vue'
-
 import scripts_table from './scripts_pages/scripts_table'
+import scripts_upload from './scripts_pages/scripts_upload.vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -96,6 +96,9 @@ const router = new VueRouter({
   }, {
     path: '/scripts/scheduleevent/editor',
     component: editor
+  }, {
+    path: '/scripts/upload',
+    component: scripts_upload
   }, {
     path: '*',
     redirect: '/bus'
