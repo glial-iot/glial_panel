@@ -73,46 +73,16 @@
       </div>
     </v-card>
 
-    <v-card id="logs-card" class="logs-card">
-      <v-card-text class="logs-text" v-if="logs_visible">
-        <v-data-table v-if="logs.length > 0" :headers="headers" :items="logs" hide-actions must-sort class="no-scroll"
-                      :pagination.sync="pagination">
-          <template slot="items" slot-scope="props">
-            <tr>
-              <td class="justify-center text-xs-center cell-flex">
-                <button-info :item="props" @click.native="$refs.logdetailsmodal.show(props.item)"></button-info>
-              </td>
-              <td class="text-xs-left">
-                <div class="ellipsis">{{ props.item.level }}</div>
-              </td>
-              <td class="text-xs-left">
-                <div class="ellipsis" :title="$options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS')">
-                  {{$options.filters.toRelativeTime(props.item.time_ms)}}
-                </div>
-              </td>
-              <td class="text-xs-left">
-                <div class="ellipsis mw-100" :title="props.item.entry">{{ props.item.entry }}</div>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-        <v-flex v-if="pagination.totalItems > pagination.rowsPerPage" d-block>
-          <v-pagination class="custom-pagination custom-pagination-hide-inactive" v-model="pagination.page"
-                        :length="pages()"></v-pagination>
-        </v-flex>
-      </v-card-text>
-    </v-card>
+    <small-logs-table :type="'editor'" :uuid="uuid"></small-logs-table>
 
     <snackbar ref="snackbar"></snackbar>
     <editor-help-modal ref="help"></editor-help-modal>
     <rename-script-modal ref="rename" :updateName="update_name"></rename-script-modal>
     <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
     <confirm-leave-modal ref="confirm_leave"></confirm-leave-modal>
-    <logdetailsmodal ref="logdetailsmodal"></logdetailsmodal>
 
   </div>
 </template>
-
 
 <script>
   import Vue from "vue";
@@ -130,7 +100,7 @@
   import confirmLeaveModal from "../components/modals/confirm-leave.vue";
   import renameScriptModal from "../components/modals/rename-script-modal.vue";
   import changeObjectModal from "../components/modals/change-object-modal.vue";
-  import logdetailsmodal from "../components/modals/show-log-details-modal.vue";
+  import smallLogsTable from "../components/small_logs_table";
   import buttonInfo from "../components/buttons/button-info.vue";
   import editor from "../brace/index.js";
   import "brace/mode/lua";
@@ -139,7 +109,6 @@
 
   export default {
     data: () => ({
-      pagination: {rowsPerPage: 6},
       lang: "lua",
       content: "",
       uuid: "",
@@ -149,62 +118,24 @@
       object: "",
       type: "",
       active_flag: "",
-      logs: [],
-      headers: [
-        {
-          text: "Info",
-          align: "center",
-          sortable: false,
-          width: "5%"
-        },
-        {
-          text: "Level",
-          value: "level",
-          align: "left",
-          sortable: false,
-          width: "6%"
-        },
-        {
-          text: "Date",
-          value: "date",
-          align: "left",
-          sortable: false,
-          width: "10%"
-        },
-        {
-          text: "Entry",
-          value: "entry",
-          align: "left",
-          sortable: false
-        }
-      ],
       prev_content: ""
     }),
     components: {
+      smallLogsTable,
       editor,
       snackbar,
       editorHelpModal,
       renameScriptModal,
       changeObjectModal,
       confirmLeaveModal,
-      buttonInfo,
-      logdetailsmodal
-    },
-    timers: {
-      get_logs: {
-        autostart: false,
-        time: 1000,
-        immediate: true,
-        repeat: true
-      }
+      buttonInfo
     },
     computed: mapState({
       logs_visible: state => state.logs_visible,
       editor_log_size: state => state.editor_log_size
     }),
     mounted: function () {
-      window.addEventListener("resize", this.force_update);
-      this.pagination.rowsPerPage = this.editor_log_size;
+      window.addEventListener("resize", this.$forceUpdate());
       let self = this;
       document.addEventListener(
         "keydown",
@@ -222,7 +153,7 @@
       document.getElementsByClassName("ace_text-input")[0].focus();
     },
     beforeDestroy: function () {
-      window.removeEventListener("resize", this.force_update);
+      window.removeEventListener("resize", this.$forceUpdate());
     },
     beforeRouteEnter(to, from, next) {
       if (
@@ -256,23 +187,8 @@
       }
     },
     methods: {
-      pages() {
-        if (
-          this.pagination.rowsPerPage == null ||
-          this.pagination.totalItems == null
-        ) {
-          return 0;
-        }
-
-        return Math.ceil(
-          this.pagination.totalItems / this.pagination.rowsPerPage
-        );
-      },
       toggle_logs_visible: function () {
         this.$store.commit("logs_visible", !this.logs_visible);
-      },
-      force_update: function () {
-        this.$forceUpdate();
       },
       update_content: function (content) {
         if (this.prev_content !== content) {
@@ -356,7 +272,6 @@
             }
           )
           .then(response => {
-            console.log(response);
             this.active_flag = flag;
             if (flag === "ACTIVE") {
               this.$refs.snackbar.update(
@@ -371,23 +286,6 @@
           .catch(error => {
             console.log(error);
             this.$refs.snackbar.update("Active change error");
-          });
-      },
-      get_logs: function () {
-        Vue.axios
-          .get(this.$store.getters.server_url + "/logger", {
-            params: {
-              action: "get_logs",
-              uuid: this.uuid,
-              limit: 60
-            }
-          })
-          .then(response => {
-            this.pagination.totalItems = response.data.length;
-            this.logs = response.data;
-          })
-          .catch(error => {
-            console.log(error);
           });
       },
       run_script() {
@@ -465,10 +363,6 @@
       uuid: function (uuid) {
         this.uuid = uuid;
         this.load_script();
-
-        if (this.logs_visible) {
-          this.$timer.start("get_logs");
-        }
       },
       prev_content: function (value, oldValue) {
         if (value !== oldValue) {
@@ -487,69 +381,19 @@
           };
         }
       },
-      logs_visible: function (value) {
-        if (value) {
-          this.$timer.start("get_logs");
-        } else {
-          this.$timer.stop("get_logs");
-          this.logs = [];
-        }
-      },
       loaded: function (value, oldValue) {
         if (!oldValue && value) {
           this.saved = true;
         }
       },
-      editor_log_size: function (value) {
-        this.pagination.rowsPerPage = value;
-      }
     }
   };
 </script>
 
 <style scoped>
-  .custom-pagination {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-  }
-
-  .logs-card {
-    margin-top: 8px;
-  }
-
-  .logs-text {
-    padding: 0;
-    position: relative;
-  }
 
   .logs-title h3 {
     font-weight: normal;
-  }
-
-  table.v-table tbody td {
-    font-size: 11px;
-  }
-
-  table.v-table tbody td,
-  table.v-table tbody th {
-    height: 20px !important;
-  }
-
-  th:first-child,
-  td:first-child {
-    padding: 0;
-  }
-
-  button.icon-btn,
-  button.icon-btn:before {
-    height: 20px;
-  }
-
-  .pagination-block {
-    display: flex;
-    justify-content: space-around;
-    padding: 4px;
   }
 
   .logs-size-block {
@@ -578,7 +422,4 @@
     max-width: 16ch;
   }
 
-  .mw-100 {
-    max-width: 100%;
-  }
 </style>

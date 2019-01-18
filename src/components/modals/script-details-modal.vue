@@ -34,40 +34,19 @@
             </div>
           </div>
         </v-card-text>
-        <v-card-text>
-          <div class="subheading">Logs:</div>
-          <v-data-table :headers="headers" :items="logs" hide-actions must-sort class="no-scroll">
-            <template slot="items" slot-scope="props">
-              <tr>
-                <td class="justify-center text-xs-center cell-flex">
-                  <button-info :item="props" @click.native="$refs.logdetailsmodal.show(props.item)"></button-info>
-                </td>
-                <td class="text-xs-center">
-                  <div class="ellipsis">{{ props.item.level }}</div>
-                </td>
-                <td class="text-xs-center">
-                  <div class="ellipsis" :title="$options.filters.moment(props.item.time_ms, 'YYYY-MM-DD, HH:MM:SS')">
-                    {{$options.filters.toRelativeTime(props.item.time_ms)}}
-                  </div>
-                </td>
-                <td class="text-xs-left">
-                  <div class="ellipsis" :title="props.item.entry">{{ props.item.entry }}</div>
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
-        </v-card-text>
-        <v-divider></v-divider>
+
+        <small-logs-table :uuid="uuid"></small-logs-table>
+
         <v-card-actions>
           <v-btn color="green darken-1" flat @click.stop="hide()">Close</v-btn>
         </v-card-actions>
+
       </v-card>
     </v-dialog>
     <rename-script-modal ref="rename_script" :hideDetails="hide" :updateName="update_name"></rename-script-modal>
     <change-object-modal ref="change_object" :updateObject="update_object"></change-object-modal>
     <change-tag-modal ref="change_tag" @tags_updated="get_script_data"></change-tag-modal>
     <change-comment-modal ref="change_comment" @comment_updated="get_script_data"></change-comment-modal>
-    <logdetailsmodal ref="logdetailsmodal"></logdetailsmodal>
   </div>
 </template>
 
@@ -84,7 +63,7 @@
   import changeTagModal from "./change-tag-modal.vue";
   import changeCommentModal from "./change-comment-modal.vue";
   import buttonInfo from "../buttons/button-info.vue";
-  import logdetailsmodal from "./show-log-details-modal.vue";
+  import smallLogsTable from "../small_logs_table.vue";
 
   export default {
     components: {
@@ -93,7 +72,7 @@
       changeTagModal,
       changeCommentModal,
       buttonInfo,
-      logdetailsmodal
+      smallLogsTable
     },
     data: () => ({
       visible: false,
@@ -108,7 +87,6 @@
       object: "",
       tags: "",
       comment: "",
-      logs: [],
       headers: [
         {
           text: "Info",
@@ -154,22 +132,6 @@
         this.get_script_data();
         this.$timer.start("get_script_data");
       },
-      get_logs() {
-        Vue.axios
-          .get(this.$store.getters.server_url + "/logger", {
-            params: {
-              action: "get_logs",
-              uuid: this.uuid,
-              limit: 5
-            }
-          })
-          .then(response => {
-            this.logs = response.data;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
       get_script_data() {
         Vue.axios
           .get(
@@ -195,7 +157,6 @@
             this.object = response.data.object;
             this.worktime_percent = response.data.worktime_percent;
             this.alltime_percent = response.data.alltime_percent;
-            this.get_logs();
           })
           .catch(error => {
           });
@@ -234,7 +195,6 @@
         this.comment = "";
         this.worktime_percent = "";
         this.alltime_percent = "";
-        this.logs = [];
         this.$timer.stop("get_script_data");
       },
       update_name(value) {

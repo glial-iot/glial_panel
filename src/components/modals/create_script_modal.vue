@@ -129,6 +129,7 @@
             this.$emit("data_updated", this.item);
             this.dialog_visible = false;
             this.name = "";
+            this.object ? this.object = "" : null;
           })
           .catch(error => {
             console.log(error);

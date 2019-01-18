@@ -6,11 +6,8 @@ import logs from './logs.vue'
 import backups from './backups.vue'
 
 import editor from './scripts_pages/editor.vue'
-import drivers from './scripts_pages/drivers.vue'
-import event_scripts from './scripts_pages/event_scripts.vue'
-import timer_scripts from './scripts_pages/timer_scripts.vue'
-import schedule_scripts from './scripts_pages/schedule_scripts.vue'
-import web_scripts from './scripts_pages/web_scripts.vue'
+import scripts_table from './scripts_pages/scripts_table'
+import scripts_upload from './scripts_pages/scripts_upload.vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -63,19 +60,24 @@ const router = new VueRouter({
     component: logs
   }, {
     path: '/scripts/drivers',
-    component: drivers
+    component: scripts_table,
+    props: { type: "DRIVER" }
   }, {
     path: '/scripts/busevent',
-    component: event_scripts
+    component: scripts_table,
+    props: { type: "BUS_EVENT" }
   }, {
     path: '/scripts/webevent',
-    component: web_scripts
+    component: scripts_table,
+    props: { type: "WEB_EVENT" }
   }, {
     path: '/scripts/timerevent',
-    component: timer_scripts
+    component: scripts_table,
+    props: { type: "TIMER_EVENT" }
   }, {
     path: '/scripts/scheduleevent',
-    component: schedule_scripts
+    component: scripts_table,
+    props: { type: "SHEDULE_EVENT" }
   }, {
     path: '/manage',
     component: manage,
@@ -94,6 +96,9 @@ const router = new VueRouter({
   }, {
     path: '/scripts/scheduleevent/editor',
     component: editor
+  }, {
+    path: '/scripts/upload',
+    component: scripts_upload
   }, {
     path: '*',
     redirect: '/bus'
