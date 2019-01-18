@@ -8,7 +8,8 @@
       <v-divider></v-divider>
       <form class="filetarget" ref="fileform" @click="load_script_file">
 
-        <input ref="fileInputImport" multiple="multiple" @change="handle_file_change" id="fileInput" type="file" style="display:none;"/>
+        <input ref="fileInputImport" multiple="multiple" @change="handle_file_change" id="fileInput" type="file"
+               style="display:none;"/>
 
         <figure class="file-upload-icon">
           <i class="fa fa-file-code"></i>
@@ -23,7 +24,8 @@
         <v-data-table class="no-scroll" :headers="headers" :items="scripts" hide-actions no-data-text="No scripts">
 
           <template slot="items" slot-scope="script">
-            <tr v-bind:class="{'invalid-script-upload': !script.item.valid, 'inprogress-script-upload': script.item.status === 'in progress', 'uploaded-script-upload': script.item.status === 'uploaded', }">
+            <tr
+              v-bind:class="{'invalid-script-upload': !script.item.valid, 'inprogress-script-upload': script.item.status === 'in progress', 'uploaded-script-upload': script.item.status === 'uploaded', }">
 
               <td class="text-xs-left ellipsis" :title="script.item.filename">
                 {{ script.item.filename}}
@@ -38,7 +40,8 @@
               </td>
 
               <td class="justify-center text-xs-center button-sm">
-                <button title="Remove script from upload" type="button" @click="remove_from_list(script.index)" class="v-btn v-btn--icon icon-btn">
+                <button title="Remove script from upload" type="button" @click="remove_from_list(script.index)"
+                        class="v-btn v-btn--icon icon-btn">
                   <i class="fa fa-trash-alt black--text"></i>
                 </button>
               </td>
@@ -58,19 +61,19 @@
         </v-data-table>
       </v-card-text>
 
-        <v-card-text class="text-md-center">
-          <v-btn v-show="list_has_valid_ready_scripts" :disabled="load_in_process" class="my-2" color="secondary" @click="create_loaded_scrips()">
-            <v-icon left small>fa-upload</v-icon>
-            <span v-if="!load_in_process">LOAD VALID SCRIPTS</span>
-            <span v-if="load_in_process">LOADING ...</span>
-          </v-btn>
+      <v-card-text class="text-md-center">
+        <v-btn v-show="list_has_valid_ready_scripts" :disabled="load_in_process" class="my-2" color="secondary"
+               @click="create_loaded_scrips()">
+          <v-icon left small>fa-upload</v-icon>
+          <span v-if="!load_in_process">LOAD VALID SCRIPTS</span>
+          <span v-if="load_in_process">LOADING ...</span>
+        </v-btn>
 
-          <v-btn v-show="scripts.length > 0" color="error" class="my-2" @click="clear_list()">
-            <v-icon left small>fa-trash</v-icon>
-            CLEAR LIST
-          </v-btn>
-        </v-card-text>
-
+        <v-btn v-show="scripts.length > 0" color="error" class="my-2" @click="clear_list()">
+          <v-icon left small>fa-trash</v-icon>
+          CLEAR LIST
+        </v-btn>
+      </v-card-text>
 
 
     </v-card>
@@ -108,10 +111,10 @@
         let file_input = document.getElementById("fileInput");
         file_input.click();
       },
-      determineDragAndDropCapable(){
+      determineDragAndDropCapable() {
         let div = document.createElement('div');
-        return ( ( 'draggable' in div )
-          || ( 'ondragstart' in div && 'ondrop' in div ) )
+        return (('draggable' in div)
+          || ('ondragstart' in div && 'ondrop' in div))
           && 'FormData' in window
           && 'FileReader' in window;
       },
@@ -121,7 +124,7 @@
         });
         this.$refs.fileInputImport.value = ""
       },
-      parse_json_from_uploaded_file (file) {
+      parse_json_from_uploaded_file(file) {
         let result = {};
         let fr = new FileReader();
         fr.onload = (event) => {
@@ -149,14 +152,14 @@
         let interval_msec = 300;
         this.load_in_process = true;
         this.scripts.filter(script => script.valid === true && script.status === "ready").forEach((script, index, array) => {
-            setTimeout(() => {
-              this.create_script(script);
-              if (index === array.length -1) {
-                setTimeout(() => {
-                  this.load_in_process = false;
-                }, 1000);
-              }
-            }, index * interval_msec);
+          setTimeout(() => {
+            this.create_script(script);
+            if (index === array.length - 1) {
+              setTimeout(() => {
+                this.load_in_process = false;
+              }, 1000);
+            }
+          }, index * interval_msec);
         })
       },
       create_script(script) {
@@ -185,7 +188,7 @@
             console.log(error);
           });
       },
-      remove_from_list (index) {
+      remove_from_list(index) {
         this.scripts.splice(index, 1);
       },
       update_script_body(created_script, uploaded_script) {
@@ -213,14 +216,12 @@
         };
         reader.readAsDataURL(data);
       },
-      clear_list () {
+      clear_list() {
         this.scripts = [];
         this.files = []
       }
     },
-    watch: {
-
-    },
+    watch: {},
     computed: {
       list_has_valid_ready_scripts() {
         return this.scripts.filter(script => script.valid === true && script.status === "ready").length > 0
@@ -229,16 +230,16 @@
     mounted: function () {
 
       this.dragAndDropCapable = this.determineDragAndDropCapable();
-      if( this.dragAndDropCapable ){
-        ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach( function( evt ) {
-          this.$refs.fileform.addEventListener(evt, function(e){
+      if (this.dragAndDropCapable) {
+        ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function (evt) {
+          this.$refs.fileform.addEventListener(evt, function (e) {
             e.preventDefault();
             e.stopPropagation();
           }.bind(this), false);
         }.bind(this));
 
-        this.$refs.fileform.addEventListener('drop', function(e){
-          Array.from(e.dataTransfer.files).forEach((file)=>{
+        this.$refs.fileform.addEventListener('drop', function (e) {
+          Array.from(e.dataTransfer.files).forEach((file) => {
             this.parse_json_from_uploaded_file(file);
           })
         }.bind(this));
