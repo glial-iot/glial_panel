@@ -44,7 +44,8 @@
               </td>
 
               <td class="text-xs-center ellipsis" :title="script.item.valid">
-                {{ script.item.valid }}
+                <span v-if="script.item.valid"><i class="fa fa-check"></i></span>
+                <span v-if="!script.item.valid"><i class="fa fa-times"></i></span>
               </td>
 
               <td class="text-xs-center ellipsis" :title="script.item.status">
