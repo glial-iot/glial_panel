@@ -147,8 +147,7 @@
       create_loaded_scrips() {
         let interval_msec = 300;
         this.load_in_process = true;
-        this.scripts.forEach((script, index) => {
-          if (script.valid && script.status === "ready")  {
+        this.scripts.filter(script => script.valid === true && script.status === "ready").forEach((script, index) => {
             setTimeout(() => {
               this.create_script(script);
               if (index === this.scripts.length -1) {
@@ -157,7 +156,6 @@
                 }, 1000);
               }
             }, index * interval_msec);
-          }
         })
       },
       create_script(script) {
