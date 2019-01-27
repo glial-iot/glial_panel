@@ -17,7 +17,7 @@
       </v-list>
       <div class="version-block">
         <div class="version-row">
-          Glue: {{server_online ? backend_version : 'Disconnected'}}
+          Glial: {{server_online ? backend_version : 'Disconnected'}}
         </div>
         <div class="version-row">
           Panel: {{frontend_version}}
@@ -34,7 +34,7 @@
           <v-menu>
             <v-toolbar-title slot="activator">
               <img class="mr-3 logo" src="./assets/logo_nokia.svg" height="25px" alt="Nokia Logo">
-              <p>IMPACT GLUE</p>
+              <p>Glial</p>
             </v-toolbar-title>
           </v-menu>
         </v-flex>

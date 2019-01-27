@@ -1,6 +1,6 @@
-# Control panel for Glue
+# Control panel for Glial
 
-> Glue: https://github.com/vvzvlad/glue
+> Glial: https://github.com/glial-iot/glial
 
 ## Build Setup
 
