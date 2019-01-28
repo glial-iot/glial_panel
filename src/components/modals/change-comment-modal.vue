@@ -1,16 +1,20 @@
-<template>
+<template lang="html">
   <div>
-    <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="290">
+    <v-dialog v-on:keydown.esc="hide()" v-on:keydown.enter="submit()" :value="visible" persistent max-width="420">
       <v-card>
-        <v-card-title class="headline">Rename script</v-card-title>
+
+        <v-card-title class="headline">Change script comment</v-card-title>
+
         <v-card-text>
-          <v-text-field autofocus v-if="visible" v-model="name" label="Edit name" required></v-text-field>
+          <v-textarea autofocus v-if="visible" v-model="comment" :label="`Comment`" required></v-textarea>
         </v-card-text>
+
         <v-card-actions>
           <v-btn color="error" flat @click="hide()">Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="submit()">Rename</v-btn>
+          <v-btn color="green darken-1" flat @click="submit()">Change</v-btn>
         </v-card-actions>
+
       </v-card>
     </v-dialog>
     <snackbar ref="snackbar"></snackbar>
@@ -26,23 +30,25 @@
   import snackbar from "../snackbar.vue";
 
   export default {
-    props: ["hideDetails", "updateName"],
+    components: {
+      snackbar
+    },
     data: () => ({
-      name: "",
+      comment: "",
       uuid: "",
       type: "",
       visible: false
     }),
     methods: {
-      show(uuid, type, name) {
+      show(uuid, comment, type) {
         this.uuid = uuid;
-        this.name = name;
+        this.comment = comment;
         this.type = type;
         this.visible = true;
       },
       hide() {
-        this.name = "";
         this.uuid = "";
+        this.comment = "";
         this.type = "";
         this.visible = false;
       },
@@ -55,20 +61,18 @@
               params: {
                 action: "update",
                 uuid: this.uuid,
-                name: this.$base64.encode(this.name)
+                comment: this.$base64.encode(this.comment)
               }
             }
           )
           .then(response => {
+            if (response.data.comment === this.comment) {
+              this.$emit("comment_updated", this.comment);
+            }
             this.hide();
-            if (this.hideDetails) {
-              this.hideDetails();
-            }
-            if (this.updateName && response.data.name) {
-              this.updateName(response.data.name);
-            }
           })
           .catch(error => {
+            this.$emit("comment_error", this.comment);
             console.log(error);
           });
       }
