@@ -68,7 +68,7 @@ module.exports = {
   devtool: '#eval-source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'NOKIA IMPACT Glue',
+      title: 'Glial',
       meta: {
         author: 'vvzvlad by nokia iot lab'
       },

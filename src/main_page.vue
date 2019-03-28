@@ -17,7 +17,7 @@
       </v-list>
       <div class="version-block">
         <div class="version-row">
-          Glue: {{server_online ? backend_version : 'Disconnected'}}
+          Glial: {{server_online ? backend_version : 'Disconnected'}}
         </div>
         <div class="version-row">
           Panel: {{frontend_version}}

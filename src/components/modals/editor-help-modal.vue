@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-on:keydown.esc="hide()" v-model="visible" max-width="500">
       <v-card>
-        <v-card-title class="headline">Glue help</v-card-title>
+        <v-card-title class="headline">Glial help</v-card-title>
         <v-card-text>
           <h2>Logging:</h2>
           <b>log_info()</b>: the function of adding to the log record level "INFO"

@@ -56,7 +56,7 @@
             </v-btn>
           </div>
 
-          <v-btn :small="true" @click.native="$refs.help.show()" title="Show glue scripts help">
+          <v-btn :small="true" @click.native="$refs.help.show()" title="Show glial scripts help">
             <v-icon left small>fa-question-circle</v-icon>
             Help
           </v-btn>

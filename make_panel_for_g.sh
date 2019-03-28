@@ -1,3 +1,5 @@
+#!/bin/sh
+set -e
 rm -rf ./panel
 mkdir panel
 mkdir panel/public

@@ -40,7 +40,7 @@
     <v-card class="mt-3">
       <v-card-title>
         <v-icon>fa-cogs</v-icon>
-        <v-toolbar-title>Glue controls</v-toolbar-title>
+        <v-toolbar-title>Glial controls</v-toolbar-title>
       </v-card-title>
       <v-divider></v-divider>
       <v-form>
@@ -48,13 +48,13 @@
           <v-flex md3 justify-center>
             <v-btn color="secondary" @click.native="send('tarantool_stop')">
               <v-icon left small>fa-stop-circle</v-icon>
-              Glue restart
+              Glial restart
             </v-btn>
           </v-flex>
           <v-flex md3 justify-center>
             <v-btn color="secondary" @click.native="send('update')">
               <v-icon left small>fa-cloud-download-alt</v-icon>
-              GLUE update and restart
+              Glial update and restart
             </v-btn>
           </v-flex>
           <v-flex md3 justify-center>
@@ -143,7 +143,7 @@
               this.$refs.server_response_modal.show(response.data.msg);
             }
             else if (action === "tarantool_stop") {
-              this.$refs.snackbar.update("Glue restarted successfuly", "success", 5000);
+              this.$refs.snackbar.update("Glial restarted successfuly", "success", 5000);
             }
             else {
               this.$refs.snackbar.update(response.data.msg, "success", 5000);
