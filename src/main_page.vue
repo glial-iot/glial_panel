@@ -33,8 +33,7 @@
         <v-flex class="header-left">
           <v-menu>
             <v-toolbar-title slot="activator">
-              <img class="mr-3 logo" src="./assets/logo_nokia.svg" height="25px" alt="Nokia Logo">
-              <p>IMPACT GLUE</p>
+              <h1>GLIAL</h1>
             </v-toolbar-title>
           </v-menu>
         </v-flex>
