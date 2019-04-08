@@ -1,10 +1,11 @@
-var path = require('path')
-var webpack = require('webpack')
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var GitRevisionPlugin = require('git-revision-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const UglifyJsPlugin = require('terser-webpack-plugin');
 
-var gitRevisionPlugin = new GitRevisionPlugin({
+const gitRevisionPlugin = new GitRevisionPlugin({
   versionCommand: 'describe --dirty --always --tags'
 })
 
@@ -13,6 +14,12 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: 'build.js'
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+      })
+    ]
   },
   module: {
     rules: [{
@@ -90,12 +97,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
       }
     }),
     new webpack.LoaderOptionsPlugin({
