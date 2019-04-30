@@ -4,10 +4,12 @@ import manage from './manage.vue'
 import bus from './bus.vue'
 import logs from './logs.vue'
 import backups from './backups.vue'
+import settings from './settings.vue'
 
 import editor from './scripts_pages/editor.vue'
 import scripts_table from './scripts_pages/scripts_table'
 import scripts_upload from './scripts_pages/scripts_upload.vue'
+
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -81,6 +83,9 @@ const router = new VueRouter({
   }, {
     path: '/manage',
     component: manage,
+  }, {
+    path: '/settings',
+    component: settings,
   }, {
     path: '/scripts/drivers/editor',
     component: editor
