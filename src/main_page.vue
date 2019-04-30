@@ -142,6 +142,12 @@
       color: "brown"
     },
     {
+      path: "/settings",
+      name: "Settings",
+      icon: "fa-wrench",
+      color: "orange"
+    },
+    {
       path: "/scripts/upload",
       name: "Upload scripts",
       icon: "fa-upload",
