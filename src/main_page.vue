@@ -33,7 +33,7 @@
         <v-flex class="header-left">
           <v-menu>
             <v-toolbar-title slot="activator">
-              <p>{{company_name}}Glial</p>
+              <h1>{{company_name}}Glial</h1>
             </v-toolbar-title>
           </v-menu>
         </v-flex>
@@ -219,7 +219,7 @@
               throw new Error("Cant find version");
             }
             if (response.data && response.data.company_name) {
-              this.company_name = response.data.company_name;
+              this.company_name = response.data.company_name + " ";
             }
           })
           .catch(error => {
