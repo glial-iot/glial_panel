@@ -33,7 +33,7 @@
         <v-flex class="header-left">
           <v-menu>
             <v-toolbar-title slot="activator">
-              <h1>GLIAL</h1>
+              <p>{{company_name}}Glial</p>
             </v-toolbar-title>
           </v-menu>
         </v-flex>
@@ -160,6 +160,7 @@
       menuitems: menu,
       frontend_version: VERSION,
       backend_version: "",
+      company_name: "",
       server_online: false
     }),
     computed: mapState({
@@ -216,6 +217,9 @@
             } else {
               this.server_online = false;
               throw new Error("Cant find version");
+            }
+            if (response.data && response.data.company_name) {
+              this.company_name = response.data.company_name;
             }
           })
           .catch(error => {
